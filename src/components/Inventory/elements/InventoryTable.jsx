@@ -5,13 +5,10 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 
-import { Square2StackIcon } from "@heroicons/react/24/outline";
+// import { Square2StackIcon } from "@heroicons/react/24/outline";
 // import { Tooltip } from "recharts";
-import {
-  PencilIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from "@heroicons/react/24/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
 
 const TABLE_HEAD = [
   "Product",
@@ -105,6 +102,18 @@ const TABLE_ROWS = [
 ];
 
 const InventoryTable = () => {
+  const [inventoryData, setInventoryData] = useState([]);
+  useEffect(() => {
+    const fetchInventoryData = async () => {
+      try {
+        const res = await fetch("http://52.90.182.126:3000/api/cai");
+        const data = await res.json();
+        setInventoryData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, []);
   return (
     <Card className=" w-full overflow-scroll">
       <table className="w-full min-w-max table-auto text-left">

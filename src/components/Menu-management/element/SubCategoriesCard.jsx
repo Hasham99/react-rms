@@ -31,7 +31,7 @@ function TrashIcon() {
   );
 }
 
-const ItemsCard = () => {
+const SubCategoriesCard = () => {
   const [size, setSize] = useState(null);
   const [categoryData, setCategoryData] = useState([]);
 
@@ -58,18 +58,17 @@ const ItemsCard = () => {
       <Card className="w-80 ">
         <CardBody className=" shadow-sm p-4">
           <Typography variant="h4" color="green">
-            UI/UX Review Check
+            Sub Categories
           </Typography>
         </CardBody>
         <List>
           {categoryData.map((category) => (
             <div key={category.id}>
               <ListItem ripple={false} className="py-1 pr-1 pl-4">
+                {/* {category.category_name} */}
                 {category.subcategories.map((sub) => (
                   <div key={sub.subcategory_id}>
-                    {sub.menu.map((menuItem) => (
-                      <div key={menuItem.item_id}>{menuItem.item_name}</div>
-                    ))}
+                    <p>{sub.subcategory_name}</p>
                   </div>
                 ))}
                 <ListItemSuffix>
@@ -130,4 +129,4 @@ const ItemsCard = () => {
   );
 };
 
-export default ItemsCard;
+export default SubCategoriesCard;
