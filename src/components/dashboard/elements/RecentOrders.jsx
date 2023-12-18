@@ -80,7 +80,7 @@ export default function RecentOrders() {
                 {/* <td>{order.time}</td> */}
                 <td>{order.total_amount}</td>
                 {/* <td>{order.status}</td> */}
-                <td>{getOrderStatus(order.status)}</td>
+                <td>{getOrderStatus(order.order_status)}</td>
                 {/* <td>
                   order.total_amount
                 </td>

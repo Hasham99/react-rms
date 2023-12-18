@@ -63,7 +63,7 @@ const ItemsCard = () => {
         </CardBody>
         <List>
           {categoryData.map((category) => (
-            <div key={category.id}>
+            <div key={category.category_id}>
               <ListItem ripple={false} className="py-1 pr-1 pl-4">
                 {category.subcategories.map((sub) => (
                   <div key={sub.subcategory_id}>

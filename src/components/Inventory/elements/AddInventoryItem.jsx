@@ -1,64 +1,95 @@
-import { useState } from "react";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Select,
+  Option,
+} from "@material-tailwind/react";
 import { FaRegWindowClose } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 export function AddInventoryItem(props) {
   // Define state variables to store form data
-  const [formData, setFormData] = useState({
-    name: "",
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  // const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState({
+    itemId: null,
+    itemName: "",
   });
 
+  const [formData, setFormData] = useState({
+    available: "",
+    reserved: "",
+  });
   // Event handler for input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    // Update the state based on the input type
-    //     if (type === "checkbox") {
-    //   setFormData({
-    //     ...formData,
-    //     [name]: checked,
-    //   });
-    //     } else {
-    // if (name === "itemName" && typeof value === "string") {
     setFormData({
       ...formData,
       [name]: value,
     });
   };
-
   // Event handler for form submission
   const handleSubmit = () => {
-    // alert(formData);
-    // if (formData.itemName === "string") {
-    alert(
-      `${formData.itemName} ${formData.location} ${formData.available} ${formData.reserved} ${formData.onHand} `
-    );
-    // } else {
-    //   {
-    //     ;
-    //   }
-    // }
+    const on_hand = parseInt(formData.available) + parseInt(formData.reserved);
+    alert(`${formData.available} ${formData.reserved} ${on_hand} `);
+    console.log(selectedOption);
   };
   const { handleClose } = props;
+
+  useEffect(() => {
+    const fetchInventoryData = async () => {
+      // Fetch data from your API
+      await fetch("http://52.90.182.126:3000/api/cai")
+        .then((response) => response.json())
+        .then((data) => {
+          // Extract "item_name" from the menu items
+          const extractedItemNames = data.reduce((accumulator, category) => {
+            return [
+              ...accumulator,
+              ...category.subcategories.reduce(
+                (subAccumulator, subcategory) => {
+                  return [
+                    ...subAccumulator,
+                    ...subcategory.menu.map((item) => ({
+                      itemId: item.item_id,
+                      itemName: item.item_name,
+                    })),
+                  ];
+                },
+                []
+              ),
+            ];
+          }, []);
+
+          setCategoryOptions(extractedItemNames);
+        })
+        .catch((error) => {
+          console.error("Error fetching data from API", error);
+        });
+    };
+    fetchInventoryData();
+  }, []);
+
+  const handleSelectChange = (selectedOption) => {
+    setSelectedOption(selectedOption);
+  };
+
   return (
     <Card color="transparent" shadow={false}>
       <div className="flex justify-between items-center">
         <Typography variant="h4" className="text-sidebar">
           Add Inventory Item
         </Typography>
-        {/* <Link to={`/inventory`}> */}
         <div onClick={handleClose}>
           <FaRegWindowClose className="cursor-pointer" />
         </div>
-        {/* </Link> */}
       </div>
-      {/* <Typography color="gray" className="mt-1 font-normal">
-        Nice to meet you! Enter your details to register.
-      </Typography> */}
       <form
         className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
         onSubmit={() => {
+          // Prevent the form submission for this example
           try {
             handleSubmit();
           } catch (error) {
@@ -66,38 +97,25 @@ export function AddInventoryItem(props) {
           }
         }}
       >
-        {/* <div className="grid grid-cols-2 "> */}
         <div className="mb-1 flex flex-col gap-3">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Item Name
+            Menu Item
           </Typography>
-          <Input
-            required
-            size="lg"
-            placeholder="Item name"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="itemName"
-            value={formData.itemName}
-            onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Location
-          </Typography>
-          <Input
-            required
-            size="lg"
-            placeholder="location"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="location"
-            value={formData.location}
-            onChange={handleInputChange}
-          />
+          <Select
+            color="teal"
+            // value={selectedOption}
+            value={selectedOption}
+            onChange={handleSelectChange}
+
+            // onClick={handleSelectChange}
+          >
+            {categoryOptions.map((item, index) => (
+              <Option key={index} value={item}>
+                {item.itemName}
+              </Option>
+            ))}
+          </Select>
+
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Available
           </Typography>
@@ -128,22 +146,6 @@ export function AddInventoryItem(props) {
             }}
             name="reserved"
             value={formData.reserved}
-            onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            On Hand
-          </Typography>
-          <Input
-            required
-            type="number"
-            size="lg"
-            placeholder="on Hand Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="onHand"
-            value={formData.onHand}
             onChange={handleInputChange}
           />
         </div>
