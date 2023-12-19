@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { FaRegWindowClose } from "react-icons/fa";
 
-export function AddInventoryItem(props) {
+export function AddInventoryItem() {
   // Define state variables to store form data
   const [categoryOptions, setCategoryOptions] = useState([]);
   // const [selectedOption, setSelectedOption] = useState(null);
@@ -22,6 +22,7 @@ export function AddInventoryItem(props) {
     available: "",
     reserved: "",
   });
+
   // Event handler for input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +34,17 @@ export function AddInventoryItem(props) {
   // Event handler for form submission
   const handleSubmit = () => {
     const on_hand = parseInt(formData.available) + parseInt(formData.reserved);
-    alert(`${formData.available} ${formData.reserved} ${on_hand} `);
-    console.log(selectedOption);
+    alert(
+      `'availability '${formData.available} 
+      'reserved '${formData.reserved} 
+      'on Hand '${on_hand}  
+      'Item ID '${selectedOption.itemId} 
+      'Item Name '${selectedOption.itemName}`
+    );
+    // console.log(selectedOption);
+    // console.log(`${selectedOption.itemId} ${selectedOption.itemName}`);
   };
-  const { handleClose } = props;
+  // const { handleClose } = props;
 
   useEffect(() => {
     const fetchInventoryData = async () => {
@@ -63,7 +71,15 @@ export function AddInventoryItem(props) {
             ];
           }, []);
 
-          setCategoryOptions(extractedItemNames);
+          localStorage.setItem(
+            "inventory-Items",
+            JSON.stringify(extractedItemNames)
+          );
+
+          const local_inventory_items = JSON.parse(
+            localStorage.getItem("inventory-Items")
+          );
+          setCategoryOptions(local_inventory_items);
         })
         .catch((error) => {
           console.error("Error fetching data from API", error);
@@ -82,7 +98,8 @@ export function AddInventoryItem(props) {
         <Typography variant="h4" className="text-sidebar">
           Add Inventory Item
         </Typography>
-        <div onClick={handleClose}>
+        {/* // onClick={handleClose} */}
+        <div>
           <FaRegWindowClose className="cursor-pointer" />
         </div>
       </div>
@@ -109,9 +126,14 @@ export function AddInventoryItem(props) {
 
             // onClick={handleSelectChange}
           >
-            {categoryOptions.map((item, index) => (
+            {/* {categoryOptions.map((item, index) => (
               <Option key={index} value={item}>
                 {item.itemName}
+              </Option>
+            ))} */}
+            {categoryOptions.map((data) => (
+              <Option key={data.itemId} value={data}>
+                {data.itemName}
               </Option>
             ))}
           </Select>
