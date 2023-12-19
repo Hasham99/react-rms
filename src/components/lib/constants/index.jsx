@@ -40,6 +40,25 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     // ],
   },
   {
+    key: "pos",
+    label: "POS",
+    path: "/pos",
+    icon: <HiOutlineShoppingCart />,
+    // submenu: [
+    //   {
+    //     key: "subitem1",
+    //     label: "Submenu Item 1",
+    //     path: "/products/subitem1",
+    //   },
+    //   {
+    //     key: "subitem2",
+    //     label: "Submenu Item 2",
+    //     path: "/products/subitem2",
+    //   },
+    //   // Add more submenu items as needed
+    // ],
+  },
+  {
     key: "inventory",
     label: "Inventory",
     path: "/inventory",

@@ -11,6 +11,7 @@ import Users from "./components/staff-management/StaffManagement";
 import { Transactions } from "./components/transactions/Transactions";
 import StaffManagement from "./components/staff-management/StaffManagement";
 import RecentOrders from "./components/dashboard/elements/RecentOrders";
+import Pos from "./components/POS/Pos";
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
           <Route index element={<Dashboard />} />
           {/* <Route path="/products" element={<Products />} /> */}
           <Route path="/orders" element={<RecentOrders />} />
+          <Route path="/pos" element={<Pos />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/staff-management" element={<StaffManagement />} />
           <Route path="/transactions" element={<Transactions />} />

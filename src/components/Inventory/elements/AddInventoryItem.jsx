@@ -8,11 +8,11 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { FaRegWindowClose } from "react-icons/fa";
+import axios from "axios";
 
 export function AddInventoryItem() {
   // Define state variables to store form data
   const [categoryOptions, setCategoryOptions] = useState([]);
-  // const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption, setSelectedOption] = useState({
     itemId: null,
     itemName: "",
@@ -31,18 +31,42 @@ export function AddInventoryItem() {
       [name]: value,
     });
   };
+
+  const on_Hand = parseInt(formData.available) + parseInt(formData.reserved);
+  const jsonData = {
+    menuitem_id: `${selectedOption.itemId}`,
+    unit: `${formData.unit}`,
+    available: `${formData.available}`,
+    reserved: `${formData.reserved}`,
+    on_hand: `${on_Hand}`,
+  };
+
   // Event handler for form submission
   const handleSubmit = () => {
-    const on_hand = parseInt(formData.available) + parseInt(formData.reserved);
-    alert(
-      `'availability '${formData.available} 
-      'reserved '${formData.reserved} 
-      'on Hand '${on_hand}  
-      'Item ID '${selectedOption.itemId} 
-      'Item Name '${selectedOption.itemName}`
-    );
-    // console.log(selectedOption);
-    // console.log(`${selectedOption.itemId} ${selectedOption.itemName}`);
+    axios
+      .post("http://52.90.182.126:3000/api/inventory/create", jsonData)
+      .then((response) => {
+        console.log("Post request successful", response.data);
+        // Handle the response data here if needed
+      })
+      .catch((error) => {
+        console.error("Error making post request", error);
+        // Handle errors here if needed
+      });
+    alert(JSON.stringify(jsonData));
+
+    // Handle the response, e.g., show a success message
+    alert("POST request successful");
+    // alert(
+    //   `
+    //   'Item ID '${selectedOption.itemId}
+    //   'Item Name '${selectedOption.itemName}
+    //   'Unit '${formData.unit}
+    //   'availability '${formData.available}
+    //   'reserved '${formData.reserved}
+    //   'on Hand '${on_hand}
+    //   `
+    // );
   };
   // const { handleClose } = props;
 
@@ -120,11 +144,8 @@ export function AddInventoryItem() {
           </Typography>
           <Select
             color="teal"
-            // value={selectedOption}
             value={selectedOption}
             onChange={handleSelectChange}
-
-            // onClick={handleSelectChange}
           >
             {/* {categoryOptions.map((item, index) => (
               <Option key={index} value={item}>
@@ -137,7 +158,22 @@ export function AddInventoryItem() {
               </Option>
             ))}
           </Select>
-
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Unit
+          </Typography>
+          <Input
+            required
+            type="text"
+            size="lg"
+            placeholder="unit"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            name="unit"
+            value={formData.unit}
+            onChange={handleInputChange}
+          />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Available
           </Typography>
