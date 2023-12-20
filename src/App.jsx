@@ -12,10 +12,12 @@ import { Transactions } from "./components/transactions/Transactions";
 import StaffManagement from "./components/staff-management/StaffManagement";
 import RecentOrders from "./components/dashboard/elements/RecentOrders";
 import Pos from "./components/POS/Pos";
+import Cart from "./components/Cart/Cart";
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/cart" element={<Cart />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           {/* <Route path="/products" element={<Products />} /> */}

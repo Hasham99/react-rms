@@ -7,6 +7,7 @@ module.exports = withMT({
   theme: {
 
     extend: {
+
       colors: {
         'sidebar': '#092635',
       },

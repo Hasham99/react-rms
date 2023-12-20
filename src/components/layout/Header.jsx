@@ -4,8 +4,9 @@ import {
   HiOutlineBell,
   HiOutlineSearch,
   HiOutlineChatAlt,
+  HiOutlineShoppingCart,
 } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 export default function Header() {
@@ -25,6 +26,23 @@ export default function Header() {
         />
       </div>
       <div className="flex items-center gap-2 mr-2">
+        <Popover className="relative">
+          <Link to={"/cart"}>
+            <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
+          </Link>
+          {/* {({ open }) => (
+            <>
+              <Popover.Button
+                className={classNames(
+                  open && "bg-gray-100",
+                  "group inline-flex items-center rounded-sm p-1.5 text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100"
+                )}
+              >
+                <HiOutlineChatAlt fontSize={24} />
+              </Popover.Button>
+            </>
+          )} */}
+        </Popover>
         <Popover className="relative">
           {({ open }) => (
             <>

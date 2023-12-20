@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { add } from "../../../redux/CartSlice";
+import { addToCart } from "../../../redux/CartSlice";
 import { useDispatch } from "react-redux";
 import {
   Card,
@@ -26,10 +26,11 @@ function ProductsPOS() {
     fetchProduct();
   }, []);
   const handleCart = (product) => {
-    dispatch(add(product));
+    dispatch(addToCart(product));
 
     // localStorage.setItem("cartitems", JSON.stringify(product));
   };
+
   return (
     <Card className="h-screen max-h-[85vh] overflow-y-scroll ">
       {/* <div className=" h-screen rounded-xl  grid grid-cols-3 overflow-y-scroll bg-white px-4  max-h-[85vh]  "> */}
@@ -43,7 +44,7 @@ function ProductsPOS() {
         <Typography variant="h4" color="blue-gray">
           Products
         </Typography>
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-6">
           {products.map((subcategory) => (
             <div key={subcategory.subcategory_id}>
               <div

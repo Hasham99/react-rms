@@ -9,6 +9,8 @@ import {
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
+import { IoMdClose } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const CartPOS = () => {
   const [Product, setProduct] = useState([]);
@@ -27,9 +29,15 @@ const CartPOS = () => {
         className="m-0 rounded-none"
       ></CardHeader>
       <CardBody>
-        <Typography variant="h4" color="blue-gray">
-          Cart
-        </Typography>
+        <div className="flex justify-between">
+          <Typography variant="h4" color="blue-gray">
+            Cart
+          </Typography>
+
+          <Link to={"/pos"}>
+            <IoMdClose className="text-gray-700" fontSize={24} />
+          </Link>
+        </div>
 
         <div className="bg-blue-gray-900 shadow-lg my-4 border-2 p-3  rounded-xl overflow-y-scroll max-h-[470px] ">
           <div className="flex justify-between px-2 text-white ">
