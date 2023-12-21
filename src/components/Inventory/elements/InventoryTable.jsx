@@ -137,7 +137,7 @@ const InventoryTable = () => {
                         <PencilSquareIcon className="h-4 w-4" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip content="Edit User">
+                    <Tooltip content="Delete User">
                       <IconButton variant="text">
                         <TrashIcon className="h-4 w-4" />
                       </IconButton>

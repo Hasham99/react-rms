@@ -1,27 +1,27 @@
 import { useState } from "react";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Select,
+  Option,
+} from "@material-tailwind/react";
 import { FaRegWindowClose } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export function UpdateInventoryItem(props) {
-  // Define state variables to store form data
-
+const UpdateStaff = (props) => {
   const [InputValue, setInputValue] = useState(props.everything);
   const [formData, setFormData] = useState({
     name: "",
     // name: `${props.product}`,
   });
-  const Availability =
-    parseInt(formData.available) + parseInt(InputValue.available);
-  const ReservedItems =
-    parseInt(formData.reserved) + parseInt(InputValue.reserved);
-  // Event handler for input changes
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-  const onHand = parseInt(Availability) + parseInt(ReservedItems);
+  const [Value, setValue] = useState();
 
+  const handleChange = (value) => {
+    setValue(value);
+  };
   const handleInputChangeTwo = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -30,18 +30,19 @@ export function UpdateInventoryItem(props) {
     });
   };
   const jsonData = {
-    menuitem_id: `${InputValue.menuitem_id}`,
-    category_id: `${InputValue.category_id}`,
-    available: `${Availability}`,
-    reserved: `${ReservedItems}`,
-    on_hand: `${onHand}`,
+    waiter_name: `${InputValue.waiter_name}`,
+    login_id: `${InputValue.login_id}`,
+    login_pass: `${formData.password}`,
+    restaurant_id: `${InputValue.restaurant_id}`,
+    status: `${Value}`,
   };
 
-  // Event handler for form submission
   const handleSubmit = () => {
-    // Make a POST request to your server endpoint
     axios
-      .patch("http://52.90.182.126:3000/api/inventory/update", jsonData)
+      .patch(
+        `http://52.90.182.126:3000/api/waiter/${InputValue.waiter_id}`,
+        jsonData
+      )
       .then((response) => {
         console.log("PATCH request successful", response.data);
         // Handle the response data here if needed
@@ -50,25 +51,26 @@ export function UpdateInventoryItem(props) {
         console.error("Error making PATCH request", error);
         // Handle errors here if needed
       });
-    //   alert(JSON.stringify(jsonData));
+    // alert(JSON.stringify(jsonData));
     // Handle the response, e.g., show a success message
-    alert("POST request successful");
-  };
-  // alert(`${Availability} ${ReservedItems}`);
 
-  // alert(
-  //   `${formData.itemName } ${formData.location} ${formData.available} ${formData.reserved} ${formData.onHand} `
-  // );
-  //   };
-  const { handleClose } = props;
-  // console.log(props.everything);
+    alert("POST request successful");
+    //   alert(`
+    //   'Waiter ID' ${JSON.stringify(InputValue.waiter_name)}
+    //   'Username' ${JSON.stringify(InputValue.login_id)}
+    //   'Restaurant ID' ${JSON.stringify(InputValue.restaurant_id)}
+    //   'password' ${JSON.stringify(formData.password)}
+    //   'status' ${Value}`);
+    // alert(JSON.stringify(jsonData));
+  };
+
   return (
     <Card color="transparent" shadow={false}>
       <div className="flex justify-between items-center">
         <Typography variant="h4" className="text-sidebar">
-          Add Inventory Item
+          Update Waiter
         </Typography>
-        <div onClick={handleClose}>
+        <div>
           <FaRegWindowClose className="cursor-pointer" />
         </div>
       </div>
@@ -85,7 +87,7 @@ export function UpdateInventoryItem(props) {
       >
         <div className="mb-1 flex flex-col gap-3">
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Item Name
+            Name
           </Typography>
           <Input
             required
@@ -97,12 +99,13 @@ export function UpdateInventoryItem(props) {
               className: "before:content-none after:content-none",
             }}
             name="itemName"
-            value={InputValue.item_name}
+            value={InputValue.waiter_name}
+            // value={InputValue.item_name}
             // value={formData.itemName}
-            onChange={handleInputChange}
+            // onChange={handleInputChange}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Category
+            Username
           </Typography>
           <Input
             required
@@ -114,54 +117,40 @@ export function UpdateInventoryItem(props) {
               className: "before:content-none after:content-none",
             }}
             name="category"
-            value={InputValue.category_name}
+            value={InputValue.login_id}
+            // value={InputValue.category_name}
             // value={formData.location}
-            onChange={handleInputChange}
+            // onChange={handleInputChange}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
-            <div className="flex justify-between ">
-              <div>Available</div>
-              <div className="text-green-400 text-sm ">
-                {InputValue.available}
-              </div>
-            </div>
+            Password
           </Typography>
           <Input
             required
-            type="number"
+            type=""
             size="lg"
             placeholder="Available Quantity"
             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            name="available"
+            name="password"
             // value={}
-            value={formData.available}
+            value={formData.password}
             onChange={handleInputChangeTwo}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             <div className="flex justify-between ">
-              <div>Reserved</div>
+              <div>Status</div>
               <div className="text-green-400 text-sm ">
-                {InputValue.reserved}
+                {/* {InputValue.reserved} */}
               </div>
             </div>
           </Typography>
-          <Input
-            required
-            type="number"
-            size="lg"
-            placeholder="Reserved Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="reserved"
-            // value={InputValue.reserved}
-            value={formData.reserved}
-            onChange={handleInputChangeTwo}
-          />
+          <Select onChange={handleChange} value={Value}>
+            <Option value="allowed">Allowed</Option>
+            <Option value="disallowed">Not Allowed</Option>
+          </Select>
           {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             On Hand
           </Typography>
@@ -185,4 +174,6 @@ export function UpdateInventoryItem(props) {
       </form>
     </Card>
   );
-}
+};
+
+export default UpdateStaff;
