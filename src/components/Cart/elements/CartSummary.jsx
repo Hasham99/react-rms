@@ -1,23 +1,6 @@
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-import React from "react";
 
-const CartSummary = (props) => {
-  const jsonData = {
-    time: new Date().toISOString(),
-    total_amount: `${props.totalAmount}`,
-    items: [
-      {
-        menu_item_id: `${props.itemId}`,
-        name: `${props.itemNames}`,
-        price: `${props.itemPrice}`,
-        quantity: `2`,
-        kitchen_id: `${props.kitchenId}`,
-        category_id: `${props.categoryId}`,
-        note: ``,
-      },
-    ],
-  };
-  console.log(JSON.stringify(jsonData));
+const CartSummary = () => {
   return (
     <div className="p-2">
       <Card className="bg-gray-100">
@@ -39,7 +22,7 @@ const CartSummary = (props) => {
                 variant="h6"
                 color="blue-gray"
               >
-                {parseFloat(props.totalAmount).toFixed(2)}
+                {/* {parseFloat(props.totalAmount).toFixed(2)} */}
               </Typography>
             </div>
             <hr />
@@ -74,7 +57,7 @@ const CartSummary = (props) => {
                 variant="h6"
                 color="blue-gray"
               >
-                {parseFloat(props.totalAmount + 10).toFixed(2)}
+                {/* {parseFloat(props.totalAmount + 10).toFixed(2)} */}
               </Typography>
             </div>
           </div>

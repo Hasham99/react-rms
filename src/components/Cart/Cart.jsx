@@ -18,14 +18,15 @@ const Cart = () => {
   const [totalPrices, setTotalPrices] = useState([]); // Array to store total prices for each item
   const [totalAmount, setTotalAmount] = useState(0); // Total payable amount
   const [CategoryId, setCategoryId] = useState(null);
-  const [KitchenId, setKitchenId] = useState(null);
-  const [ItemName, setItemName] = useState(null);
-  const [ItemPrice, setItemPrice] = useState(null);
-  const [ItemId, setItemId] = useState(null);
+  // const [KitchenId, setKitchenId] = useState(null);
+  // const [ItemName, setItemName] = useState(null);
+  // const [ItemPrice, setItemPrice] = useState(null);
+  // const [ItemId, setItemId] = useState(null);
 
   const [Product, setProduct] = useState([]);
   const cartItems = useSelector((state) => state.cart);
 
+  // console.log(cartItems);
   // Function to increment the count for a specific item
   const incrementCount = (index) => {
     const updatedCounts = [...counts];
@@ -84,27 +85,27 @@ const Cart = () => {
     //     kitchenId: item.kitchen_id,
     //   }))
     // );
-    const extractedItems = Product.flatMap((subcategory) =>
-      subcategory.items.map((item) => ({
-        // subcategoryName: subcategory.subcategory_name,
-        itemId: item.item_id,
-        itemName: item.item_name,
-        itemPrice: item.item_price,
+    // const extractedItems = Product.flatMap((subcategory) =>
+    //   subcategory.items.map((item) => ({
+    //     // subcategoryName: subcategory.subcategory_name,
+    //     itemId: item.item_id,
+    //     itemName: item.item_name,
+    //     itemPrice: item.item_price,
 
-        kitchenId: item.kitchen_id,
-      }))
-    );
+    //     kitchenId: item.kitchen_id,
+    //   }))
+    // );
     // console.log("item", JSON.stringify(extractedItems));
 
-    const itemId = extractedItems.map((item) => item.itemId);
-    const itemNames = extractedItems.map((item) => item.itemName);
-    const itemPrice = extractedItems.map((item) => item.itemPrice);
-    const kitchenId = extractedItems.map((item) => item.kitchenId);
+    // const itemId = extractedItems.map((item) => item.itemId);
+    // const itemNames = extractedItems.map((item) => item.itemName);
+    // const itemPrice = extractedItems.map((item) => item.itemPrice);
+    // const kitchenId = extractedItems.map((item) => item.kitchenId);
 
-    setItemId(itemId);
-    setItemName(itemNames);
-    setItemPrice(itemPrice);
-    setKitchenId(kitchenId);
+    // setItemId(itemId);
+    // setItemName(itemNames);
+    // setItemPrice(itemPrice);
+    // setKitchenId(kitchenId);
 
     const extractedSubCategoryIds = Product.map(
       (subcategory) => subcategory.subcategory_id
@@ -228,12 +229,12 @@ const Cart = () => {
           </div>
         </div>
         <CartSummary
-          totalAmount={totalAmount}
-          categoryId={CategoryId}
-          kitchenId={KitchenId}
-          itemPrice={ItemPrice}
-          itemName={ItemName}
-          itemId={ItemId}
+        // totalAmount={totalAmount}
+        // categoryId={CategoryId}
+        // kitchenId={KitchenId}
+        // itemPrice={ItemPrice}
+        // itemName={ItemName}
+        // itemId={ItemId}
         />
       </div>
     </div>

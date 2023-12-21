@@ -13,6 +13,7 @@ import StaffManagement from "./components/staff-management/StaffManagement";
 import RecentOrders from "./components/dashboard/elements/RecentOrders";
 import Pos from "./components/POS/Pos";
 import Cart from "./components/Cart/Cart";
+import Ingredients from "./components/Ingredients/Ingredients";
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
           <Route path="/staff-management" element={<StaffManagement />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/menu-management" element={<MenuManagement />} />
+          <Route path="/ingredients" element={<Ingredients />} />
           <Route path="/settings" element={<SettingsLayout />}>
             <Route path="/settings-accounts" element={<Account />} />
           </Route>
