@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const AddStaff = () => {
-  const [InputValue, setInputValue] = useState('');
+  const [InputValue, setInputValue] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     // name: `${props.product}`,
@@ -49,14 +49,8 @@ const AddStaff = () => {
     });
   };
 
-  
-
-    
-  
-
-
   const handleSubmit = () => {
-    if(formData.password==formData.confirm_password){
+    if (formData.password == formData.confirm_password) {
       //   alert(`
       //   'Waiter Name' ${JSON.stringify(formData.waiter_name)}
       //   'Username' ${JSON.stringify(formData.login_id)}
@@ -67,34 +61,28 @@ const AddStaff = () => {
         waiter_name: `${formData.waiter_name}`,
         login_id: `${formData.login_id}`,
         login_pass: `${formData.password}`,
+        restaurant_id: 1,
       };
+      axios
+        .post(`http://52.90.182.126:3000/api/waiter`, jsonData)
+        .then((response) => {
+          console.log("PATCH request successful", response.data);
+          // Handle the response data here if needed
+        })
+        .catch((error) => {
+          console.error("Error making PATCH request", error);
+          // Handle errors here if needed
+        });
 
-      
-    alert(JSON.stringify(jsonData));
-       }
-      else{
-        alert('password & Confirm pass does not match')
-      }
-    
-    // axios
-    //   .patch(
-    //     `http://52.90.182.126:3000/api/waiter/${InputValue.waiter_id}`,
-    //     jsonData
-    //   )
-    //   .then((response) => {
-    //     console.log("PATCH request successful", response.data);
-    //     // Handle the response data here if needed
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error making PATCH request", error);
-    //     // Handle errors here if needed
-    //   });
+      alert(JSON.stringify(jsonData));
+    } else {
+      alert("password & Confirm pass does not match");
+    }
+
     // // alert(JSON.stringify(jsonData));
     // // Handle the response, e.g., show a success message
 
     // alert("POST request successful");
-
-   
   };
 
   return (
@@ -189,7 +177,7 @@ const AddStaff = () => {
             value={formData.confirm_password}
             onChange={handleInputChangeConfirmPass}
           />
-          
+
           {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             On Hand
           </Typography>
@@ -212,7 +200,7 @@ const AddStaff = () => {
         </Button>
       </form>
     </Card>
-    );
+  );
 };
 
 export default AddStaff;
