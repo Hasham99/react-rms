@@ -7,6 +7,8 @@ import {
 } from "@material-tailwind/react";
 import React from "react";
 import { useState } from "react";
+import ItemIngredients from "./elements/ItemIngredients";
+import axios from "axios";
 
 const Ingredients = () => {
   // const [inputValue, setInputValue] = useState(null);
@@ -28,17 +30,15 @@ const Ingredients = () => {
   const ItemPerGram01 = parseFloat(
     parseFloat(formData.itemAmount01) /
       (parseFloat(formData.itemWeight01) * 1000)
-  ).toFixed(5);
+  ).toFixed(4);
 
   const jsonData01 = {
-    item_name: `${formData.itemName01}`,
-    item_weight: `${formData.itemWeight01}`,
-    item_price: `${formData.itemAmount01}`,
-    item_price_per_gram: `${ItemPerGram01}`,
+    IngredientName: `${formData.itemName01}`,
+    PricePerGm: `${ItemPerGram01}`,
   };
   const ItemPerGram02 = parseFloat(
     parseFloat(formData.itemAmount02) / parseFloat(formData.itemWeight02)
-  ).toFixed(5);
+  ).toFixed(4);
 
   const jsonData02 = {
     item_name: `${formData.itemName02}`,
@@ -48,8 +48,25 @@ const Ingredients = () => {
   };
 
   const handleSubmit01 = () => {
-    alert(JSON.stringify(jsonData01));
+    axios
+      .post("http://52.90.182.126:3000/api/ingredients", jsonData01)
+      .then(() => {
+        // console.log("Post request successful", response.data);
+        setFormData({
+          ...formData,
+          itemName01: "", // Clear the item name field
+          itemWeight01: "", // Clear the item weight field
+          itemAmount01: "", // Clear the total amount field
+        });
+        // alert(JSON.stringify(jsonData01));
+        // Handle the response data here if needed
+      })
+      .catch((error) => {
+        console.error("Error making post request", error);
+        // Handle errors here if needed
+      });
   };
+
   const handleSubmit02 = () => {
     alert(JSON.stringify(jsonData02));
   };
@@ -58,12 +75,12 @@ const Ingredients = () => {
       <div className="grid grid-cols-2 ">
         <Card className="m-4">
           <CardBody>
-            <Typography variant="h3" className="text-blue-gray-800 text-center">
+            <Typography variant="h4" className="text-blue-gray-800 text-center">
               Add Ingredient (Kg)
             </Typography>
             <div className="grid grid-cols-2">
               <div className="p-2">
-                <Typography variant="h5">Item Name</Typography>
+                <Typography variant="h6">Item Name</Typography>
                 <Input
                   name="itemName01"
                   type="text"
@@ -74,7 +91,7 @@ const Ingredients = () => {
 
               <div className="p-2"></div>
               <div className="p-2">
-                <Typography variant="h5">Write in Kg</Typography>
+                <Typography variant="h6">Write in Kg</Typography>
                 <Input
                   name="itemWeight01"
                   type="number"
@@ -84,7 +101,7 @@ const Ingredients = () => {
               </div>
 
               <div className="p-2">
-                <Typography variant="h5">Total Amount</Typography>
+                <Typography variant="h6">Total Amount</Typography>
                 <Input
                   name="itemAmount01"
                   type="number"
@@ -116,12 +133,12 @@ const Ingredients = () => {
         </Card>
         <Card className="m-4">
           <CardBody>
-            <Typography variant="h3" className="text-blue-gray-800 text-center">
+            <Typography variant="h4" className="text-blue-gray-800 text-center">
               Add Ingredient (g)
             </Typography>
             <div className="grid grid-cols-2">
               <div className="p-2">
-                <Typography variant="h5">Item Name</Typography>
+                <Typography variant="h6">Item Name</Typography>
                 <Input
                   name="itemName02"
                   type="text"
@@ -132,7 +149,7 @@ const Ingredients = () => {
 
               <div className="p-2"></div>
               <div className="p-2">
-                <Typography variant="h5">Write in g</Typography>
+                <Typography variant="h6">Write in g</Typography>
                 <Input
                   name="itemWeight02"
                   type="number"
@@ -142,7 +159,7 @@ const Ingredients = () => {
               </div>
 
               <div className="p-2">
-                <Typography variant="h5">Total Amount</Typography>
+                <Typography variant="h6">Total Amount</Typography>
                 <Input
                   name="itemAmount02"
                   type="number"
@@ -171,6 +188,7 @@ const Ingredients = () => {
           </CardBody>
         </Card>
       </div>
+      <ItemIngredients />
     </>
   );
 };

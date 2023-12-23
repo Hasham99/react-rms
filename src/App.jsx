@@ -21,7 +21,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          {/* <Route path="/products" element={<Products />} /> */}
+          {/* <Route path="/cost-management" element={<newFile />} /> */}
           <Route path="/orders" element={<RecentOrders />} />
           <Route path="/pos" element={<Pos />} />
           <Route path="/inventory" element={<Inventory />} />
