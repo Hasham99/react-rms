@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Layout from "./components/layout/layout";
 import Dashboard from "./components/dashboard/Dashboard";
 import Products from "./components/products/Products";
@@ -14,10 +19,30 @@ import RecentOrders from "./components/dashboard/elements/RecentOrders";
 import Pos from "./components/POS/Pos";
 import Cart from "./components/Cart/Cart";
 import Ingredients from "./components/Ingredients/Ingredients";
+import CostManagement from "./components/costManagement/CostManagement";
+import Login from "./components/login/UserLogin";
+
+// Dummy authentication check function (replace it with your actual authentication logic)
+// const isAuthenticated = () => {
+//   // Check if the user is authenticated (you may use your own authentication logic)
+//   // For example, check if there is a token in localStorage
+//   return localStorage.getItem("authToken") !== null;
+// };
+
+// // PrivateRoute HOC to protect routes
+// const PrivateRoute = ({ element, ...rest }) => {
+//   return isAuthenticated() ? (
+//     React.cloneElement(element, rest)
+//   ) : (
+//     <Navigate to="/login" />
+//   );
+// };
+
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
@@ -26,9 +51,10 @@ function App() {
           <Route path="/pos" element={<Pos />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/staff-management" element={<StaffManagement />} />
-          <Route path="/transactions" element={<Transactions />} />
           <Route path="/menu-management" element={<MenuManagement />} />
           <Route path="/ingredients" element={<Ingredients />} />
+          <Route path="/cost-management" element={<CostManagement />} />
+          <Route path="/transactions" element={<Transactions />} />
           <Route path="/settings" element={<SettingsLayout />}>
             <Route path="/settings-accounts" element={<Account />} />
           </Route>

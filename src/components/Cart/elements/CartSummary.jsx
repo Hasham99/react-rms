@@ -1,6 +1,26 @@
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-
+import axios from "axios";
+// import { useHistory } from "react-router-dom";
 const CartSummary = (props) => {
+  // const history = useHistory();
+  const amountAfterTax = props.totalAmount + 10;
+  const jsonData = {
+    time: new Date().toLocaleString(),
+    total_amount: amountAfterTax,
+    items: props.items,
+  };
+  const submitData = () => {
+    axios
+      .post("http://52.90.182.126:3000/api/posorders/1", jsonData)
+      .then(() => {
+        alert(JSON.stringify(jsonData));
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error("Error making post request", error);
+        // Handle errors here if needed
+      });
+  };
   return (
     <div className="p-2">
       <Card className="bg-gray-100">
@@ -61,7 +81,9 @@ const CartSummary = (props) => {
               </Typography>
             </div>
           </div>
-          <Button fullWidth>Checkout</Button>
+          <Button onClick={submitData} fullWidth>
+            Checkout
+          </Button>
         </CardBody>
       </Card>
     </div>

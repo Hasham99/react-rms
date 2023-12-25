@@ -73,7 +73,7 @@ const ItemIngredients = () => {
 
   useEffect(() => {
     const fetchItemName = async () => {
-      await fetch("http://52.90.182.126:3000/api/items/")
+      await fetch("http://52.90.182.126:3000/api/items/recipewise")
         .then((response) => response.json())
         .then((data) => {
           setItemName(data);
@@ -152,6 +152,7 @@ const ItemIngredients = () => {
       .post("http://52.90.182.126:3000/api/recipeitems", jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
+        window.location.href = "/ingredients";
       })
       .catch((error) => {
         console.error("Error making post request", error);

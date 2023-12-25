@@ -18,30 +18,49 @@ const Cart = () => {
   const [totalPrices, setTotalPrices] = useState([]); // Array to store total prices for each item
   const [UpdatedPayload, setUpdatedPayload] = useState([]); // Array to store total prices for each item
   const [totalAmount, setTotalAmount] = useState(0); // Total payable amount
-  // const [CategoryId, setCategoryId] = useState(null);
-  // const [KitchenId, setKitchenId] = useState(null);
-  // const [ItemName, setItemName] = useState(null);
-  // const [ItemPrice, setItemPrice] = useState(null);
-  // const [ItemId, setItemId] = useState(null);
 
   const [Product, setProduct] = useState([]);
   const cartItems = useSelector((state) => state.cart);
 
   // console.log(cartItems);
+  // // Function to increment the count for a specific item
+  // const incrementCount = (index) => {
+  //   const updatedCounts = [...counts];
+  //   updatedCounts[index] += 1;
+  //   setCounts(updatedCounts);
+  // };
+
+  // // Function to decrement the count for a specific item with a condition to keep it above 1
+  // const decrementCount = (index) => {
+  //   if (counts[index] > 0) {
+  //     const updatedCounts = [...counts];
+  //     updatedCounts[index] -= 1;
+  //     setCounts(updatedCounts);
+  //   }
+  // };
+  const prevCounts = useRef(counts);
   // Function to increment the count for a specific item
   const incrementCount = (index) => {
-    const updatedCounts = [...counts];
-    updatedCounts[index] += 1;
-    setCounts(updatedCounts);
+    setCounts((prevCounts) => {
+      const updatedCounts = [...prevCounts];
+      updatedCounts[index] += 1;
+      return updatedCounts;
+    });
   };
 
-  // Function to decrement the count for a specific item with a condition to keep it above 1
+  // Function to decrement the count for a specific item with a condition to keep it above 0
   const decrementCount = (index) => {
-    if (counts[index] > 1) {
-      const updatedCounts = [...counts];
-      updatedCounts[index] -= 1;
-      setCounts(updatedCounts);
-    }
+    setCounts((prevCounts) => {
+      if (prevCounts[index] > 1) {
+        const updatedCounts = [...prevCounts];
+        if (updatedCounts[index] > 0) {
+          updatedCounts[index] -= 1;
+        }
+        // updatedCounts[index] -= 1;
+        return updatedCounts;
+      }
+      return prevCounts;
+    });
   };
   // console.log("product", Product);
   // console.log("count", counts);
@@ -56,7 +75,6 @@ const Cart = () => {
   //   return cartItems.map(() => 1);
   // }, [cartItems]);
   // Use useRef to keep track of previous counts
-  // const prevCounts = useRef(counts);
 
   // const quantityProduct = counts[index];
   useEffect(() => {
@@ -82,8 +100,19 @@ const Cart = () => {
   // }));
   // console.log(transformedPayload);
   useEffect(() => {
-    const updatedPayload = Product.map((category, index) => ({
-      items: category.items.map((item) => ({
+    // const updatedPayload = Product.map((category, index) => ({
+    //   items: category.items.map((item) => ({
+    //     menuitemID: item.item_id,
+    //     name: item.item_name,
+    //     price: item.item_price,
+    //     quantity: counts[index], // Use counts based on the category index
+    //     kitchenID: item.kitchen_id,
+    //     categoryID: category.subcategory_id,
+    //     note: "", // You can set a default note here
+    //   })),
+    // }));
+    const updatedPayload = Product.reduce((accumulator, category, index) => {
+      const categoryItems = category.items.map((item) => ({
         menuitemID: item.item_id,
         name: item.item_name,
         price: item.item_price,
@@ -91,13 +120,15 @@ const Cart = () => {
         kitchenID: item.kitchen_id,
         categoryID: category.subcategory_id,
         note: "", // You can set a default note here
-      })),
-    }));
+      }));
+
+      return [...accumulator, ...categoryItems];
+    }, []);
+
     setUpdatedPayload(updatedPayload);
     console.log(JSON.stringify(UpdatedPayload));
-
     // setProduct(updatedPayload);
-  }, [counts]);
+  }, [counts, cartItems]);
 
   useEffect(() => {
     const updatedTotalPrices = Product.map((subcategory, index) =>
@@ -185,7 +216,7 @@ const Cart = () => {
             </Card>
           </div>
         </div>
-        <CartSummary totalAmount={totalAmount} />
+        <CartSummary items={UpdatedPayload} totalAmount={totalAmount} />
       </div>
     </div>
   );

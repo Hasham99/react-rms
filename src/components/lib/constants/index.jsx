@@ -96,12 +96,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     //   // Add more submenu items as needed
     // ],
   },
-  {
-    key: "transactions",
-    label: "Transactions",
-    path: "/transactions",
-    icon: <GrTransaction />,
-  },
+  // {
+  //   key: "transactions",
+  //   label: "Transactions",
+  //   path: "/transactions",
+  //   icon: <GrTransaction />,
+  // },
   // {
   //   key: "reports",
   //   label: "Reports",
