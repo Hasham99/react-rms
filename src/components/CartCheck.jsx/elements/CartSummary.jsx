@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 
-const CartSummary = (props) => {
+const CartSummary = () => {
   return (
     <div className="p-2">
       <Card className="bg-gray-100">
@@ -22,7 +22,7 @@ const CartSummary = (props) => {
                 variant="h6"
                 color="blue-gray"
               >
-                {parseFloat(props.totalAmount).toFixed(2)}
+                {/* {parseFloat(props.totalAmount).toFixed(2)} */}
               </Typography>
             </div>
             <hr />
@@ -57,7 +57,7 @@ const CartSummary = (props) => {
                 variant="h6"
                 color="blue-gray"
               >
-                {parseFloat(props.totalAmount + 10).toFixed(2)}
+                {/* {parseFloat(props.totalAmount + 10).toFixed(2)} */}
               </Typography>
             </div>
           </div>

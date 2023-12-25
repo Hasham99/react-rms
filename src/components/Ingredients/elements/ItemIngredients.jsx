@@ -8,7 +8,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import { parse } from "date-fns";
+import { useState, useEffect } from "react";
 
 const ItemIngredients = () => {
   const [ItemName, setItemName] = useState([]);
@@ -144,63 +145,13 @@ const ItemIngredients = () => {
   const jsonData = {
     MenuItemID: `${MenuItem}`,
     CostPrice: `${totalPrice}`,
-    items: [
-      {
-        IngredientID: `${PriceOne.IngredientID}`,
-        PerItemPrice: `${PriceOne.PricePerGm}`,
-        Grams: `${PriceOne.PricePerGm * formData.itemName01}`,
-      },
-      {
-        IngredientID: `${PriceTwo.IngredientID}`,
-        PerItemPrice: `${PriceTwo.PricePerGm}`,
-        Grams: `${PriceTwo.PricePerGm * formData.itemName02}`,
-      },
-      {
-        IngredientID: `${PriceThree.IngredientID}`,
-        PerItemPrice: `${PriceThree.PricePerGm}`,
-        Grams: `${PriceThree.PricePerGm * formData.itemName03}`,
-      },
-      {
-        IngredientID: `${PriceFour.IngredientID}`,
-        PerItemPrice: `${PriceFour.PricePerGm}`,
-        Grams: `${PriceFour.PricePerGm * formData.itemName04}`,
-      },
-      {
-        IngredientID: `${PriceFive.IngredientID}`,
-        PerItemPrice: `${PriceFive.PricePerGm}`,
-        Grams: `${PriceFive.PricePerGm * formData.itemName05}`,
-      },
-      {
-        IngredientID: `${PriceSix.IngredientID}`,
-        PerItemPrice: `${PriceSix.PricePerGm}`,
-        Grams: `${PriceSix.PricePerGm * formData.itemName06}`,
-      },
-      {
-        IngredientID: `${PriceSeven.IngredientID}`,
-        PerItemPrice: `${PriceSeven.PricePerGm}`,
-        Grams: `${PriceSeven.PricePerGm * formData.itemName07}`,
-      },
-      {
-        IngredientID: `${PriceEight.IngredientID}`,
-        PerItemPrice: `${PriceEight.PricePerGm}`,
-        Grams: `${PriceEight.PricePerGm * formData.itemName08}`,
-      },
-    ],
+    items: [],
   };
   const handleSubmit = () => {
     axios
       .post("http://52.90.182.126:3000/api/recipeitems", jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
-        // console.log("Post request successful", response.data);
-        //   setFormData({
-        //     ...formData,
-        //     itemName01: "", // Clear the item name field
-        //     itemWeight01: "", // Clear the item weight field
-        //     itemAmount01: "", // Clear the total amount field
-        //   });
-        // alert(JSON.stringify(jsonData01));
-        // Handle the response data here if needed
       })
       .catch((error) => {
         console.error("Error making post request", error);
@@ -208,6 +159,65 @@ const ItemIngredients = () => {
         // Handle errors here if needed
       });
   };
+  useEffect(() => {
+    if (formData.itemName01) {
+      jsonData.items.push({
+        IngredientID: `${PriceOne.IngredientID}`,
+        PerItemPrice: `${PriceOne.PricePerGm}`,
+        Grams: `${PriceOne.PricePerGm * formData.itemName01}`,
+      });
+    }
+    if (formData.itemName02) {
+      jsonData.items.push({
+        IngredientID: `${PriceTwo.IngredientID}`,
+        PerItemPrice: `${PriceTwo.PricePerGm}`,
+        Grams: `${PriceTwo.PricePerGm * formData.itemName02}`,
+      });
+    }
+    if (formData.itemName03) {
+      jsonData.items.push({
+        IngredientID: `${PriceThree.IngredientID}`,
+        PerItemPrice: `${PriceThree.PricePerGm}`,
+        Grams: `${PriceThree.PricePerGm * formData.itemName03}`,
+      });
+    }
+    if (formData.itemName04) {
+      jsonData.items.push({
+        IngredientID: `${PriceFour.IngredientID}`,
+        PerItemPrice: `${PriceFour.PricePerGm}`,
+        Grams: `${PriceFour.PricePerGm * formData.itemName04}`,
+      });
+    }
+    if (formData.itemName05) {
+      jsonData.items.push({
+        IngredientID: `${PriceFive.IngredientID}`,
+        PerItemPrice: `${PriceFive.PricePerGm}`,
+        Grams: `${PriceFive.PricePerGm * formData.itemName05}`,
+      });
+    }
+    if (formData.itemName06) {
+      jsonData.items.push({
+        IngredientID: `${PriceSix.IngredientID}`,
+        PerItemPrice: `${PriceSix.PricePerGm}`,
+        Grams: `${PriceSix.PricePerGm * formData.itemName06}`,
+      });
+    }
+    if (formData.itemName07) {
+      jsonData.items.push({
+        IngredientID: `${PriceSeven.IngredientID}`,
+        PerItemPrice: `${PriceSeven.PricePerGm}`,
+        Grams: `${PriceSeven.PricePerGm * formData.itemName07}`,
+      });
+    }
+    if (formData.itemName08) {
+      jsonData.items.push({
+        IngredientID: `${PriceEight.IngredientID}`,
+        PerItemPrice: `${PriceEight.PricePerGm}`,
+        Grams: `${PriceEight.PricePerGm * formData.itemName08}`,
+      });
+    }
+  }, [formData]);
+
   return (
     <div className="grid grid-cols-2">
       <Card className="m-4 p-2  ">
@@ -250,10 +260,17 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceOne.PricePerGm}
+                        {
+                          isNaN(PriceOne.PricePerGm)
+                            ? 0
+                            : parseFloat(PriceOne.PricePerGm).toFixed(4)
+                          // parseFloat(PriceOne.PricePerGm).toFixed(4) || 0
+                        }
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceOne.PricePerGm * formData.itemName01 || 0}
+                        {parseFloat(
+                          PriceOne.PricePerGm * formData.itemName01
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -285,10 +302,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceTwo.PricePerGm}
+                        {parseFloat(PriceTwo.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceTwo.PricePerGm * formData.itemName02}
+                        {parseFloat(
+                          PriceTwo.PricePerGm * formData.itemName02
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -320,10 +339,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceThree.PricePerGm}
+                        {parseFloat(PriceThree.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceThree.PricePerGm * formData.itemName03}
+                        {parseFloat(
+                          PriceThree.PricePerGm * formData.itemName03
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -355,10 +376,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceFour.PricePerGm}
+                        {parseFloat(PriceFour.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceFour.PricePerGm * formData.itemName04}
+                        {parseFloat(
+                          PriceFour.PricePerGm * formData.itemName04
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -390,10 +413,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceFive.PricePerGm}
+                        {parseFloat(PriceFive.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceFive.PricePerGm * formData.itemName05}
+                        {parseFloat(
+                          PriceFive.PricePerGm * formData.itemName05
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -425,10 +450,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceSix.PricePerGm}
+                        {parseFloat(PriceSix.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceSix.PricePerGm * formData.itemName06}
+                        {parseFloat(
+                          PriceSix.PricePerGm * formData.itemName06
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -460,10 +487,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceSeven.PricePerGm}
+                        {parseFloat(PriceSeven.PricePerGm).toFixed(4)}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceSeven.PricePerGm * formData.itemName07}
+                        {parseFloat(
+                          PriceSeven.PricePerGm * formData.itemName07
+                        ).toFixed(4)}
                       </span>
                     </Typography>
                     <Input
@@ -495,10 +524,12 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {PriceEight.PricePerGm}
+                        {parseFloat(PriceEight.PricePerGm).toFixed(4) || 0}
                       </span>{" "}
                       <span className="text-green-600">
-                        {PriceEight.PricePerGm * formData.itemName08}
+                        {parseFloat(
+                          PriceEight.PricePerGm * formData.itemName08
+                        ).toFixed(4) || 0}
                       </span>
                     </Typography>
                     <Input

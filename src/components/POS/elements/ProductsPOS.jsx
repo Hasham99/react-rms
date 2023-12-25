@@ -27,7 +27,6 @@ function ProductsPOS() {
   }, []);
   const handleCart = (product) => {
     dispatch(addToCart(product));
-
     // localStorage.setItem("cartitems", JSON.stringify(product));
   };
 

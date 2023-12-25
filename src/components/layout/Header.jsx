@@ -8,9 +8,12 @@ import {
 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const navigate = useNavigate();
+
+  const cartItems = useSelector((state) => state.cart.length);
 
   return (
     <div className="  bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
@@ -28,7 +31,10 @@ export default function Header() {
       <div className="flex items-center gap-2 mr-2">
         <Popover className="relative">
           <Link to={"/cart"}>
-            <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
+            <div className="flex flex-col">
+              <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
+            </div>
+            <span>{cartItems}</span>
           </Link>
           {/* {({ open }) => (
             <>

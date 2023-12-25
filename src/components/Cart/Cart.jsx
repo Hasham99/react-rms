@@ -5,7 +5,7 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import CartPOS from "../POS/elements/CartPOS";
 import CartItems from "./elements/CartItems";
@@ -16,8 +16,9 @@ import { IoMdClose } from "react-icons/io";
 const Cart = () => {
   const [counts, setCounts] = useState([]); // Array to store counts for each item
   const [totalPrices, setTotalPrices] = useState([]); // Array to store total prices for each item
+  const [UpdatedPayload, setUpdatedPayload] = useState([]); // Array to store total prices for each item
   const [totalAmount, setTotalAmount] = useState(0); // Total payable amount
-  const [CategoryId, setCategoryId] = useState(null);
+  // const [CategoryId, setCategoryId] = useState(null);
   // const [KitchenId, setKitchenId] = useState(null);
   // const [ItemName, setItemName] = useState(null);
   // const [ItemPrice, setItemPrice] = useState(null);
@@ -44,104 +45,60 @@ const Cart = () => {
   };
   // console.log("product", Product);
   // console.log("count", counts);
+
   // console.log("totalPrices", totalPrices);
   // console.log("totalAmount", totalAmount);
   // console.log("product", Product);
   // console.log(counts);
 
+  // Initialize counts only when cartItems change
+  // const memoizedCounts = useMemo(() => {
+  //   return cartItems.map(() => 1);
+  // }, [cartItems]);
+  // Use useRef to keep track of previous counts
+  // const prevCounts = useRef(counts);
+
+  // const quantityProduct = counts[index];
   useEffect(() => {
     const initialCounts = cartItems.map(() => 1);
     setCounts(initialCounts);
     setProduct(cartItems);
-    // const extractedValues = [];
-
-    // // Loop through the API response and extract values
-    // Product.forEach((subcategory) => {
-    //   subcategory.items.forEach((item) => {
-    //     extractedValues.push({
-    //       subcategoryId: subcategory.subcategory_id,
-    //       subcategoryName: subcategory.subcategory_name,
-    //       itemId: item.item_id,
-    //       itemName: item.item_name,
-    //       itemPrice: item.item_price,
-    //       kitchenId: item.kitchen_id,
-    //       itemDescription: item.item_description,
-    //     });
-    //   });
-    // });
-
-    // console.log("ids", extractedValues);
+    // console.log(JSON.stringify(Product));
+    // console.log(Product);
+    // Convert the payload to the desired format
+    // if(count[index])
   }, [cartItems]);
 
+  // const transformedPayload = Product.map((category) => ({
+  //   items: category.items.map((item) => ({
+  //     menuitemID: item.item_id,
+  //     name: item.item_name,
+  //     price: item.item_price,
+  //     quantity: 1, // You can set the default quantity here
+  //     kitchenID: item.kitchen_id,
+  //     categoryID: category.subcategory_id,
+  //     note: "", // You can set a default note here
+  //   })),
+  // }));
+  // console.log(transformedPayload);
   useEffect(() => {
-    // Extract all items' data and store it in the state variable
-    // const extractedItems = Product.flatMap((subcategory) =>
-    //   subcategory.items.map((item) => ({
-    //     categoryId: subcategory.subcategory_id,
-    //     // subcategoryName: subcategory.subcategory_name,
-    //     itemId: item.item_id,
-    //     itemName: item.item_name,
-    //     itemPrice: item.item_price,
-    //     kitchenId: item.kitchen_id,
-    //   }))
-    // );
-    // const extractedItems = Product.flatMap((subcategory) =>
-    //   subcategory.items.map((item) => ({
-    //     // subcategoryName: subcategory.subcategory_name,
-    //     itemId: item.item_id,
-    //     itemName: item.item_name,
-    //     itemPrice: item.item_price,
+    const updatedPayload = Product.map((category, index) => ({
+      items: category.items.map((item) => ({
+        menuitemID: item.item_id,
+        name: item.item_name,
+        price: item.item_price,
+        quantity: counts[index], // Use counts based on the category index
+        kitchenID: item.kitchen_id,
+        categoryID: category.subcategory_id,
+        note: "", // You can set a default note here
+      })),
+    }));
+    setUpdatedPayload(updatedPayload);
+    console.log(JSON.stringify(UpdatedPayload));
 
-    //     kitchenId: item.kitchen_id,
-    //   }))
-    // );
-    // console.log("item", JSON.stringify(extractedItems));
+    // setProduct(updatedPayload);
+  }, [counts]);
 
-    // const itemId = extractedItems.map((item) => item.itemId);
-    // const itemNames = extractedItems.map((item) => item.itemName);
-    // const itemPrice = extractedItems.map((item) => item.itemPrice);
-    // const kitchenId = extractedItems.map((item) => item.kitchenId);
-
-    // setItemId(itemId);
-    // setItemName(itemNames);
-    // setItemPrice(itemPrice);
-    // setKitchenId(kitchenId);
-
-    const extractedSubCategoryIds = Product.map(
-      (subcategory) => subcategory.subcategory_id
-    );
-    setCategoryId(extractedSubCategoryIds);
-
-    // const category_id = Product.flatMap((subcategory) =>
-    //   subcategory.items.map((item) => ({
-    //     categoryId: subcategory.subcategory_id,
-    //   }))
-    // );
-    // console.log("extracted", JSON.stringify(extractedItems));
-    //  setItemsData(extractedItems);
-
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-    // const extractedSubCategoryIds = Product.map(
-    //   (subcategory) => subcategory.subcategory_id
-    // );
-
-    console.log(JSON.stringify(extractedSubCategoryIds));
-  }, []);
-  // Update total prices whenever counts change
   useEffect(() => {
     const updatedTotalPrices = Product.map((subcategory, index) =>
       subcategory.items.reduce(
@@ -228,14 +185,7 @@ const Cart = () => {
             </Card>
           </div>
         </div>
-        <CartSummary
-        // totalAmount={totalAmount}
-        // categoryId={CategoryId}
-        // kitchenId={KitchenId}
-        // itemPrice={ItemPrice}
-        // itemName={ItemName}
-        // itemId={ItemId}
-        />
+        <CartSummary totalAmount={totalAmount} />
       </div>
     </div>
   );
