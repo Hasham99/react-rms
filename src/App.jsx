@@ -39,6 +39,9 @@ import Login from "./components/login/UserLogin";
 // };
 
 function App() {
+  // const variable_env = process.env.VITE_REACT_APP_API_KEY;
+  // console.log(import.meta.env.VITE_API_KEY);
+  // console.log(process.env.VITE_KEY);
   return (
     <Router>
       <Routes>

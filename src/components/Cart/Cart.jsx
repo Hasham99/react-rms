@@ -159,7 +159,7 @@ const Cart = () => {
             <Card className="bg-gray-100 h-[80vh]">
               <CardBody>
                 <Typography variant="h4" color="blue-gray">
-                  Kuch Bhi Dal
+                  Cart
                 </Typography>
 
                 {Product.map((subcategory, index) => (

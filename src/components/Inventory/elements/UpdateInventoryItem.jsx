@@ -41,7 +41,7 @@ export function UpdateInventoryItem(props) {
   const handleSubmit = () => {
     // Make a POST request to your server endpoint
     axios
-      .patch("http://52.90.182.126:3000/api/inventory/update", jsonData)
+      .patch(`${import.meta.env.VITE_API_KEY}/api/inventory/update`, jsonData)
       .then((response) => {
         console.log("PATCH request successful", response.data);
         // Handle the response data here if needed

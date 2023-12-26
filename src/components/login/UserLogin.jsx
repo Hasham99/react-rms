@@ -19,7 +19,7 @@ const UserLogin = () => {
   };
   const handleSubmit = () => {
     axios
-      .post("http://52.90.182.126:3000/admin/login", jsonData)
+      .post(`${import.meta.env.VITE_API_KEY}/admin/login`, jsonData)
       .then(() => {
         window.location.href = "/";
         // Handle the response data here if needed

@@ -44,7 +44,7 @@ export function AddInventoryItem() {
   // Event handler for form submission
   const handleSubmit = () => {
     axios
-      .post("http://52.90.182.126:3000/api/inventory/create", jsonData)
+      .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
       .then((response) => {
         console.log("Post request successful", response.data);
         // Handle the response data here if needed
@@ -73,7 +73,7 @@ export function AddInventoryItem() {
   useEffect(() => {
     const fetchInventoryData = async () => {
       // Fetch data from your API
-      await fetch("http://52.90.182.126:3000/api/cai")
+      await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
         .then((response) => response.json())
         .then((data) => {
           // Extract "item_name" from the menu items

@@ -14,19 +14,19 @@ export default function RecentOrders() {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
-        const res = await fetch("http://52.90.182.126:3000/api/order");
+        const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/order`);
         const data = await res.json();
-        localStorage.setItem("orders", JSON.stringify(data));
+        // localStorage.setItem("orders", JSON.stringify(data));
+        setOrdersData(data);
       } catch (error) {
         console.log(error);
       }
     };
     // const localData = () => {
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem("orders"));
+    // const dataFromLocalStorage = JSON.parse(localStorage.getItem("orders"));
 
-    if (dataFromLocalStorage) {
-      setOrdersData(dataFromLocalStorage);
-    }
+    // if (dataFromLocalStorage) {
+    // }
     // };
     fetchOrdersData();
     // localData();

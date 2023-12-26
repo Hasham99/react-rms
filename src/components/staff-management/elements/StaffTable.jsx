@@ -27,7 +27,7 @@ const StaffTable = () => {
   useEffect(() => {
     const fetchStaffData = async () => {
       try {
-        const res = await fetch("http://52.90.182.126:3000/api/waiter");
+        const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/waiter`);
         const data = await res.json();
         setStaffData(data);
       } catch (error) {

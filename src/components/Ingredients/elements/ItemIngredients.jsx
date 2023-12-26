@@ -73,7 +73,7 @@ const ItemIngredients = () => {
 
   useEffect(() => {
     const fetchItemName = async () => {
-      await fetch("http://52.90.182.126:3000/api/items/recipewise")
+      await fetch(`${import.meta.env.VITE_API_KEY}/api/items/recipewise`)
         .then((response) => response.json())
         .then((data) => {
           setItemName(data);
@@ -83,7 +83,7 @@ const ItemIngredients = () => {
         });
     };
     const fetchIngredientName = async () => {
-      await fetch("http://52.90.182.126:3000/api/ingredients/")
+      await fetch(`${import.meta.env.VITE_API_KEY}/api/ingredients/`)
         .then((response) => response.json())
         .then((data) => {
           setIngredientName(data);
@@ -149,7 +149,7 @@ const ItemIngredients = () => {
   };
   const handleSubmit = () => {
     axios
-      .post("http://52.90.182.126:3000/api/recipeitems", jsonData)
+      .post(`${import.meta.env.VITE_API_KEY}/api/recipeitems`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
         window.location.href = "/ingredients";

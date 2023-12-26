@@ -32,7 +32,9 @@ const InventoryTable = () => {
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
-        const res = await fetch("http://52.90.182.126:3000/api/inventory/get");
+        const res = await fetch(
+          `${import.meta.env.VITE_API_KEY}/api/inventory/get`
+        );
         const data = await res.json();
         setInventoryData(data);
       } catch (error) {

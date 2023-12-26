@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 
 const CostManagement = () => {
   const [allData, setAllData] = useState([]);
+
   useEffect(() => {
     // const fetchItemCostManagement = async () => {
     //   await fetch(" http://52.90.182.126:3000/api/recipeitems/ing")
@@ -24,7 +25,7 @@ const CostManagement = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://52.90.182.126:3000/api/recipeitems/ing"
+          `${import.meta.env.VITE_API_KEY}/api/recipeitems/ing`
         );
         setAllData(response.data);
       } catch (error) {

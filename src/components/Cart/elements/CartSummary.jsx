@@ -11,7 +11,7 @@ const CartSummary = (props) => {
   };
   const submitData = () => {
     axios
-      .post("http://52.90.182.126:3000/api/posorders/1", jsonData)
+      .post(`${import.meta.env.VITE_API_KEY}api/posorders/1`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
         window.location.href = "/";

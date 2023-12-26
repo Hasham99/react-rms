@@ -64,7 +64,7 @@ const AddStaff = () => {
         restaurant_id: 1,
       };
       axios
-        .post(`http://52.90.182.126:3000/api/waiter`, jsonData)
+        .post(`${import.meta.env.VITE_API_KEY}/api/waiter`, jsonData)
         .then((response) => {
           console.log("PATCH request successful", response.data);
           // Handle the response data here if needed

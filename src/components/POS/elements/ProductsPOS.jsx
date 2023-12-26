@@ -14,7 +14,7 @@ function ProductsPOS() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await fetch("http://52.90.182.126:3000/api/cai/v2/")
+      await fetch(`${import.meta.env.VITE_API_KEY}/api/cai/v2/`)
         .then((response) => response.json())
         .then((data) => {
           setProducts(data); // Assuming your API response is an array of items
@@ -26,6 +26,7 @@ function ProductsPOS() {
     fetchProduct();
   }, []);
   const handleCart = (product) => {
+    // alert(JSON.stringify(product));
     dispatch(addToCart(product));
     // localStorage.setItem("cartitems", JSON.stringify(product));
   };
@@ -43,15 +44,16 @@ function ProductsPOS() {
         <Typography variant="h4" color="blue-gray">
           Products
         </Typography>
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-3">
           {products.map((subcategory) => (
             <div key={subcategory.subcategory_id}>
-              <div
-                onClick={() => handleCart(subcategory)}
-                className="cursor-pointer h-20 block my-4 w-36 p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 "
-              >
-                {subcategory.items.map((item) => (
-                  <div key={item.item_id} className="flex justify-between">
+              {subcategory.items.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleCart(subcategory)}
+                  className="cursor-pointer h-20 block my-4 w-36 p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 "
+                >
+                  <div className="flex justify-between">
                     <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900">
                       {item.item_name}
                     </h5>
@@ -60,8 +62,8 @@ function ProductsPOS() {
                       {item.item_price}
                     </p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
