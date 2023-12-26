@@ -73,7 +73,8 @@ export function AddInventoryItem() {
   useEffect(() => {
     const fetchInventoryData = async () => {
       // Fetch data from your API
-      await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
+      await fetch(`http://54.196.226.78:3000/api/cai`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
         .then((response) => response.json())
         .then((data) => {
           // Extract "item_name" from the menu items

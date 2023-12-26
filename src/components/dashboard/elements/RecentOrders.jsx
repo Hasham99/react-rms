@@ -14,7 +14,8 @@ export default function RecentOrders() {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/order`);
+        const res = await fetch(`http://54.196.226.78:3000/api/order`);
+        // const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/order`);
         const data = await res.json();
         // localStorage.setItem("orders", JSON.stringify(data));
         setOrdersData(data);

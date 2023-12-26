@@ -49,7 +49,8 @@ const Ingredients = () => {
 
   const handleSubmit01 = () => {
     axios
-      .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
+      .post(`http://54.196.226.78:3000/api/ingredients`, jsonData01)
+      // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
       .then(() => {
         // console.log("Post request successful", response.data);
         setFormData({

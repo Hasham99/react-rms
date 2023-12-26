@@ -39,7 +39,7 @@ const ItemsCard = () => {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        const res = await fetch("http://52.90.182.126:3000/api/cai");
+        const res = await fetch("http://54.196.226.78:3000/api/cai");
         const data = await res.json();
         // const allItems = Object.values(data).flatMap(
         //   (category) => category.

@@ -59,7 +59,8 @@ function MenuManagement() {
     //     console.error("Error fetching data:", error);
     //   });
     const fetchKitchen = async () => {
-      await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
+      await fetch(`http://54.196.226.78:3000/api/kitchen`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
         .then((response) => response.json())
         .then((data) => {
           setKitchen(data);
@@ -69,7 +70,8 @@ function MenuManagement() {
         });
     };
     const fetchCategory = async () => {
-      await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
+      await fetch(`http://54.196.226.78:3000/api/category`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
           setCategory(data);
@@ -79,7 +81,8 @@ function MenuManagement() {
         });
     };
     const fetchSubCategory = async () => {
-      await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
+      await fetch(`http://54.196.226.78:3000/api/subcategory`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
         .then((response) => response.json())
         .then((data) => {
           setSubCategory(data);
@@ -95,7 +98,9 @@ function MenuManagement() {
 
   const handleSubmit = () => {
     axios
-      .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
+      .post(`http://54.196.226.78:3000/api/items`, jsonData)
+      // .post(`http://54.196.226.78:3000/api/items`, jsonData)
+      // .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
       .then(() => {
         window.location.href = "/menu-management";
         // Handle the response data here if needed

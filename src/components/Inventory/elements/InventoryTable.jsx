@@ -33,7 +33,8 @@ const InventoryTable = () => {
     const fetchInventoryData = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_KEY}/api/inventory/get`
+          `http://54.196.226.78:3000/api/inventory/get`
+          // `${import.meta.env.VITE_API_KEY}/api/inventory/get`
         );
         const data = await res.json();
         setInventoryData(data);

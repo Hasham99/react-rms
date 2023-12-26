@@ -14,7 +14,8 @@ function ProductsPOS() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await fetch(`${import.meta.env.VITE_API_KEY}/api/cai/v2/`)
+      await fetch(`http://54.196.226.78:3000/api/cai/v3/`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai/v3/`)
         .then((response) => response.json())
         .then((data) => {
           setProducts(data); // Assuming your API response is an array of items
@@ -44,14 +45,14 @@ function ProductsPOS() {
         <Typography variant="h4" color="blue-gray">
           Products
         </Typography>
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-6">
           {products.map((subcategory) => (
             <div key={subcategory.subcategory_id}>
-              {subcategory.items.map((item, index) => (
+              {subcategory.items.map((item) => (
                 <div
-                  key={index}
+                  key={item.item_id}
                   onClick={() => handleCart(subcategory)}
-                  className="cursor-pointer h-20 block my-4 w-36 p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 "
+                  className="flex-wrap cursor-pointer h-20 block my-4 w-36 p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 "
                 >
                   <div className="flex justify-between">
                     <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900">
