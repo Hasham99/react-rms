@@ -64,7 +64,7 @@ const AddStaff = () => {
         restaurant_id: 1,
       };
       axios
-        .post(`http://54.196.226.78:3000/api/waiter`, jsonData)
+        .post(`https://albadwan.shop/api/waiter`, jsonData)
         // .post(`${import.meta.env.VITE_API_KEY}/api/waiter`, jsonData)
         .then((response) => {
           console.log("PATCH request successful", response.data);

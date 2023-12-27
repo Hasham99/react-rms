@@ -44,7 +44,8 @@ export function AddInventoryItem() {
   // Event handler for form submission
   const handleSubmit = () => {
     axios
-      .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
+      .post(`https://albadwan.shop/api/inventory/create`, jsonData)
+      // .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
       .then((response) => {
         console.log("Post request successful", response.data);
         // Handle the response data here if needed
@@ -73,7 +74,7 @@ export function AddInventoryItem() {
   useEffect(() => {
     const fetchInventoryData = async () => {
       // Fetch data from your API
-      await fetch(`http://54.196.226.78:3000/api/cai`)
+      await fetch(`https://albadwan.shop/api/cai`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
         .then((response) => response.json())
         .then((data) => {

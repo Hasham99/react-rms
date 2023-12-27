@@ -19,7 +19,7 @@ const UserLogin = () => {
   };
   const handleSubmit = () => {
     axios
-      .post(`http://54.196.226.78:3000/admin/login`, jsonData)
+      .post(`https://albadwan.shop/admin/login`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/admin/login`, jsonData)
       .then(() => {
         window.location.href = "/";

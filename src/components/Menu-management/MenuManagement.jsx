@@ -59,7 +59,7 @@ function MenuManagement() {
     //     console.error("Error fetching data:", error);
     //   });
     const fetchKitchen = async () => {
-      await fetch(`http://54.196.226.78:3000/api/kitchen`)
+      await fetch(`https://albadwan.shop/api/kitchen`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
         .then((response) => response.json())
         .then((data) => {
@@ -70,7 +70,7 @@ function MenuManagement() {
         });
     };
     const fetchCategory = async () => {
-      await fetch(`http://54.196.226.78:3000/api/category`)
+      await fetch(`https://albadwan.shop/api/category`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -81,7 +81,7 @@ function MenuManagement() {
         });
     };
     const fetchSubCategory = async () => {
-      await fetch(`http://54.196.226.78:3000/api/subcategory`)
+      await fetch(`https://albadwan.shop/api/subcategory`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
         .then((response) => response.json())
         .then((data) => {
@@ -98,7 +98,7 @@ function MenuManagement() {
 
   const handleSubmit = () => {
     axios
-      .post(`http://54.196.226.78:3000/api/items`, jsonData)
+      .post(`https://albadwan.shop/api/items`, jsonData)
       // .post(`http://54.196.226.78:3000/api/items`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
       .then(() => {

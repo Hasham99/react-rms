@@ -7,7 +7,7 @@ const CartSummary = (props) => {
   const jsonData = {
     time: new Date().toLocaleString(),
     total_amount: amountAfterTax,
-    // items: props.items,
+    items: props.items,
   };
   const submitData = () => {
     axios

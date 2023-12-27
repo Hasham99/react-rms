@@ -73,7 +73,7 @@ const ItemIngredients = () => {
 
   useEffect(() => {
     const fetchItemName = async () => {
-      await fetch(`http://54.196.226.78:3000/api/items/recipewise`)
+      await fetch(`https://albadwan.shop/api/items/recipewise`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/items/recipewise`)
         .then((response) => response.json())
         .then((data) => {
@@ -84,7 +84,7 @@ const ItemIngredients = () => {
         });
     };
     const fetchIngredientName = async () => {
-      await fetch(`http://54.196.226.78:3000/api/ingredients/`)
+      await fetch(`https://albadwan.shop/api/ingredients/`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/ingredients/`)
         .then((response) => response.json())
         .then((data) => {
@@ -151,7 +151,7 @@ const ItemIngredients = () => {
   };
   const handleSubmit = () => {
     axios
-      .post(`http://54.196.226.78:3000/api/recipeitems`, jsonData)
+      .post(`https://albadwan.shop/api/recipeitems`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/api/recipeitems`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));

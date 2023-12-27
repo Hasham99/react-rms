@@ -40,7 +40,7 @@ const UpdateStaff = (props) => {
   const handleSubmit = () => {
     axios
       .patch(
-        `http://54.196.226.78:3000/api/waiter/${InputValue.waiter_id}`,
+        `https://albadwan.shop/api/waiter/${InputValue.waiter_id}`,
         // `${import.meta.env.VITE_API_KEY}/api/waiter/${InputValue.waiter_id}`,
         jsonData
       )

@@ -25,7 +25,7 @@ const CostManagement = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://54.196.226.78:3000/api/recipeitems/ing`
+          `https://albadwan.shop/api/recipeitems/ing`
           // `${import.meta.env.VITE_API_KEY}/api/recipeitems/ing`
         );
         setAllData(response.data);

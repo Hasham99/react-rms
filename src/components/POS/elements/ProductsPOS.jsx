@@ -1,75 +1,94 @@
-import React, { useState, useEffect } from "react";
-import { addToCart } from "../../../redux/CartSlice";
-import { useDispatch } from "react-redux";
 import {
   Card,
   CardBody,
-  CardHeader,
   Typography,
+  Button,
+  Dialog,
+  DialogBody,
+  Input,
 } from "@material-tailwind/react";
+import React, { useState, useEffect } from "react";
+import POSDialog from "./ProductDialog/POSDialog";
 
-function ProductsPOS() {
-  const [products, setProducts] = useState([]);
-  const dispatch = useDispatch();
+const ProductsPOS = () => {
+  const [categories, setCategories] = useState([]);
+  const [itemData, setItemData] = useState([]);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      await fetch(`http://54.196.226.78:3000/api/cai/v3/`)
-        // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai/v3/`)
-        .then((response) => response.json())
-        .then((data) => {
-          setProducts(data); // Assuming your API response is an array of items
-        })
-        .catch((error) => {
-          console.error("Error fetching data from API", error);
-        });
+  const handleClick = (item, category) => {
+    handleOpen("sm");
+    const jsonData = {
+      subcategory_id: category.subcategory_id,
+      item: item,
     };
-    fetchProduct();
-  }, []);
-  const handleCart = (product) => {
-    // alert(JSON.stringify(product));
-    dispatch(addToCart(product));
-    // localStorage.setItem("cartitems", JSON.stringify(product));
+    // alert(JSON.stringify(jsonData));
+    setItemData(jsonData);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://albadwan.shop/api/cai/v2/");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
+    fetchData();
+  }, []);
+  const [size, setSize] = useState(null);
+
+  const handleOpen = (value) => setSize(value);
   return (
-    <Card className="h-screen max-h-[85vh] overflow-y-scroll ">
-      {/* <div className=" h-screen rounded-xl  grid grid-cols-3 overflow-y-scroll bg-white px-4  max-h-[85vh]  "> */}
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="m-0 rounded-none"
-      ></CardHeader>
-      <CardBody>
-        <Typography variant="h4" color="blue-gray">
-          Products
-        </Typography>
-        <div className="grid grid-cols-6">
-          {products.map((subcategory) => (
-            <div key={subcategory.subcategory_id}>
-              {subcategory.items.map((item) => (
-                <div
-                  key={item.item_id}
-                  onClick={() => handleCart(subcategory)}
-                  className="flex-wrap cursor-pointer h-20 block my-4 w-36 p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 "
-                >
-                  <div className="flex justify-between">
-                    <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900">
+    <>
+      <Card>
+        <CardBody>
+          <Typography variant="h3">Products</Typography>
+          {categories.map((category) => (
+            <div key={category.subcategory_id}>
+              <div className="border-t border-gray-400 py-3 my-2 ">
+                <Typography variant="h5">
+                  {category.subcategory_name}
+                </Typography>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {category.items.map((item) => (
+                  <div
+                    key={item.item_id}
+                    className="border p-4 rounded-md bg-white shadow-md cursor-pointer"
+                    onClick={() => {
+                      handleClick(item, category);
+                    }}
+                  >
+                    <Typography variant="h6" className="">
                       {item.item_name}
-                    </h5>
-                    {/* <br /> */}
-                    <p className="font-normal text-gray-700 ">
-                      {item.item_price}
-                    </p>
+                    </Typography>
+                    <p className="text-gray-600">${item.item_price}</p>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ))}
-        </div>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+      <Dialog
+        open={
+          size === "xs" ||
+          size === "sm" ||
+          size === "md" ||
+          size === "lg" ||
+          size === "xl" ||
+          size === "xxl"
+        }
+        size={size || "md"}
+        handler={handleOpen}
+      >
+        <DialogBody className="p-10">
+          <POSDialog itemDetails={itemData} />
+        </DialogBody>
+      </Dialog>
+    </>
   );
-}
+};
+
 export default ProductsPOS;
