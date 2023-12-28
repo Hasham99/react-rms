@@ -28,12 +28,16 @@ const ProductsPOS = () => {
       try {
         const response = await fetch("https://albadwan.shop/api/cai/v2/");
         const data = await response.json();
-        setCategories(data);
+        localStorage.setItem("products", JSON.stringify(data));
+        const data1 = localStorage.getItem("products");
+        // (data1);
+        // setCategories(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
+    setCategories(JSON.parse(localStorage.getItem("products")));
     fetchData();
   }, []);
   const [size, setSize] = useState(null);

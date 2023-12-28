@@ -25,19 +25,19 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     label: "Orders",
     path: "/orders",
     icon: <HiOutlineCube />,
-    // submenu: [
-    //   {
-    //     key: "subitem1",
-    //     label: "Submenu Item 1",
-    //     path: "/products/subitem1",
-    //   },
-    //   {
-    //     key: "subitem2",
-    //     label: "Submenu Item 2",
-    //     path: "/products/subitem2",
-    //   },
-    //   // Add more submenu items as needed
-    // ],
+    submenu: [
+      {
+        key: "pos-orders",
+        label: "POS Orders",
+        path: "/orders/admin",
+      },
+      {
+        key: "staff-orders",
+        label: "Staff",
+        path: "/orders/staff",
+      },
+      // Add more submenu items as needed
+    ],
   },
   {
     key: "pos",

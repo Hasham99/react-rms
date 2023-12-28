@@ -17,13 +17,14 @@ const POSDialog = (props) => {
   };
   const [ItemData, setItemData] = useState(props.itemDetails);
   const jsonData = {
-    subcategory_id: ItemData.subcategory_id,
     // item: {
     menuitemID: ItemData.item.item_id,
     name: ItemData.item.item_name,
     price: ItemData.item.item_price,
     quantity: parseInt(formData),
-    kitchen_id: ItemData.item.kitchen_id,
+    kitchenID: ItemData.item.kitchen_id,
+    categoryID: ItemData.subcategory_id,
+    note: "",
     // },
   };
   const handleSubmit = () => {

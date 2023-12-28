@@ -21,6 +21,8 @@ import Cart from "./components/Cart/Cart";
 import Ingredients from "./components/Ingredients/Ingredients";
 import CostManagement from "./components/costManagement/CostManagement";
 import Login from "./components/login/UserLogin";
+import StaffOrders from "./components/Orders/StaffOrders";
+import AdminOrders from "./components/Orders/AdminOrders";
 
 // Dummy authentication check function (replace it with your actual authentication logic)
 // const isAuthenticated = () => {
@@ -50,7 +52,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           {/* <Route path="/cost-management" element={<newFile />} /> */}
-          <Route path="/orders" element={<RecentOrders />} />
+          <Route path="/orders/admin" element={<AdminOrders />} />
+          <Route path="/orders/staff" element={<StaffOrders />} />
           <Route path="/pos" element={<Pos />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/staff-management" element={<StaffManagement />} />

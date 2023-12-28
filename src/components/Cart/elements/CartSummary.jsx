@@ -7,11 +7,11 @@ const CartSummary = (props) => {
   const jsonData = {
     time: new Date().toLocaleString(),
     total_amount: amountAfterTax,
-    // items: props.items,
+    items: props.items,
   };
   const submitData = () => {
     axios
-      .post(`http://54.196.226.78:3000/api/posorders/1`, jsonData)
+      .post(`https://albadwan.shop/api/posorders/1`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));

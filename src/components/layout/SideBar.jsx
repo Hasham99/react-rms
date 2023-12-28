@@ -71,7 +71,7 @@ export default function SideBar() {
               </Link>
             )}
             {openSubmenus.includes(index) && link.submenu && (
-              <div className="pl-5">
+              <div className="pl-5 my-1">
                 {link.submenu.map((sublink) => (
                   <SidebarLink key={sublink.key} link={sublink} />
                 ))}

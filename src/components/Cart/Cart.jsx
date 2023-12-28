@@ -21,22 +21,16 @@ const Cart = () => {
   const cartItems = useSelector((state) => state.cart);
 
   useEffect(() => {
+    console.log(cartItems);
     setProduct(cartItems);
+    // Calculate total amount
+    const newTotalAmount = cartItems.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+
+    setTotalAmount(newTotalAmount);
   }, [cartItems]);
 
-  // useEffect(() => {
-  //   // Calculate total amount for each item and update the state
-  //   const updatedProduct = Product.map((item) => ({
-  //     ...item,
-  //     total: item.price * item.quantity,
-  //   }));
-  //   setProduct(updatedProduct);
-  // }, [Product]);
-  // useEffect(() => {
-  //   // Calculate overall total amount for all items in the cart
-  //   const total = Product.reduce((sum, item) => sum + item.total, 0);
-  //   setTotalAmount(total);
-  // }, [Product]);
   return (
     <div className="px-5 bg-white h-screen">
       <div className="py-4 px-10 flex justify-end ">
@@ -85,8 +79,8 @@ const Cart = () => {
             </Card>
           </div>
         </div>
-        <CartSummary items={0} totalAmount={0} />
-        {/* <CartSummary items={UpdatedPayload} totalAmount={totalAmount} /> */}
+        {/* <CartSummary items={0} totalAmount={0} /> */}
+        <CartSummary items={Product} totalAmount={totalAmount} />
       </div>
     </div>
   );
