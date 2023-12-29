@@ -29,12 +29,12 @@ export default function Header() {
         />
       </div>
       <div className="flex items-center gap-2 mr-2">
-        <Popover className="relative">
+        <Popover className="flex-col justify-between bg-blue-gray-200 ">
           <Link to={"/cart"}>
-            <div className="flex flex-col">
+            <div className="">
               <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
             </div>
-            <span>{cartItems}</span>
+            <div>{cartItems}</div>
           </Link>
           {/* {({ open }) => (
             <>

@@ -26,7 +26,7 @@ const ProductsPOS = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/cai/v2/");
+        const response = await fetch(`https://albadwan.shop/api/cai/v2/res/1`);
         const data = await response.json();
         localStorage.setItem("products", JSON.stringify(data));
         const data1 = localStorage.getItem("products");

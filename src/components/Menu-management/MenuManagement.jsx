@@ -59,7 +59,7 @@ function MenuManagement() {
     //     console.error("Error fetching data:", error);
     //   });
     const fetchKitchen = async () => {
-      await fetch(`https://albadwan.shop/api/kitchen`)
+      await fetch(`https://albadwan.shop/api/kitchen/res/1`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
         .then((response) => response.json())
         .then((data) => {

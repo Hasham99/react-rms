@@ -61,9 +61,9 @@ function App() {
           <Route path="/ingredients" element={<Ingredients />} />
           <Route path="/cost-management" element={<CostManagement />} />
           <Route path="/transactions" element={<Transactions />} />
-          <Route path="/settings" element={<SettingsLayout />}>
-            <Route path="/settings-accounts" element={<Account />} />
-          </Route>
+          {/* <Route path="/settings" element={<SettingsLayout />}> */}
+          <Route path="/settings" element={<Settings />} />
+          {/* </Route> */}
         </Route>
       </Routes>
     </Router>

@@ -1,85 +1,167 @@
 import React from "react";
-import Account from "./elements/Account";
-
-// <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet" />
-{
-  /* <style>
-  * {
-  font-family: 'Source Sans Pro';
-  }
-</style> */
-}
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+  Card,
+  CardBody,
+  Input,
+  Typography,
+  Button,
+  Checkbox,
+} from "@material-tailwind/react";
+import {
+  Square3Stack3DIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/solid";
+import { FaTelegramPlane } from "react-icons/fa";
+import { RiWhatsappFill } from "react-icons/ri";
 const Settings = () => {
+  const data = [
+    {
+      label: "Profile",
+      value: "profile",
+      icon: UserCircleIcon,
+      desc: `Because it's about motivating the doers. Because I'm here
+      to follow my dreams and inspire other people to follow their dreams, too.`,
+    },
+    {
+      label: "Telegram",
+      value: "telegram",
+      icon: FaTelegramPlane,
+      desc: `It really matters and then like it really doesn't matter.
+      What matters is the people who are sparked by it. And the people
+      who are like offended by it, it doesn't matter.`,
+    },
+    {
+      label: "Whatsapp",
+      value: "whatsapp",
+      icon: RiWhatsappFill,
+      desc: `We're not always in the position that we want to be at.
+      We're constantly growing. We're constantly making mistakes. We're
+      constantly trying to express ourselves and actualize our dreams.`,
+    },
+  ];
   return (
-    <div className="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto">
-      {/* <h1 className="border-b py-6 text-4xl font-semibold">Settings</h1> */}
-      <div className="grid grid-cols-8 pt-3 sm:grid-cols-10">
-        <div className="relative my-4 w-56 sm:hidden">
-          <input
-            className="peer hidden"
-            type="checkbox"
-            name="select-1"
-            id="select-1"
-          />
-          <label
-            htmlFor="select-1"
-            className="flex w-full cursor-pointer select-none rounded-lg border p-2 px-3 text-sm text-gray-700 ring-blue-700 peer-checked:ring"
-          >
-            Accounts{" "}
-          </label>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="pointer-events-none absolute right-0 top-3 ml-auto mr-5 h-4 text-slate-700 transition peer-checked:rotate-180"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-          <ul className="max-h-0 select-none flex-col overflow-hidden rounded-b-lg shadow-md transition-all duration-300 peer-checked:max-h-56 peer-checked:py-3">
-            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">
-              Accounts
-            </li>
-            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">
-              Team
-            </li>
-            <li className="cursor-pointer px-3 py-2 text-sm text-slate-600 hover:bg-blue-700 hover:text-white">
-              Others
-            </li>
-          </ul>
-        </div>
-
-        <div className="col-span-2 hidden sm:block">
-          <ul>
-            <li className="mt-5 cursor-pointer border-l-2 border-l-blue-700 px-2 py-2 font-semibold text-blue-700 transition hover:border-l-blue-700 hover:text-blue-700">
-              Accounts
-            </li>
-            <li className="mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700">
-              Users
-            </li>
-            <li className="mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700">
-              Profile
-            </li>
-            <li className="mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700">
-              Billing
-            </li>
-            <li className="mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700">
-              Notifications
-            </li>
-            <li className="mt-5 cursor-pointer border-l-2 border-transparent px-2 py-2 font-semibold transition hover:border-l-blue-700 hover:text-blue-700">
-              Integrations
-            </li>
-          </ul>
-        </div>
-        {/* 
-        <Account /> */}
-      </div>
-    </div>
+    <Tabs value="profile">
+      <TabsHeader>
+        {data.map(({ label, value, icon }) => (
+          <Tab key={value} value={value}>
+            <div className="flex items-center gap-2">
+              {React.createElement(icon, { className: "w-5 h-5" })}
+              {label}
+            </div>
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ value, desc }) => (
+          <TabPanel key={value} value={value}>
+            {value === "telegram" ? (
+              <Card className="m-2">
+                <CardBody>{desc}</CardBody>
+              </Card>
+            ) : value === "whatsapp" ? (
+              <Card className="flex justify-center items-center">
+                <CardBody>
+                  <Typography variant="h4" color="blue-gray">
+                    Sign Up
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    Nice to meet you! Enter your details to register.
+                  </Typography>
+                  <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                    <div className="mb-1 flex flex-col gap-6">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="-mb-3"
+                      >
+                        Your Name
+                      </Typography>
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="-mb-3"
+                      >
+                        Your Email
+                      </Typography>
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="-mb-3"
+                      >
+                        Password
+                      </Typography>
+                      <Input
+                        type="password"
+                        size="lg"
+                        placeholder="********"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+                    </div>
+                    <Checkbox
+                      label={
+                        <Typography
+                          variant="small"
+                          color="gray"
+                          className="flex items-center font-normal"
+                        >
+                          I agree the
+                          <a
+                            href="#"
+                            className="font-medium transition-colors hover:text-gray-900"
+                          >
+                            &nbsp;Terms and Conditions
+                          </a>
+                        </Typography>
+                      }
+                      containerProps={{ className: "-ml-2.5" }}
+                    />
+                    <Button className="mt-6" fullWidth>
+                      sign up
+                    </Button>
+                    <Typography
+                      color="gray"
+                      className="mt-4 text-center font-normal"
+                    >
+                      Already have an account?{" "}
+                      <a href="#" className="font-medium text-gray-900">
+                        Sign In
+                      </a>
+                    </Typography>
+                  </form>
+                </CardBody>
+              </Card>
+            ) : (
+              <div>{desc}</div>
+            )}
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
   );
 };
 
