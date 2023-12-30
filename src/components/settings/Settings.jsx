@@ -46,7 +46,7 @@ const Settings = () => {
     },
   ];
   return (
-    <Tabs value="profile">
+    <Tabs value="whatsapp">
       <TabsHeader>
         {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value}>
@@ -61,27 +61,25 @@ const Settings = () => {
         {data.map(({ value, desc }) => (
           <TabPanel key={value} value={value}>
             {value === "telegram" ? (
-              <Card className="m-2">
-                <CardBody>{desc}</CardBody>
-              </Card>
-            ) : value === "whatsapp" ? (
-              <Card className="flex justify-center items-center">
-                <CardBody>
+              <Card color="transparent" shadow={false} className="flex justify-center items-center">
+                <CardBody className="bg-white shadow-md rounded-md mt-6">
                   <Typography variant="h4" color="blue-gray">
-                    Sign Up
+                    BOT ID
                   </Typography>
                   <Typography color="gray" className="mt-1 font-normal">
-                    Nice to meet you! Enter your details to register.
+                    XX978ED67E6AB6HBEDE
                   </Typography>
-                  <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                    <div className="mb-1 flex flex-col gap-6">
+                  <form className="mt-8 mb-2 w-[500px]">
+                    <div className="mb-1 flex-col gap-6">
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
                       <Typography
                         variant="h6"
                         color="blue-gray"
-                        className="-mb-3"
+                        className=" w-32 "
                       >
-                        Your Name
+                        Kitchen 01
                       </Typography>
+                      <div className="col-span-3">
                       <Input
                         size="lg"
                         placeholder="name@mail.com"
@@ -90,13 +88,19 @@ const Settings = () => {
                           className: "before:content-none after:content-none",
                         }}
                       />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
                       <Typography
                         variant="h6"
                         color="blue-gray"
-                        className="-mb-3"
+                        className=" w-32 "
                       >
-                        Your Email
+                        Kitchen 02
                       </Typography>
+                      <div className="col-span-3">
                       <Input
                         size="lg"
                         placeholder="name@mail.com"
@@ -105,53 +109,282 @@ const Settings = () => {
                           className: "before:content-none after:content-none",
                         }}
                       />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
                       <Typography
                         variant="h6"
                         color="blue-gray"
-                        className="-mb-3"
+                        className=" w-32 "
                       >
-                        Password
+                        Kitchen 03
                       </Typography>
+                      <div className="col-span-3">
                       <Input
-                        type="password"
                         size="lg"
-                        placeholder="********"
+                        placeholder="name@mail.com"
                         className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
                       />
-                    </div>
-                    <Checkbox
-                      label={
-                        <Typography
-                          variant="small"
-                          color="gray"
-                          className="flex items-center font-normal"
-                        >
-                          I agree the
-                          <a
-                            href="#"
-                            className="font-medium transition-colors hover:text-gray-900"
-                          >
-                            &nbsp;Terms and Conditions
-                          </a>
-                        </Typography>
-                      }
-                      containerProps={{ className: "-ml-2.5" }}
-                    />
-                    <Button className="mt-6" fullWidth>
-                      sign up
-                    </Button>
-                    <Typography
-                      color="gray"
-                      className="mt-4 text-center font-normal"
-                    >
-                      Already have an account?{" "}
-                      <a href="#" className="font-medium text-gray-900">
-                        Sign In
-                      </a>
-                    </Typography>
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 04
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 05
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 06
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 07
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      </div>  
+                     
+                   
+                  </form>
+                </CardBody>
+              </Card>
+            ) : value === "whatsapp" ? (
+              <Card color="transparent" shadow={false} className="flex justify-center items-center">
+                <CardBody className="bg-white shadow-md rounded-md mt-6">
+                  <Typography variant="h4" color="blue-gray">
+                    INSTANCE ID
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    AB6HBEDEXX978ED67E6
+                  </Typography>
+                  <form className="mt-8 mb-2 w-[500px]">
+                    <div className="mb-1 flex-col gap-6">
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 01
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 02
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 03
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 04
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 05
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 06
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      <div className="py-3 grid grid-cols-5 items-center bg-balck ">
+                      <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className=" w-32 "
+                      >
+                        Kitchen 07
+                      </Typography>
+                      <div className="col-span-3">
+                      <Input
+                        size="lg"
+                        placeholder="name@mail.com"
+                        className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                      />
+
+                      </div>
+                      <Button className="mx-2">Add</Button>
+                      </div>  
+                      </div>  
+                     
+                   
                   </form>
                 </CardBody>
               </Card>

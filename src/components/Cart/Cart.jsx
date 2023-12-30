@@ -6,7 +6,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
+import { remove } from "../../redux/CartSlice"; // Replace "path_to_your_cart_slice" with the actual path to your cart slice
 import CartSummary from "./elements/CartSummary";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -20,6 +21,17 @@ const Cart = () => {
   const [Product, setProduct] = useState([]);
   const cartItems = useSelector((state) => state.cart);
 
+  const dispatch = useDispatch(); // Initialize useDispatch hook
+
+  // const handleRemove = (id) => {
+  //   // Dispatch the 'remove' action with the item ID
+  //   dispatch(remove(id));
+  // };
+
+  const handleRemove = (id) => {
+    console.log("Removing item with ID:", id); // Log the ID before dispatch
+    // dispatch(remove(id));
+  };
   useEffect(() => {
     console.log(cartItems);
     setProduct(cartItems);
@@ -55,7 +67,10 @@ const Cart = () => {
                     <div className="my-3 px-2 grid grid-cols-4 items-center">
                       <div>
                         <Typography variant="h6" color="blue-gray">
-                          {subcategory.name}
+                        {subcategory.name}
+                          <Link onClick={() => handleRemove(subcategory.id)}>
+                          <div className="font-light">Remove</div>
+                          </Link>
                         </Typography>
                       </div>
                       <div>
