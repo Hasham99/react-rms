@@ -29,26 +29,33 @@ export default function Header() {
         />
       </div>
       <div className="flex items-center gap-2 mr-2">
-        <Popover className="flex-col justify-between bg-blue-gray-200 ">
+        {cartItems > 0 && (
+          <Popover className="flex justify-between ">
+            <Link to={"/cart"}>
+              <div className="flex items-start">
+                <HiOutlineShoppingCart
+                  className="text-gray-700"
+                  fontSize={24}
+                />
+                <span className="text-white bg-green-500 rounded-full text-[12px]  px-1">
+                  {cartItems}
+                </span>
+              </div>
+            </Link>
+          </Popover>
+        )}
+
+        {/* <Popover className="flex justify-between ">
           <Link to={"/cart"}>
-            <div className="">
+            <span className="flex items-center">
               <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
-            </div>
-            <div>{cartItems}</div>
+              <span className="text-green-300">
+                {cartItems == 0 ? "" : cartItems}
+              </span>
+            </span>
           </Link>
-          {/* {({ open }) => (
-            <>
-              <Popover.Button
-                className={classNames(
-                  open && "bg-gray-100",
-                  "group inline-flex items-center rounded-sm p-1.5 text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100"
-                )}
-              >
-                <HiOutlineChatAlt fontSize={24} />
-              </Popover.Button>
-            </>
-          )} */}
-        </Popover>
+        </Popover> */}
+
         <Popover className="relative">
           {({ open }) => (
             <>
@@ -145,7 +152,7 @@ export default function Header() {
               <Menu.Item>
                 {({ active }) => (
                   <div
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/settings")}
                     className={classNames(
                       active && "bg-gray-100",
                       "active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200"
@@ -171,6 +178,7 @@ export default function Header() {
               <Menu.Item>
                 {({ active }) => (
                   <div
+                    onClick={() => navigate("/login")}
                     className={classNames(
                       active && "bg-gray-100",
                       "active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200"

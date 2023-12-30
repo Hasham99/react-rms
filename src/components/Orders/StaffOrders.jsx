@@ -22,15 +22,16 @@ const StaffOrders = () => {
         const data = await res.json();
         // Sort orders by PosOrderID in descending order
         const sortedOrders = data.sort((a, b) => b.PosOrderID - a.PosOrderID);
-        if (sortedOrders) {
-          localStorage.setItem("staff-orders", JSON.stringify(sortedOrders));
-        }
+        setOrdersData(sortedOrders);
+        // if (sortedOrders) {
+        //   localStorage.setItem("staff-orders", JSON.stringify(sortedOrders));
+        // }
       } catch (error) {
         console.log(error);
       }
     };
 
-    setOrdersData(JSON.parse(localStorage.getItem("staff-orders")));
+    // setOrdersData(JSON.parse(localStorage.getItem("staff-orders")));
     fetchOrdersData();
   }, []);
 

@@ -23,6 +23,7 @@ import CostManagement from "./components/costManagement/CostManagement";
 import Login from "./components/login/UserLogin";
 import StaffOrders from "./components/Orders/StaffOrders";
 import AdminOrders from "./components/Orders/AdminOrders";
+import ContactUs from "./components/contact-us/ContactUs";
 
 // Dummy authentication check function (replace it with your actual authentication logic)
 // const isAuthenticated = () => {
@@ -62,6 +63,7 @@ function App() {
           <Route path="/cost-management" element={<CostManagement />} />
           <Route path="/transactions" element={<Transactions />} />
           {/* <Route path="/settings" element={<SettingsLayout />}> */}
+          <Route path="/support" element={<ContactUs />} />
           <Route path="/settings" element={<Settings />} />
           {/* </Route> */}
         </Route>

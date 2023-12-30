@@ -57,7 +57,7 @@ const CostManagement = () => {
         </ul>
       </div> */}
       {allData.map((item) => (
-        <Card key={item.MenuItemID} className="m-2 ">
+        <Card key={item.MenuItemID} className="m-2 justify-between">
           {/* <CardHeader className="py-3"></CardHeader> */}
           <CardBody className=" ">
             <Typography className="text-center " variant="h4">

@@ -41,10 +41,12 @@ const Ingredients = () => {
   ).toFixed(4);
 
   const jsonData02 = {
-    item_name: `${formData.itemName02}`,
-    item_weight: `${formData.itemWeight02}`,
-    item_price: `${formData.itemAmount02}`,
-    item_price_per_gram: `${ItemPerGram02}`,
+    // item_name: `${formData.itemName02}`,
+    // item_weight: `${formData.itemWeight02}`,
+    // item_price: `${formData.itemAmount02}`,
+    // item_price_per_gram: `${ItemPerGram02}`,
+    IngredientName: `${formData.itemName02}`,
+    PricePerGm: `${ItemPerGram02}`,
   };
 
   const handleSubmit01 = () => {
@@ -69,7 +71,24 @@ const Ingredients = () => {
   };
 
   const handleSubmit02 = () => {
-    alert(JSON.stringify(jsonData02));
+    axios
+      .post(`https://albadwan.shop/api/ingredients`, jsonData02)
+      // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
+      .then(() => {
+        // console.log("Post request successful", response.data);
+        setFormData({
+          ...formData,
+          itemName02: "", // Clear the item name field
+          itemWeight02: "", // Clear the item weight field
+          itemAmount02: "", // Clear the total amount field
+        });
+        // alert(JSON.stringify(jsonData01));
+        // Handle the response data here if needed
+      })
+      .catch((error) => {
+        console.error("Error making post request", error);
+        // Handle errors here if needed
+      });
   };
   return (
     <>

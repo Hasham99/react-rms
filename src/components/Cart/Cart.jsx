@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
-import { remove } from "../../redux/CartSlice"; // Replace "path_to_your_cart_slice" with the actual path to your cart slice
+import { remove, clearAll } from "../../redux/CartSlice"; //path to your cart slice
 import CartSummary from "./elements/CartSummary";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -23,14 +23,11 @@ const Cart = () => {
 
   const dispatch = useDispatch(); // Initialize useDispatch hook
 
-  // const handleRemove = (id) => {
-  //   // Dispatch the 'remove' action with the item ID
-  //   dispatch(remove(id));
-  // };
-
-  const handleRemove = (id) => {
-    console.log("Removing item with ID:", id); // Log the ID before dispatch
-    // dispatch(remove(id));
+  const handleRemove = (index) => {
+    dispatch(remove(index));
+  };
+  const handleClearAll = () => {
+    dispatch(clearAll());
   };
   useEffect(() => {
     console.log(cartItems);
@@ -56,20 +53,27 @@ const Cart = () => {
           <div className="p-2 ">
             <Card className="bg-gray-100 h-[80vh]">
               <CardBody>
-                <Typography variant="h4" color="blue-gray">
-                  Cart
-                </Typography>
-                {Product.map((subcategory) => (
+                <div className="flex gap-3 items-center">
+                  <Typography variant="h4" color="blue-gray">
+                    Cart
+                  </Typography>
+                  <Link onClick={handleClearAll}>
+                    <Typography variant="h6" color="red">
+                      (Clear All)
+                    </Typography>
+                  </Link>
+                </div>
+                {Product.map((subcategory, index) => (
                   <Card
                     className="rounded-md my-2 px-2"
-                    key={subcategory.subcategory_id}
+                    key={subcategory.index}
                   >
                     <div className="my-3 px-2 grid grid-cols-4 items-center">
                       <div>
                         <Typography variant="h6" color="blue-gray">
-                        {subcategory.name}
-                          <Link onClick={() => handleRemove(subcategory.id)}>
-                          <div className="font-light">Remove</div>
+                          {subcategory.name}
+                          <Link onClick={() => handleRemove(index)}>
+                            <div className="font-light">Remove</div>
                           </Link>
                         </Typography>
                       </div>
@@ -94,7 +98,6 @@ const Cart = () => {
             </Card>
           </div>
         </div>
-        {/* <CartSummary items={0} totalAmount={0} /> */}
         <CartSummary items={Product} totalAmount={totalAmount} />
       </div>
     </div>

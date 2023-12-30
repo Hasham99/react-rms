@@ -14,7 +14,7 @@ const Dashboard = () => {
       </div>
       <div className="flex flex-row gap-4 w-full">
         <RecentOrders />
-        <PopularProducts />
+        {/* <PopularProducts /> */}
       </div>
     </div>
   );
