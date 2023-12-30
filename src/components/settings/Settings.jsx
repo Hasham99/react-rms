@@ -50,6 +50,7 @@ const Settings = () => {
     setActiveKitchen(kitchen);
   };
   const [kitchenData, setKitchenData] = useState([]);
+  const [instanceId, setInstanceId] = useState([]);
   const [activeKitchen, setActiveKitchen] = useState(null);
 
   useEffect(() => {
@@ -64,8 +65,19 @@ const Settings = () => {
         console.error("Error fetching kitchen data:", error);
       }
     };
+    const InstanceId = async () => {
+      try {
+        const response = await fetch("https://albadwan.shop/api/whatsapp");
+        const data = await response.json();
+        setInstanceId(data);
+        // setActiveKitchen(data[0]); // Set the first kitchen as active by default
+      } catch (error) {
+        console.error("Error fetching kitchen data:", error);
+      }
+    };
 
     fetchKitchenData();
+    InstanceId();
   }, []);
 
   return (
@@ -88,30 +100,51 @@ const Settings = () => {
               shadow={false}
               className="flex justify-center items-center"
             >
-              <CardBody className=" shadow-md rounded-md mt-6">
-                <Typography variant="h4" color="blue-gray">
-                  BOT ID
-                </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
-                  AB6HBEDEX*********
-                </Typography>
+              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
+                <div className=" shadow-md rounded-lg p-4 text-center">
+                  <Typography variant="h4" color="blue-gray">
+                    BOT ID
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    AB6HBEDEX*********
+                  </Typography>
+                </div>
+                {/* <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
+                  <Typography
+                    className="text-center"
+                    variant="h4"
+                    color="blue-gray"
+                  >
+                    Instance Token
+                  </Typography>
+                  <div className=" grid grid-cols-4 my-1 gap-1">
+                    {instanceId.map((item) => (
+                      <Typography key={item.instance_id} className="  ">
+                        {
+                          <div>
+                            <span className="font-bold">
+                              {item.instance_id}
+                              {". "}
+                            </span>
+                            <span className="font-medium">
+                              {`${item.instance_number.substring(0, 7)}****`}
+                            </span>
+                          </div>
+                        }
+                      </Typography>
+                    ))}
+                  </div>
+                </div> */}
 
-                <form className="mt-8 mb-2 w-[500px] ">
-                  <div className="mb-1 flex-col gap-6  ">
+                <form className=" mb-2 w-[500px]">
+                  <div className="mb-1 flex-col gap-6">
                     {kitchenData.map((kitchen) => (
                       <div
                         key={kitchen.KitchenID}
-                        className={`py-3 grid grid-cols-5 items-end `}
+                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
                         onClick={() => handleKitchenChange(kitchen)}
                       >
-                        <div className="col-span-4 ">
-                          <Typography variant="h5">{kitchen.Name}</Typography>
-                          <Typography variant="h6">
-                            Inctance ID: {kitchen.Name}
-                          </Typography>
-                          <Typography variant="h6">{kitchen.Name}</Typography>
-                          <Typography variant="h6">{kitchen.Name}</Typography>
-                          <Typography variant="h6">{kitchen.Name}</Typography>
+                        <div className="col-span-4">
                           <Input
                             size="lg"
                             placeholder="Group Id"
@@ -122,7 +155,6 @@ const Settings = () => {
                         <Button className="mx-2">Add</Button>
                       </div>
                     ))}
-                    <hr />
                   </div>
                 </form>
               </CardBody>
@@ -131,25 +163,89 @@ const Settings = () => {
         </TabPanel>
         <TabPanel value="whatsapp">
           {activeKitchen && (
+            // <Card
+            //   color="transparent"
+            //   shadow={false}
+            //   className="flex justify-center items-center"
+            // >
+            //   <CardBody className="bg-white shadow-md rounded-md mt-6">
+            //     <Typography variant="h4" color="blue-gray">
+            //       INSTANCE ID
+            //     </Typography>
+            //     <Typography color="gray" className="mt-1 font-normal">
+            //       AB6HBEDEX*********
+            //     </Typography>
+
+            //     <form className="mt-8 mb-2 w-[500px]">
+            //       <div className="mb-1 flex-col gap-6">
+            //         {kitchenData.map((kitchen) => (
+            //           <div
+            //             key={kitchen.KitchenID}
+            //             className={`py-3 grid grid-cols-5 items-center bg-balck`}
+            //             onClick={() => handleKitchenChange(kitchen)}
+            //           >
+            //             <div className="col-span-4">
+            //               <Input
+            //                 size="lg"
+            //                 placeholder="Group Id"
+            //                 label={kitchen.Name}
+            //                 className=""
+            //               />
+            //             </div>
+            //             <Button className="mx-2">Add</Button>
+            //           </div>
+            //         ))}
+            //       </div>
+            //     </form>
+            //   </CardBody>
+            // </Card>
             <Card
               color="transparent"
               shadow={false}
               className="flex justify-center items-center"
             >
-              <CardBody className="bg-white shadow-md rounded-md mt-6">
-                <Typography variant="h4" color="blue-gray">
-                  INSTANCE ID
-                </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
-                  AB6HBEDEX*********
-                </Typography>
+              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
+                <div className=" shadow-md rounded-lg p-4 text-center">
+                  <Typography variant="h4" color="blue-gray">
+                    Access Token
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    AB6HBEDEX*********
+                  </Typography>
+                </div>
+                <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
+                  <Typography
+                    className="text-center"
+                    variant="h4"
+                    color="blue-gray"
+                  >
+                    Instance Token
+                  </Typography>
+                  <div className=" grid grid-cols-4 my-1 gap-1">
+                    {instanceId.map((item) => (
+                      <Typography key={item.instance_id} className="  ">
+                        {
+                          <div>
+                            <span className="font-bold">
+                              {item.instance_id}
+                              {". "}
+                            </span>
+                            <span className="font-medium">
+                              {`${item.instance_number.substring(0, 7)}****`}
+                            </span>
+                          </div>
+                        }
+                      </Typography>
+                    ))}
+                  </div>
+                </div>
 
-                <form className="mt-8 mb-2 w-[500px]">
+                <form className=" mb-2 w-[500px]">
                   <div className="mb-1 flex-col gap-6">
                     {kitchenData.map((kitchen) => (
                       <div
                         key={kitchen.KitchenID}
-                        className={`py-3 grid grid-cols-5 items-center bg-balck`}
+                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
                         onClick={() => handleKitchenChange(kitchen)}
                       >
                         <div className="col-span-4">
