@@ -1,5 +1,6 @@
-import { Fragment } from "react";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from "react";
+import { Dialog, Transition, Menu, Popover } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   HiOutlineBell,
   HiOutlineSearch,
@@ -10,9 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
-export default function Header() {
+const Header = () => {
   const navigate = useNavigate();
-
   const cartItems = useSelector((state) => state.cart.length);
 
   return (
@@ -29,7 +29,7 @@ export default function Header() {
         />
       </div>
       <div className="flex items-center gap-2 mr-2">
-        {cartItems > 0 && (
+        {/* {cartItems > 0 && (
           <Popover className="flex justify-between ">
             <Link to={"/cart"}>
               <div className="flex items-start">
@@ -43,18 +43,22 @@ export default function Header() {
               </div>
             </Link>
           </Popover>
-        )}
+        )} */}
 
-        {/* <Popover className="flex justify-between ">
-          <Link to={"/cart"}>
-            <span className="flex items-center">
-              <HiOutlineShoppingCart className="text-gray-700" fontSize={24} />
+        <Popover className="flex justify-between ">
+          <Link to={"/cart01"}>
+            <span className="flex items-center cursor-pointer">
+              <HiOutlineShoppingCart
+                className="text-gray-700"
+                fontSize={24}
+                onClick={() => setCartDialogOpen(true)}
+              />
               <span className="text-green-300">
                 {cartItems == 0 ? "" : cartItems}
               </span>
             </span>
           </Link>
-        </Popover> */}
+        </Popover>
 
         <Popover className="relative">
           {({ open }) => (
@@ -194,4 +198,5 @@ export default function Header() {
       </div>
     </div>
   );
-}
+};
+export default Header;

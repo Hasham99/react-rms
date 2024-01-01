@@ -18,6 +18,7 @@ import Login from "./components/login/UserLogin";
 import StaffOrders from "./components/Orders/StaffOrders";
 import AdminOrders from "./components/Orders/AdminOrders";
 import ContactUs from "./components/contact-us/ContactUs";
+import CartTest from "./components/CartTest";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/cart01" element={<CartTest />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           {/* <Route path="/cost-management" element={<newFile />} /> */}
