@@ -28,7 +28,7 @@ const ProductsPOS = () => {
       try {
         const response = await fetch(`https://albadwan.shop/api/cai/v2/res/1`);
         const data = await response.json();
-        localStorage.setItem("products", JSON.stringify(data));
+        // localStorage.setItem("products", JSON.stringify(data));
         // const data1 = localStorage.getItem("products");
         // (data1);
         setCategories(data);
@@ -55,7 +55,7 @@ const ProductsPOS = () => {
                   {category.subcategory_name}
                 </Typography>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
                 {category.items.map((item) => (
                   <div
                     key={item.item_id}

@@ -126,7 +126,7 @@ export default function Header() {
         </Popover>
         <Menu as="div" className="relative">
           <div>
-            <Menu.Button className="ml-2 bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400">
+            <Menu.Button className="ml-2 bg-gray-400 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400">
               <span className="sr-only">Open user menu</span>
               <div
                 className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"

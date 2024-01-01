@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -52,7 +52,8 @@ const Settings = () => {
   const [kitchenData, setKitchenData] = useState([]);
   const [instanceId, setInstanceId] = useState([]);
   const [activeKitchen, setActiveKitchen] = useState(null);
-
+  const [inputValues, setInputValues] = useState({});
+  const [jsonData, setJsonData] = useState([]);
   useEffect(() => {
     // Fetch kitchen data from the API
     const fetchKitchenData = async () => {
@@ -79,7 +80,32 @@ const Settings = () => {
     fetchKitchenData();
     InstanceId();
   }, []);
+  const handleInputChange = (kitchenId, value) => {
+    setInputValues((prevInputValues) => ({
+      ...prevInputValues,
+      [kitchenId]: value,
+    }));
+  };
+  const handleAddButtonClick = () => {
+    // Assuming activeKitchen is the currently selected kitchen
+    if (activeKitchen) {
+      const kitchenId = activeKitchen.KitchenID;
+      const inputValue = inputValues[kitchenId] || "";
+      const updatedJsonData = {
+        ...jsonData,
+        [kitchenId]: inputValue,
+      };
+      setJsonData(updatedJsonData);
+      alert(`Kitchen ID: ${kitchenId}, Input Value: ${inputValue}`);
 
+      // Clear the input value after adding
+      setInputValues((prevInputValues) => ({
+        ...prevInputValues,
+        [kitchenId]: "",
+      }));
+    }
+  };
+  const inputRef = useRef();
   return (
     <Tabs value="profile">
       <TabsHeader>
@@ -93,112 +119,8 @@ const Settings = () => {
         ))}
       </TabsHeader>
       <TabsBody>
-        <TabPanel value="telegram">
-          {activeKitchen && (
-            <Card
-              color="transparent"
-              shadow={false}
-              className="flex justify-center items-center"
-            >
-              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
-                <div className=" shadow-md rounded-lg p-4 text-center">
-                  <Typography variant="h4" color="blue-gray">
-                    BOT ID
-                  </Typography>
-                  <Typography color="gray" className="mt-1 font-normal">
-                    AB6HBEDEX*********
-                  </Typography>
-                </div>
-                {/* <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
-                  <Typography
-                    className="text-center"
-                    variant="h4"
-                    color="blue-gray"
-                  >
-                    Instance Token
-                  </Typography>
-                  <div className=" grid grid-cols-4 my-1 gap-1">
-                    {instanceId.map((item) => (
-                      <Typography key={item.instance_id} className="  ">
-                        {
-                          <div>
-                            <span className="font-bold">
-                              {item.instance_id}
-                              {". "}
-                            </span>
-                            <span className="font-medium">
-                              {`${item.instance_number.substring(0, 7)}****`}
-                            </span>
-                          </div>
-                        }
-                      </Typography>
-                    ))}
-                  </div>
-                </div> */}
-
-                <form className=" mb-2 w-[500px]">
-                  <div className="mb-1 flex-col gap-6">
-                    {kitchenData.map((kitchen) => (
-                      <div
-                        key={kitchen.KitchenID}
-                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
-                        onClick={() => handleKitchenChange(kitchen)}
-                      >
-                        <div className="col-span-4">
-                          <Input
-                            size="lg"
-                            placeholder="Group Id"
-                            label={kitchen.Name}
-                            className=""
-                          />
-                        </div>
-                        <Button className="mx-2">Add</Button>
-                      </div>
-                    ))}
-                  </div>
-                </form>
-              </CardBody>
-            </Card>
-          )}
-        </TabPanel>
         <TabPanel value="whatsapp">
           {activeKitchen && (
-            // <Card
-            //   color="transparent"
-            //   shadow={false}
-            //   className="flex justify-center items-center"
-            // >
-            //   <CardBody className="bg-white shadow-md rounded-md mt-6">
-            //     <Typography variant="h4" color="blue-gray">
-            //       INSTANCE ID
-            //     </Typography>
-            //     <Typography color="gray" className="mt-1 font-normal">
-            //       AB6HBEDEX*********
-            //     </Typography>
-
-            //     <form className="mt-8 mb-2 w-[500px]">
-            //       <div className="mb-1 flex-col gap-6">
-            //         {kitchenData.map((kitchen) => (
-            //           <div
-            //             key={kitchen.KitchenID}
-            //             className={`py-3 grid grid-cols-5 items-center bg-balck`}
-            //             onClick={() => handleKitchenChange(kitchen)}
-            //           >
-            //             <div className="col-span-4">
-            //               <Input
-            //                 size="lg"
-            //                 placeholder="Group Id"
-            //                 label={kitchen.Name}
-            //                 className=""
-            //               />
-            //             </div>
-            //             <Button className="mx-2">Add</Button>
-            //           </div>
-            //         ))}
-            //       </div>
-            //     </form>
-            //   </CardBody>
-            // </Card>
             <Card
               color="transparent"
               shadow={false}
@@ -254,9 +176,21 @@ const Settings = () => {
                             placeholder="Group Id"
                             label={kitchen.Name}
                             className=""
+                            value={inputValues[kitchen.KitchenID] || ""}
+                            onChange={(e) =>
+                              handleInputChange(
+                                kitchen.KitchenID,
+                                e.target.value
+                              )
+                            }
                           />
                         </div>
-                        <Button className="mx-2">Add</Button>
+                        <Button
+                          className="mx-2"
+                          onClick={() => handleAddButtonClick()}
+                        >
+                          Add
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -265,179 +199,61 @@ const Settings = () => {
             </Card>
           )}
         </TabPanel>
+        <TabPanel value="telegram">
+          {activeKitchen && (
+            <Card
+              color="transparent"
+              shadow={false}
+              className="flex justify-center items-center"
+            >
+              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
+                <div className=" shadow-md rounded-lg p-4 text-center">
+                  <Typography variant="h4" color="blue-gray">
+                    BOT ID
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    AB6HBEDEX*********
+                  </Typography>
+                </div>
 
-        {/* : value === "whatsapp" ? (
-             <Card 
-          //     color="transparent"
-          //     shadow={false}
-          //     className="flex justify-center items-center"
-          //   >
-          //     <CardBody className="bg-white shadow-md rounded-md mt-6">
-          //       <Typography variant="h4" color="blue-gray">
-          //         INSTANCE ID
-          //       </Typography>
-          //       <Typography color="gray" className="mt-1 font-normal">
-          //         AB6HBEDEXX978ED67E6
-          //       </Typography>
-          //       <form className="mt-8 mb-2 w-[500px]">
-          //         <div className="mb-1 flex-col gap-6">
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 01
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 02
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 03
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 04
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 05
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 06
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //           <div className="py-3 grid grid-cols-5 items-center bg-balck ">
-          //             <Typography
-          //               variant="h6"
-          //               color="blue-gray"
-          //               className=" w-32 "
-          //             >
-          //               Kitchen 07
-          //             </Typography>
-          //             <div className="col-span-3">
-          //               <Input
-          //                 size="lg"
-          //                 placeholder="name@mail.com"
-          //                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          //                 labelProps={{
-          //                   className:
-          //                     "before:content-none after:content-none",
-          //                 }}
-          //               />
-          //             </div>
-          //             <Button className="mx-2">Add</Button>
-          //           </div>
-          //         </div>
-          //       </form>
-          //     </CardBody>
-          //   </Card>
-          // ) : (
-          //   <div>{desc}</div>
-          // )}
-          // </TabPanel>
-        // )
-        // )}*/}
+                <form className=" mb-2 w-[500px]">
+                  <div className="mb-1 flex-col gap-6">
+                    {kitchenData.map((kitchen) => (
+                      <div
+                        key={kitchen.KitchenID}
+                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
+                        onClick={() => handleKitchenChange(kitchen)}
+                      >
+                        <div className="col-span-4">
+                          <Input
+                            size="lg"
+                            placeholder="Group Id"
+                            label={kitchen.Name}
+                            className=""
+                            value={inputValues[kitchen.KitchenID] || ""}
+                            onChange={(e) =>
+                              handleInputChange(
+                                kitchen.KitchenID,
+                                e.target.value
+                              )
+                            }
+                            ref={inputRef} // Add this line to attach the ref
+                          />
+                        </div>
+                        <Button
+                          className="mx-2"
+                          onClick={() => handleAddButtonClick()}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </form>
+              </CardBody>
+            </Card>
+          )}
+        </TabPanel>
       </TabsBody>
     </Tabs>
   );

@@ -9,6 +9,7 @@ import React from "react";
 import { useState } from "react";
 import ItemIngredients from "./elements/ItemIngredients";
 import axios from "axios";
+import { useHref } from "react-router-dom";
 
 const Ingredients = () => {
   // const [inputValue, setInputValue] = useState(null);
@@ -61,6 +62,7 @@ const Ingredients = () => {
           itemWeight01: "", // Clear the item weight field
           itemAmount01: "", // Clear the total amount field
         });
+        window.location.href = "/ingredients";
         // alert(JSON.stringify(jsonData01));
         // Handle the response data here if needed
       })
@@ -82,6 +84,7 @@ const Ingredients = () => {
           itemWeight02: "", // Clear the item weight field
           itemAmount02: "", // Clear the total amount field
         });
+        window.location.href = "/ingredients";
         // alert(JSON.stringify(jsonData01));
         // Handle the response data here if needed
       })
@@ -136,7 +139,9 @@ const Ingredients = () => {
                 <div>
                   Per Gram:{" "}
                   {/* {inputValue.itemAmount01 / (inputValue.itemWeight01 * 1000)} */}
-                  {formData.itemAmount01 / (formData.itemWeight01 * 1000)}
+                  {parseFloat(
+                    formData.itemAmount01 / (formData.itemWeight01 * 1000)
+                  ).toFixed(4)}
                 </div>
               </div>
             </div>
@@ -192,7 +197,10 @@ const Ingredients = () => {
               <div>
                 {/* <div>In Gram: {inputValue * 1000}</div> */}
                 <div>
-                  Per Gram: {formData.itemAmount02 / formData.itemWeight02}
+                  Per Gram:{" "}
+                  {parseFloat(
+                    formData.itemAmount02 / formData.itemWeight02
+                  ).toFixed(4)}
                 </div>
               </div>
             </div>
