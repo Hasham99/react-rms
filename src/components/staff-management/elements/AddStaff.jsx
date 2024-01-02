@@ -51,12 +51,6 @@ const AddStaff = () => {
 
   const handleSubmit = () => {
     if (formData.password == formData.confirm_password) {
-      //   alert(`
-      //   'Waiter Name' ${JSON.stringify(formData.waiter_name)}
-      //   'Username' ${JSON.stringify(formData.login_id)}
-      //   'password' ${JSON.stringify(formData.password)}`
-      // )
-      // const newPass = formData.password;
       const jsonData = {
         waiter_name: `${formData.waiter_name}`,
         login_id: `${formData.login_id}`,
@@ -68,14 +62,13 @@ const AddStaff = () => {
         // .post(`${import.meta.env.VITE_API_KEY}/api/waiter`, jsonData)
         .then((response) => {
           console.log("PATCH request successful", response.data);
+          alert("successfull");
           // Handle the response data here if needed
         })
         .catch((error) => {
           console.error("Error making PATCH request", error);
           // Handle errors here if needed
         });
-
-      alert(JSON.stringify(jsonData));
     } else {
       alert("password & Confirm pass does not match");
     }
@@ -87,99 +80,89 @@ const AddStaff = () => {
   };
 
   return (
-    <Card color="transparent" shadow={false}>
-      <div className="flex justify-between items-center">
-        <Typography variant="h4" className="text-sidebar">
-          Add New Waiter
+    <form
+      className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
+      onSubmit={() => {
+        try {
+          handleSubmit();
+        } catch (error) {
+          console.log(error);
+        }
+      }}
+    >
+      <div className="mb-1 flex flex-col gap-3">
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Name
         </Typography>
-        <div>
-          <FaRegWindowClose className="cursor-pointer" />
-        </div>
-      </div>
+        <Input
+          required
+          size="lg"
+          placeholder="waiter name"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="waiter_name"
+          value={formData.waiter_name}
+          // value={InputValue.waiter_name}
+          // value={InputValue.item_name}
+          // value={formData.itemName}
+          onChange={handleChangeName}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Username
+        </Typography>
+        <Input
+          required
+          size="lg"
+          placeholder="waiter username"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="login_id"
+          value={formData.login_id}
+          // value={InputValue.login_id}
+          // value={InputValue.category_name}
+          // value={formData.location}
+          onChange={handleChangeUsername}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Password
+        </Typography>
+        <Input
+          required
+          type=""
+          size="lg"
+          placeholder="password"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="password"
+          // value={}
+          value={formData.password}
+          onChange={handleInputChangePass}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Confirm Password
+        </Typography>
+        <Input
+          required
+          type=""
+          size="lg"
+          placeholder="confirm password"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="confirm_password"
+          // value={}
+          value={formData.confirm_password}
+          onChange={handleInputChangeConfirmPass}
+        />
 
-      <form
-        className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
-        onSubmit={() => {
-          try {
-            handleSubmit();
-          } catch (error) {
-            console.log(error);
-          }
-        }}
-      >
-        <div className="mb-1 flex flex-col gap-3">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Name
-          </Typography>
-          <Input
-            required
-            size="lg"
-            placeholder="waiter name"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="waiter_name"
-            value={formData.waiter_name}
-            // value={InputValue.waiter_name}
-            // value={InputValue.item_name}
-            // value={formData.itemName}
-            onChange={handleChangeName}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Username
-          </Typography>
-          <Input
-            required
-            size="lg"
-            placeholder="waiter username"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="login_id"
-            value={formData.login_id}
-            // value={InputValue.login_id}
-            // value={InputValue.category_name}
-            // value={formData.location}
-            onChange={handleChangeUsername}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Password
-          </Typography>
-          <Input
-            required
-            type=""
-            size="lg"
-            placeholder="password"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="password"
-            // value={}
-            value={formData.password}
-            onChange={handleInputChangePass}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Confirm Password
-          </Typography>
-          <Input
-            required
-            type=""
-            size="lg"
-            placeholder="confirm password"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="confirm_password"
-            // value={}
-            value={formData.confirm_password}
-            onChange={handleInputChangeConfirmPass}
-          />
-
-          {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
+        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             On Hand
           </Typography>
           <Input
@@ -195,12 +178,11 @@ const AddStaff = () => {
             value={formData.onHand}
             onChange={handleInputChange}
           /> */}
-        </div>
-        <Button className="mt-6" fullWidth type="submit">
-          Update Item
-        </Button>
-      </form>
-    </Card>
+      </div>
+      <Button className="mt-6" fullWidth type="submit">
+        Update Item
+      </Button>
+    </form>
   );
 };
 

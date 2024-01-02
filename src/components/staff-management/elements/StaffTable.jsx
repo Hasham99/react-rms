@@ -1,20 +1,17 @@
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {
   Card,
-  CardHeader,
-  Input,
   Typography,
-  Button,
   CardBody,
-  Avatar,
   IconButton,
   Tooltip,
   Dialog,
   DialogBody,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { AddInventoryItem } from "../../Inventory/elements/AddInventoryItem";
+// import { AddInventoryItem } from "../../Inventory/elements/AddInventoryItem";
 import UpdateStaff from "./UpdateStaff";
+import { FaRegWindowClose } from "react-icons/fa";
 
 const StaffTable = () => {
   const TABLE_HEAD = ["Name", "Username", "Password", "Status", ""];
@@ -22,6 +19,7 @@ const StaffTable = () => {
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
+  const handleClose = () => setSize(null);
   const [staffData, setStaffData] = useState([]);
   const [getStaffData, setGetStaffData] = useState([]);
   useEffect(() => {
@@ -140,7 +138,17 @@ const StaffTable = () => {
         handler={handleOpen}
       >
         <DialogBody className="flex justify-center ">
-          <UpdateStaff everything={getStaffData} />
+          <Card color="transparent" shadow={false}>
+            <div className="flex justify-between items-center">
+              <Typography variant="h4" className="text-sidebar">
+                Update Waiter
+              </Typography>
+              <div onClick={handleClose}>
+                <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
+              </div>
+            </div>
+            <UpdateStaff everything={getStaffData} />
+          </Card>
         </DialogBody>
       </Dialog>
     </div>

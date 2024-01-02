@@ -16,20 +16,24 @@ const POSDialog = (props) => {
     setFormData(e.target.value);
   };
   const [ItemData, setItemData] = useState(props.itemDetails);
-  const jsonData = {
-    // item: {
-    menuitemID: ItemData.item.item_id,
-    name: ItemData.item.item_name,
-    price: ItemData.item.item_price,
-    quantity: parseInt(formData),
-    kitchenID: ItemData.item.kitchen_id,
-    categoryID: ItemData.subcategory_id,
-    note: "",
-    // },
-  };
+  const [isDialogOpen, setDialogOpen] = useState(true); // State to control dialog visibility
+
   const handleSubmit = () => {
+    const jsonData = {
+      // item: {
+      menuitemID: ItemData.item.item_id,
+      name: ItemData.item.item_name,
+      price: ItemData.item.item_price,
+      quantity: parseInt(formData),
+      kitchenID: ItemData.item.kitchen_id,
+      categoryID: ItemData.subcategory_id,
+      note: "",
+      // },
+    };
     // alert(JSON.stringify(jsonData));
     dispatch(addToCart(jsonData));
+    // Close the dialog
+    setDialogOpen(false);
   };
 
   return (

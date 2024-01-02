@@ -16,9 +16,11 @@ import { useEffect, useState } from "react";
 import { AddInventoryItem } from "../Inventory/elements/AddInventoryItem";
 import StaffTable from "./elements/StaffTable";
 import AddStaff from "./elements/AddStaff";
+import { FaRegWindowClose } from "react-icons/fa";
 
 const StaffManagement = () => {
   const [size, setSize] = useState(null);
+  const handleClose = () => setSize(null);
 
   const handleOpen = (value) => setSize(value);
   const [getInventoryData, setGetInventoryData] = useState([]);
@@ -68,7 +70,20 @@ const StaffManagement = () => {
         handler={handleOpen}
       >
         <DialogBody className="flex justify-center ">
-          <AddStaff />
+          <Card color="transparent" shadow={false}>
+            <div className="flex justify-between items-center">
+              <Typography variant="h4" className="text-sidebar">
+                Add New Waiter
+              </Typography>
+              <div>
+                <FaRegWindowClose
+                  onClick={handleClose}
+                  className="cursor-pointer h-6 w-6 text-red-500"
+                />
+              </div>
+            </div>
+            <AddStaff />
+          </Card>
         </DialogBody>
       </Dialog>
     </>

@@ -46,113 +46,94 @@ const UpdateStaff = (props) => {
       )
       .then((response) => {
         console.log("PATCH request successful", response.data);
+        alert("POST request successful");
         // Handle the response data here if needed
       })
       .catch((error) => {
         console.error("Error making PATCH request", error);
+        alert("error", error);
         // Handle errors here if needed
       });
-    // alert(JSON.stringify(jsonData));
-    // Handle the response, e.g., show a success message
-
-    alert("POST request successful");
-    //   alert(`
-    //   'Waiter ID' ${JSON.stringify(InputValue.waiter_name)}
-    //   'Username' ${JSON.stringify(InputValue.login_id)}
-    //   'Restaurant ID' ${JSON.stringify(InputValue.restaurant_id)}
-    //   'password' ${JSON.stringify(formData.password)}
-    //   'status' ${Value}`);
-    // alert(JSON.stringify(jsonData));
   };
 
   return (
-    <Card color="transparent" shadow={false}>
-      <div className="flex justify-between items-center">
-        <Typography variant="h4" className="text-sidebar">
-          Update Waiter
+    <form
+      className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
+      onSubmit={() => {
+        try {
+          handleSubmit();
+        } catch (error) {
+          console.log(error);
+        }
+      }}
+    >
+      <div className="mb-1 flex flex-col gap-3">
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Name
         </Typography>
-        <div>
-          <FaRegWindowClose className="cursor-pointer" />
-        </div>
-      </div>
-
-      <form
-        className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
-        onSubmit={() => {
-          try {
-            handleSubmit();
-          } catch (error) {
-            console.log(error);
-          }
-        }}
-      >
-        <div className="mb-1 flex flex-col gap-3">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Name
-          </Typography>
-          <Input
-            required
-            disabled
-            size="lg"
-            placeholder="Item name"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="itemName"
-            value={InputValue.waiter_name}
-            // value={InputValue.item_name}
-            // value={formData.itemName}
-            // onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Username
-          </Typography>
-          <Input
-            required
-            disabled
-            size="lg"
-            placeholder="category"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="category"
-            value={InputValue.login_id}
-            // value={InputValue.category_name}
-            // value={formData.location}
-            // onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Password
-          </Typography>
-          <Input
-            required
-            type=""
-            size="lg"
-            placeholder="Available Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="password"
-            // value={}
-            value={formData.password}
-            onChange={handleInputChangeTwo}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            <div className="flex justify-between ">
-              <div>Status</div>
-              <div className="text-green-400 text-sm ">
-                {/* {InputValue.reserved} */}
-              </div>
+        <Input
+          required
+          disabled
+          size="lg"
+          placeholder="Item name"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900 "
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="itemName"
+          value={InputValue.waiter_name}
+          // value={InputValue.item_name}
+          // value={formData.itemName}
+          // onChange={handleInputChange}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Username
+        </Typography>
+        <Input
+          required
+          disabled
+          size="lg"
+          placeholder="category"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="category"
+          value={InputValue.login_id}
+          // value={InputValue.category_name}
+          // value={formData.location}
+          // onChange={handleInputChange}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Password
+        </Typography>
+        <Input
+          required
+          type=""
+          size="lg"
+          placeholder="Available Quantity"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="password"
+          // value={}
+          value={formData.password}
+          onChange={handleInputChangeTwo}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          <div className="flex justify-between ">
+            <div>Status</div>
+            <div className="text-green-400 text-sm ">
+              {/* {InputValue.reserved} */}
             </div>
-          </Typography>
-          <Select onChange={handleChange} value={Value}>
-            <Option value="allowed">Allowed</Option>
-            <Option value="disallowed">Not Allowed</Option>
-          </Select>
-          {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
+          </div>
+        </Typography>
+        <Select onChange={handleChange} value={Value}>
+          <Option value="allowed">Allowed</Option>
+          <Option value="disallowed">Not Allowed</Option>
+        </Select>
+        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             On Hand
           </Typography>
           <Input
@@ -168,12 +149,11 @@ const UpdateStaff = (props) => {
             value={formData.onHand}
             onChange={handleInputChange}
           /> */}
-        </div>
-        <Button className="mt-6" fullWidth type="submit">
-          Update Item
-        </Button>
-      </form>
-    </Card>
+      </div>
+      <Button className="mt-6" fullWidth type="submit">
+        Update Item
+      </Button>
+    </form>
   );
 };
 

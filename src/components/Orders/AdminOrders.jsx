@@ -14,6 +14,7 @@ import {
 } from "@material-tailwind/react";
 import React from "react";
 import axios from "axios";
+import AdminDialog from "./Dialog.jsx/AdminDialog";
 const AdminOrders = () => {
   const [ordersData, setOrdersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,23 +68,29 @@ const AdminOrders = () => {
     setCurrentPage(pageNumber);
   };
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const handleOpen = () => setOpen(!open);
-  const markAsPaid = async () => {
-    axios
-      .patch(`https://albadwan.shop/api/posorders/${OrderID}/paid`)
-      .then((response) => {
-        console.log("PATCH request successful", response.data);
-        setOpen(!open);
-        window.location.href = "/orders/admin";
-        // Handle the response data here if needed
-      })
-      .catch((error) => {
-        console.error("Error making PATCH request", error);
-        // Handle errors here if needed
-      });
+  // const handleOpen = () => setOpen(!open);
+  // const markAsPaid = async () => {
+  const markAsPaid = async (order) => {
+    console.log(order);
+    // axios
+    //   .patch(`https://albadwan.shop/api/posorders/${OrderID}/paid`)
+    //   .then((response) => {
+    //     console.log("PATCH request successful", response.data);
+    //     setOpen(!open);
+    //     window.location.href = "/orders/admin";
+    //     // Handle the response data here if needed
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error making PATCH request", error);
+    //     // Handle errors here if needed
+    //   });
   };
+  const [size, setSize] = React.useState(null);
+
+  const handleOpen = (value) => setSize(value);
+  const handleClose = () => setSize(null);
   return (
     <>
       <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
@@ -118,8 +125,10 @@ const AdminOrders = () => {
                   className="cursor-pointer"
                   key={order.PosOrderID}
                   onClick={() => {
-                    setOrderID(order.PosOrderID);
-                    handleOpen();
+                    // setOrderID(order.PosOrderID);
+                    markAsPaid(order);
+                    // handleOpen();
+                    handleOpen("xxl");
                   }}
                 >
                   <td>{order.PosOrderID}</td>
@@ -196,7 +205,7 @@ const AdminOrders = () => {
           </CardFooter>
         </div>
       </div>
-      <Dialog open={open} handler={handleOpen}>
+      {/* <Dialog open={open} handler={handleOpen}>
         <DialogHeader>Order ID: {OrderID}</DialogHeader>
         <DialogBody>
           Would you like to mark Order: {OrderID}, as{" "}
@@ -215,6 +224,40 @@ const AdminOrders = () => {
             <span>Confirm</span>
           </Button>
         </DialogFooter>
+      </Dialog> */}
+      <Dialog
+        open={
+          size === "xs" ||
+          size === "sm" ||
+          size === "md" ||
+          size === "lg" ||
+          size === "xl" ||
+          size === "xxl"
+        }
+        size={size || "md"}
+        handler={handleOpen}
+      >
+        {/* <DialogHeader>Its a simple dialog.</DialogHeader> */}
+        <DialogBody className="p-0 m-0">
+          <AdminDialog onClose={handleClose} />
+        </DialogBody>
+        {/* <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={() => handleOpen(null)}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={() => handleOpen(null)}
+          >
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter> */}
       </Dialog>
     </>
   );

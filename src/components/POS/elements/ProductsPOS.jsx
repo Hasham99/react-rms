@@ -7,10 +7,37 @@ import {
   DialogBody,
   Input,
 } from "@material-tailwind/react";
+// import React, { useState } from "react";
+import { addToCart } from "../../../redux/CartSlice";
+import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import POSDialog from "./ProductDialog/POSDialog";
+// import POSDialog from "./ProductDialog/POSDialog";
 
 const ProductsPOS = () => {
+  const [formData, setFormData] = useState(null);
+  const dispatch = useDispatch();
+  const handleInputChange = (e) => {
+    setFormData(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    const jsonData = {
+      // item: {
+      menuitemID: itemData.item.item_id,
+      name: itemData.item.item_name,
+      price: itemData.item.item_price,
+      quantity: parseInt(formData),
+      kitchenID: itemData.item.kitchen_id,
+      categoryID: itemData.subcategory_id,
+      note: "",
+      // },
+    };
+    // alert(JSON.stringify(jsonData));
+    dispatch(addToCart(jsonData));
+    setFormData("");
+    handleClose();
+  };
+
   const [categories, setCategories] = useState([]);
   const [itemData, setItemData] = useState([]);
 
@@ -43,6 +70,7 @@ const ProductsPOS = () => {
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
+  const handleClose = () => setSize(null); // Function to close the dialog
   return (
     <>
       <Card>
@@ -88,7 +116,39 @@ const ProductsPOS = () => {
         handler={handleOpen}
       >
         <DialogBody className="p-10">
-          <POSDialog itemDetails={itemData} />
+          {/* <POSDialog itemDetails={itemData} /> */}
+          <Card color="transparent" shadow={false}>
+            <div className="text-center">
+              <Typography variant="h4" className=" text-sidebar">
+                Enter Quantity
+              </Typography>
+            </div>
+
+            <Typography variant="h6" color="blue-gray" className="">
+              Quantity
+            </Typography>
+            <Input
+              required
+              type="number"
+              size="lg"
+              placeholder="Quantity"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+              // name="quantity"
+              value={formData}
+              onChange={handleInputChange}
+            />
+            <Button
+              onClick={handleSubmit}
+              className="mt-6"
+              fullWidth
+              type="submit"
+            >
+              Add Item
+            </Button>
+          </Card>
         </DialogBody>
       </Dialog>
     </>

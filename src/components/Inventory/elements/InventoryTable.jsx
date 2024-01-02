@@ -14,6 +14,7 @@ import {
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { UpdateInventoryItem } from "./UpdateInventoryItem";
+import { FaRegWindowClose } from "react-icons/fa";
 
 const TABLE_HEAD = [
   "Product",
@@ -52,6 +53,7 @@ const InventoryTable = () => {
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
+  const handleClose = () => setSize(null);
   return (
     <>
       <Card className=" w-full overflow-scroll">
@@ -165,15 +167,25 @@ const InventoryTable = () => {
         size={size || "md"}
         handler={handleOpen}
       >
-        <DialogBody className="flex justify-center ">
-          <UpdateInventoryItem
-            everything={getInventoryData}
-            // product={getInventoryData.item_name}
-            // category={getInventoryData.category_name}
-            // available={getInventoryData.available}
-            // reserved={getInventoryData.reserved}
-            // onhand={getInventoryData.item_name}
-          />
+        <DialogBody className="flex justify-center py-5">
+          <Card color="transparent" shadow={false}>
+            <div className="flex justify-between items-center">
+              <Typography variant="h4" className="text-sidebar">
+                Add Inventory Item
+              </Typography>
+              <div onClick={handleClose}>
+                <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
+              </div>
+            </div>
+            <UpdateInventoryItem
+              everything={getInventoryData}
+              // product={getInventoryData.item_name}
+              // category={getInventoryData.category_name}
+              // available={getInventoryData.available}
+              // reserved={getInventoryData.reserved}
+              // onhand={getInventoryData.item_name}
+            />
+          </Card>
         </DialogBody>
       </Dialog>
     </>

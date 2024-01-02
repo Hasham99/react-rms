@@ -10,7 +10,7 @@ import {
 import { FaRegWindowClose } from "react-icons/fa";
 import axios from "axios";
 
-export function AddInventoryItem() {
+export function AddInventoryItem(props) {
   // Define state variables to store form data
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState({
@@ -119,100 +119,89 @@ export function AddInventoryItem() {
   };
 
   return (
-    <Card color="transparent" shadow={false}>
-      <div className="flex justify-between items-center">
-        <Typography variant="h4" className="text-sidebar">
-          Add Inventory Item
+    <form
+      className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
+      onSubmit={() => {
+        // Prevent the form submission for this example
+        try {
+          handleSubmit();
+        } catch (error) {
+          console.log(error);
+        }
+      }}
+    >
+      <div className="mb-1 flex flex-col gap-3">
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Menu Item
         </Typography>
-        {/* // onClick={handleClose} */}
-        <div>
-          <FaRegWindowClose className="cursor-pointer" />
-        </div>
-      </div>
-      <form
-        className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
-        onSubmit={() => {
-          // Prevent the form submission for this example
-          try {
-            handleSubmit();
-          } catch (error) {
-            console.log(error);
-          }
-        }}
-      >
-        <div className="mb-1 flex flex-col gap-3">
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Menu Item
-          </Typography>
-          <Select
-            color="teal"
-            value={selectedOption}
-            onChange={handleSelectChange}
-          >
-            {/* {categoryOptions.map((item, index) => (
+        <Select
+          color="teal"
+          value={selectedOption}
+          onChange={handleSelectChange}
+        >
+          {/* {categoryOptions.map((item, index) => (
               <Option key={index} value={item}>
                 {item.itemName}
               </Option>
             ))} */}
-            {categoryOptions.map((data) => (
-              <Option key={data.itemId} value={data}>
-                {data.itemName}
-              </Option>
-            ))}
-          </Select>
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Unit
-          </Typography>
-          <Input
-            required
-            type="text"
-            size="lg"
-            placeholder="unit"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="unit"
-            value={formData.unit}
-            onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Available
-          </Typography>
-          <Input
-            required
-            type="number"
-            size="lg"
-            placeholder="Available Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="available"
-            value={formData.available}
-            onChange={handleInputChange}
-          />
-          <Typography variant="h6" color="blue-gray" className="-mb-3">
-            Reserved
-          </Typography>
-          <Input
-            required
-            type="number"
-            size="lg"
-            placeholder="Reserved Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="reserved"
-            value={formData.reserved}
-            onChange={handleInputChange}
-          />
-        </div>
-        <Button className="mt-6" fullWidth type="submit">
-          Add Item
-        </Button>
-      </form>
-    </Card>
+          {categoryOptions.map((data) => (
+            <Option key={data.itemId} value={data}>
+              {data.itemName}
+            </Option>
+          ))}
+        </Select>
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Unit
+        </Typography>
+        <Input
+          required
+          type="text"
+          size="lg"
+          placeholder="unit"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="unit"
+          value={formData.unit}
+          onChange={handleInputChange}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Available
+        </Typography>
+        <Input
+          required
+          type="number"
+          size="lg"
+          placeholder="Available Quantity"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="available"
+          value={formData.available}
+          onChange={handleInputChange}
+        />
+        <Typography variant="h6" color="blue-gray" className="-mb-3">
+          Reserved
+        </Typography>
+        <Input
+          required
+          type="number"
+          size="lg"
+          placeholder="Reserved Quantity"
+          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          name="reserved"
+          value={formData.reserved}
+          onChange={handleInputChange}
+        />
+      </div>
+      <Button className="mt-6" fullWidth type="submit">
+        Add Item
+      </Button>
+    </form>
   );
 }
