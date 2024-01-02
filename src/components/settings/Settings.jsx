@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -11,6 +11,8 @@ import {
   Typography,
   Button,
   Checkbox,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 import {
   Square3Stack3DIcon,
@@ -19,7 +21,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { FaTelegramPlane } from "react-icons/fa";
 import { RiWhatsappFill } from "react-icons/ri";
-import { useEffect } from "react";
+
 const Settings = () => {
   const data = [
     {
@@ -54,6 +56,11 @@ const Settings = () => {
   const [activeKitchen, setActiveKitchen] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [jsonData, setJsonData] = useState([]);
+  const [timeZones, setTimeZones] = useState([]);
+  const [selectedTimeZone, setSelectedTimeZone] = useState("");
+
+  const [value, setValue] = useState([]);
+
   useEffect(() => {
     // Fetch kitchen data from the API
     const fetchKitchenData = async () => {
@@ -106,6 +113,29 @@ const Settings = () => {
     }
   };
   const inputRef = useRef();
+
+  useEffect(() => {
+    const fetchTimeZones = async () => {
+      try {
+        const response = await fetch("https://albadwan.shop/api/timezones");
+        const data = await response.json();
+        setTimeZones(data);
+        // console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching time zones:", error);
+      }
+    };
+
+    fetchTimeZones();
+  }, []);
+
+  const handleTimeZoneChange = (value) => {
+    setSelectedTimeZone(value.tz_name);
+  };
+
+  const handleSaveButtonClick = () => {
+    alert(`Selected Time Zone: ${selectedTimeZone}`);
+  };
   return (
     <Tabs value="profile">
       <TabsHeader>
@@ -198,6 +228,72 @@ const Settings = () => {
               </CardBody>
             </Card>
           )}
+        </TabPanel>
+        <TabPanel value="profile">
+          <Card color="transparent" shadow={false} className="h-screen">
+            {/* <div className="flex w-full ">
+              <div className="flex-col rounded-md bg-white m-2 p-6 w-1/3 h-56 space-y-4">
+                <Typography className="text-xl font-bold  text-gray-900">
+                  Time-Zone
+                </Typography>
+                <div>
+                  {" "}
+                  <Typography className="text-md font-meduim  text-gray-800">
+                    Time Zone
+                  </Typography>
+                  <Select>
+                    <Option></Option>
+                  </Select>
+                </div>
+                <Button>Save</Button>
+              </div>
+              <div className="bg-white m-2 w-2/3 h-96"></div>
+            </div> */}
+            <div className="grid grid-cols-3  h-4/5">
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
+                <Typography className="text-xl font-bold  text-gray-900">
+                  Time-Zone
+                </Typography>
+                <div>
+                  {" "}
+                  <Typography className="text-md font-meduim  text-gray-800">
+                    Select Time Zone
+                  </Typography>
+                  <Select value={value} onChange={handleTimeZoneChange}>
+                    {timeZones.map((zone) => (
+                      <Option key={zone.tz_id} value={zone}>
+                        {zone.tz_name}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+                <Button
+                  className="bg-[#092635]"
+                  onClick={handleSaveButtonClick}
+                  // disabled={!selectedTimeZone}
+                >
+                  Save
+                </Button>
+              </div>
+              {/* <div className="bg-white m-2 col-span-2 h-96 rounded-md"></div> */}
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
+                <Typography className="text-xl font-bold  text-gray-900">
+                  Currency
+                </Typography>
+                <div>
+                  {" "}
+                  <Typography className="text-md font-meduim  text-gray-800">
+                    Select Currency
+                  </Typography>
+                  <Select>
+                    <Option></Option>
+                  </Select>
+                </div>
+                <Button className="bg-[#092635]">Save</Button>
+              </div>
+              {/* <div className="bg-white"></div> */}
+            </div>
+          </Card>
         </TabPanel>
         <TabPanel value="telegram">
           {activeKitchen && (

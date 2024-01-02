@@ -19,9 +19,10 @@ const AdminOrders = () => {
   const [ordersData, setOrdersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null); // State to store selected order data
+  const [itemsPerPage, setItemsPerPage] = useState(25); // Step 1: Set default itemsPerPage
   const [searchTerm, setSearchTerm] = useState("");
-  const [OrderID, setOrderID] = useState(null);
-  const itemsPerPage = 25; // Set the number of items to display per page
+  const [OrderData, setOrderData] = useState([]);
+  // const itemsPerPage = 25; // Set the number of items to display per page
 
   useEffect(() => {
     const fetchOrdersData = async () => {
@@ -67,26 +68,16 @@ const AdminOrders = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
+  // Function to handle items per page change
+  const handleItemsPerPageChange = (value) => {
+    setItemsPerPage(value);
+    setCurrentPage(1); // Step 3: Reset the current page when items per page changes
+  };
   // const [open, setOpen] = React.useState(false);
 
   // const handleOpen = () => setOpen(!open);
   // const markAsPaid = async () => {
-  const markAsPaid = async (order) => {
-    console.log(order);
-    // axios
-    //   .patch(`https://albadwan.shop/api/posorders/${OrderID}/paid`)
-    //   .then((response) => {
-    //     console.log("PATCH request successful", response.data);
-    //     setOpen(!open);
-    //     window.location.href = "/orders/admin";
-    //     // Handle the response data here if needed
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error making PATCH request", error);
-    //     // Handle errors here if needed
-    //   });
-  };
+
   const [size, setSize] = React.useState(null);
 
   const handleOpen = (value) => setSize(value);
@@ -94,17 +85,33 @@ const AdminOrders = () => {
   return (
     <>
       <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
-        <div className="grid grid-cols-4">
-          <div className="col-span-3 flex items-center">
+        <div className="grid grid-cols-6">
+          <div className="col-span-4 flex items-center ">
             <strong className="text-gray-800 text-lg font-medium">
-              Recent Orders
+              POS Orders
             </strong>
           </div>
+
           <Input
             label="Search Orders"
             className=""
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <div className="col-span-1 flex items-center justify-end space-x-2">
+            <span>Show:</span>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              className="border border-gray-300 rounded-md px-2 py-1"
+            >
+              {[1, 2, 5, 10, 15, 20, 25, 50].map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+            {/* <span>items per page</span> */}
+          </div>
         </div>
         <div className=" border-x border-gray-200 rounded-sm mt-3">
           <table className="w-full text-gray-700">
@@ -126,9 +133,10 @@ const AdminOrders = () => {
                   key={order.PosOrderID}
                   onClick={() => {
                     // setOrderID(order.PosOrderID);
-                    markAsPaid(order);
+                    // markAsPaid(order);
+                    setOrderData(order);
                     // handleOpen();
-                    handleOpen("xxl");
+                    handleOpen("xl");
                   }}
                 >
                   <td>{order.PosOrderID}</td>
@@ -239,7 +247,7 @@ const AdminOrders = () => {
       >
         {/* <DialogHeader>Its a simple dialog.</DialogHeader> */}
         <DialogBody className="p-0 m-0">
-          <AdminDialog onClose={handleClose} />
+          <AdminDialog onClose={handleClose} orderData={OrderData} />
         </DialogBody>
         {/* <DialogFooter>
           <Button

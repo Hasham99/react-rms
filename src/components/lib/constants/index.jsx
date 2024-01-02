@@ -33,7 +33,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
       },
       {
         key: "staff-orders",
-        label: "Staff",
+        label: "Waiter Orders",
         path: "/orders/staff",
       },
       // Add more submenu items as needed

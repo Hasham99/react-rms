@@ -75,11 +75,13 @@ const ProductsPOS = () => {
     <>
       <Card>
         <CardBody>
-          <Typography variant="h3">Products</Typography>
+          <Typography className="font-bold text-2xl text-gray-800">
+            Products
+          </Typography>
           {categories.map((category) => (
             <div key={category.subcategory_id}>
               <div className="border-t border-gray-400 py-3 my-2 ">
-                <Typography variant="h5">
+                <Typography className="text-lg font-bold text-green-600">
                   {category.subcategory_name}
                 </Typography>
               </div>
@@ -87,15 +89,17 @@ const ProductsPOS = () => {
                 {category.items.map((item) => (
                   <div
                     key={item.item_id}
-                    className="border p-4 rounded-md bg-white shadow-md cursor-pointer"
+                    className="border-r-2 border-green-600 p-4 rounded-md bg-white shadow-md cursor-pointer"
                     onClick={() => {
                       handleClick(item, category);
                     }}
                   >
-                    <Typography variant="h6" className="">
+                    <Typography className="text-[14px] font-semibold">
                       {item.item_name}
                     </Typography>
-                    <p className="text-gray-600">${item.item_price}</p>
+                    <p className="text-gray-600 text-[14px]">
+                      ${item.item_price}
+                    </p>
                   </div>
                 ))}
               </div>
