@@ -54,7 +54,7 @@ const CartTest = () => {
   const submitData = () => {
     axios
       .post(`https://albadwan.shop/api/posorders/1`, jsonData)
-      // .post(`${import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
+      // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
         window.location.href = "/";
@@ -65,6 +65,7 @@ const CartTest = () => {
         // Handle errors here if needed
       });
   };
+  const currency = localStorage.getItem("currency");
   return (
     <div className="h-screen mx-auto ">
       <div className="flex shadow-md h-screen">
@@ -89,7 +90,7 @@ const CartTest = () => {
               Quantity
             </h3>
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">
-              Price
+              Price <span className="">({currency})</span>
             </h3>
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">
               Total
@@ -127,10 +128,9 @@ const CartTest = () => {
                 />
               </div>
               <span className="text-center w-1/5 font-semibold text-sm">
-                $ {parseFloat(subcategory.price).toFixed(2)}
+                {parseFloat(subcategory.price).toFixed(2)}
               </span>
               <span className="text-center w-1/5 font-semibold text-sm">
-                ${" "}
                 {parseFloat(subcategory.price * subcategory.quantity).toFixed(
                   2
                 )}
@@ -148,11 +148,12 @@ const CartTest = () => {
               >
                 <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
               </svg>
-              Continue Shopping
+              Go Back
             </Link>
             <div className="items-end font-semibold text-gray-600 text-sm uppercase mr-14">
               <span className="">Sub Total:</span>
-              <span className="font-bold text-green-500"> {totalAmount}</span>
+              <span className="font-bold text-green-300"> {currency} </span>
+              <span className="font-bold text-green-600">{totalAmount}</span>
             </div>
           </div>
         </div>
@@ -166,7 +167,7 @@ const CartTest = () => {
               Items <span className="text-red-700"> {cartItemsCount}</span>
             </span>
             <span className="font-semibold text-sm">
-              $ {parseFloat(totalAmount).toFixed(4)}
+              {currency} {parseFloat(totalAmount).toFixed(2)}
             </span>
           </div>
           {/* <div>
@@ -174,7 +175,7 @@ const CartTest = () => {
               Shipping
             </label>
             <select className="block p-2 text-gray-600 w-full text-sm">
-              <option>Standard shipping - $10.00</option>
+              <option>Standard shipping - {currency}10.00</option>
             </select>
           </div> */}
           <div className="flex justify-between my-10 items-end">
@@ -197,10 +198,10 @@ const CartTest = () => {
             <div className="flex font-semibold justify-between  text-sm uppercase">
               <span>Total cost</span>
               <span>
-                ${" "}
+                {currency}{" "}
                 {parseFloat(
                   totalAmount - (totalAmount * discountPercentage) / 100
-                ).toFixed(4)}
+                ).toFixed(2)}
               </span>
             </div>
             <button

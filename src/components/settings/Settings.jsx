@@ -21,12 +21,13 @@ import {
 } from "@heroicons/react/24/solid";
 import { FaTelegramPlane } from "react-icons/fa";
 import { RiWhatsappFill } from "react-icons/ri";
+import axios from "axios";
 
 const Settings = () => {
   const data = [
     {
-      label: "Profile",
-      value: "profile",
+      label: "Basic Setup",
+      value: "basic_setup",
       icon: UserCircleIcon,
       desc: `Because it's about motivating the doers. Because I'm here
               to follow my dreams and inspire other people to follow their dreams, too.`,
@@ -57,9 +58,65 @@ const Settings = () => {
   const [inputValues, setInputValues] = useState({});
   const [jsonData, setJsonData] = useState([]);
   const [timeZones, setTimeZones] = useState([]);
+  const [currency, setCurrency] = useState([]);
+  const [payment, setPayment] = useState([]);
   const [selectedTimeZone, setSelectedTimeZone] = useState("");
-
+  const [selectedCurrency, setSelectedCurrency] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("");
   const [value, setValue] = useState([]);
+  const [valueCurr, setValueCurr] = useState([]);
+  const [valuePay, setValuePay] = useState([]);
+  const [name, setName] = useState("");
+  const [defaultCurrency, setDefaultCurrency] = useState("");
+  const [timeZone, setTimeZone] = useState("");
+  const [tax, setTax] = useState(null);
+  const [enteredTax, setEnteredTax] = useState(null); // State to store entered tax percentage
+  const [enteredPayment, setEnteredPayment] = useState(""); // State to store entered Payment
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://albadwan.shop/api/timezones/res/1"
+        );
+        const data = response.data;
+
+        // Extract values from the response and set them in state
+        if (data && data.timezone && data.timezone.length > 0) {
+          const timezoneData = data.timezone[0];
+
+          setName(timezoneData.name);
+          setDefaultCurrency(timezoneData.default_currency);
+          setTimeZone(timezoneData.time_zone);
+          setTax(timezoneData.tax);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    // const fetchCurrencyData = async () => {
+    //   try {
+    //     const response = await axios.get("https://albadwan.shop/api/currency");
+    //     const data = response.data;
+
+    //     // Extract values from the response and set them in state
+    //     if (data && data.timezone && data.timezone.length > 0) {
+    //       const timezoneData = data.timezone[0];
+
+    //       setName(timezoneData.name);
+    //       setDefaultCurrency(timezoneData.default_currency);
+    //       setTimeZone(timezoneData.time_zone);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
+
+    // Call the fetch function
+    fetchData();
+    // fetchCurrencyData();
+  }, []); // Empty dependency array to run the effect only once on mount
 
   useEffect(() => {
     // Fetch kitchen data from the API
@@ -125,19 +182,142 @@ const Settings = () => {
         console.error("Error fetching time zones:", error);
       }
     };
+    const fetchCurrency = async () => {
+      try {
+        const response = await fetch("https://albadwan.shop/api/currency");
+        const data = await response.json();
+        setCurrency(data);
+        // console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching time zones:", error);
+      }
+    };
+    const fetchPayment = async () => {
+      try {
+        const response = await fetch(
+          "https://albadwan.shop/api/payment/res/1/get"
+        );
+        const data = await response.json();
+        setPayment(data);
+        // console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching time zones:", error);
+      }
+    };
 
     fetchTimeZones();
+    fetchCurrency();
+    fetchPayment();
   }, []);
 
   const handleTimeZoneChange = (value) => {
     setSelectedTimeZone(value.tz_name);
   };
 
-  const handleSaveButtonClick = () => {
-    alert(`Selected Time Zone: ${selectedTimeZone}`);
+  const handleCurrencyChange = (value) => {
+    setSelectedCurrency(value.currency_code);
+  };
+
+  const handlePaymentChange = (value) => {
+    setSelectedPayment(value.p_name);
+  };
+
+  const handleSaveButtonClick = async () => {
+    // Check if a time zone is selected
+    if (selectedTimeZone) {
+      const jsonData = {
+        time_zone: `${selectedTimeZone}`,
+      };
+
+      // Make the PATCH request
+      await axios
+        .patch(`https://albadwan.shop/api/timezones/1`, jsonData)
+        .then(() => {
+          // Alert after successful request
+          alert(`Selected Time Zone: ${selectedTimeZone}`);
+
+          // Clear the input values and selected time zone
+          setInputValues({});
+          setValue([]);
+          setSelectedTimeZone("");
+          // Reload the window
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+        });
+    } else alert("Select Time Zone before saving ");
+  };
+  const handleSaveButtonClick01 = async () => {
+    // Check if a time zone is selected
+    if (selectedCurrency) {
+      const jsonData = {
+        currency: `${selectedCurrency}`,
+      };
+
+      // Make the PATCH request
+      await axios
+        .patch(`https://albadwan.shop/api/currency/1`, jsonData)
+        .then(() => {
+          // Alert after successful request
+          alert(`Selected Currency: ${selectedCurrency}`);
+          localStorage.setItem("currency", selectedCurrency);
+
+          // Clear the input values and selected time zone
+          setInputValues({});
+          setValueCurr([]);
+          setSelectedCurrency("");
+          // Reload the window
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+        });
+    } else alert("Select Currency before saving ");
+  };
+  const handleSaveButtonClick02 = async () => {
+    if (enteredTax) {
+      const jsonData = {
+        tax: `${enteredTax}`,
+      };
+      // Make the PATCH request
+      await axios
+        .patch(`https://albadwan.shop/api/tax/res/1/update`, jsonData)
+        .then(() => {
+          setEnteredTax(null);
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+        });
+    } else alert("Tax can't be empty ");
+  };
+  const handleSaveButtonClick03 = async () => {
+    if (enteredPayment) {
+      const jsonData = {
+        p_name: `${enteredPayment}`,
+      };
+      // alert(JSON.stringify(jsonData));
+      // Make the PATCH request
+      await axios
+        .post(`https://albadwan.shop/api/payment/res/1/create`, jsonData)
+        .then(() => {
+          setEnteredPayment(null);
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+        });
+    } else alert("Payment Type can't be empty ");
+  };
+  const handleTaxInputChange = (e) => {
+    setEnteredTax(e.target.value);
+  };
+  const handlePaymentInputChange = (e) => {
+    setEnteredPayment(e.target.value);
   };
   return (
-    <Tabs value="profile">
+    <Tabs value="basic_setup">
       <TabsHeader>
         {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value}>
@@ -229,30 +409,15 @@ const Settings = () => {
             </Card>
           )}
         </TabPanel>
-        <TabPanel value="profile">
+        <TabPanel value="basic_setup">
           <Card color="transparent" shadow={false} className="h-screen">
-            {/* <div className="flex w-full ">
-              <div className="flex-col rounded-md bg-white m-2 p-6 w-1/3 h-56 space-y-4">
-                <Typography className="text-xl font-bold  text-gray-900">
-                  Time-Zone
-                </Typography>
-                <div>
-                  {" "}
-                  <Typography className="text-md font-meduim  text-gray-800">
-                    Time Zone
-                  </Typography>
-                  <Select>
-                    <Option></Option>
-                  </Select>
-                </div>
-                <Button>Save</Button>
-              </div>
-              <div className="bg-white m-2 w-2/3 h-96"></div>
-            </div> */}
             <div className="grid grid-cols-3  h-4/5">
               <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
-                <Typography className="text-xl font-bold  text-gray-900">
-                  Time-Zone
+                <Typography className="text-xl font-bold flex items-center justify-between  text-gray-900">
+                  Time-Zone{" "}
+                  <span className="text-base font-medium text-green-600">
+                    {timeZone}
+                  </span>
                 </Typography>
                 <div>
                   {" "}
@@ -277,19 +442,96 @@ const Settings = () => {
               </div>
               {/* <div className="bg-white m-2 col-span-2 h-96 rounded-md"></div> */}
               <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
-                <Typography className="text-xl font-bold  text-gray-900">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between  ">
                   Currency
+                  <span className="text-base font-medium text-green-600 ">
+                    {defaultCurrency}
+                  </span>
                 </Typography>
                 <div>
                   {" "}
-                  <Typography className="text-md font-meduim  text-gray-800">
+                  <Typography className="text-md font-meduim  text-gray-800 ">
                     Select Currency
                   </Typography>
-                  <Select>
-                    <Option></Option>
+                  <Select value={valueCurr} onChange={handleCurrencyChange}>
+                    {currency.map((currency) => (
+                      <Option key={currency.currency_id} value={currency}>
+                        {currency.currency_name}
+                      </Option>
+                    ))}
                   </Select>
                 </div>
-                <Button className="bg-[#092635]">Save</Button>
+                <Button
+                  onClick={handleSaveButtonClick01}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
+              </div>
+
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between  ">
+                  Tex percentage
+                  <span className="text-base font-medium text-green-600 ">
+                    {tax}%
+                  </span>
+                </Typography>
+                <div>
+                  {" "}
+                  <Typography className="text-md font-meduim  text-gray-800 ">
+                    Select Tax
+                  </Typography>
+                  <Input
+                    placeholder="Tax percentage (%)"
+                    required
+                    type="number"
+                    value={enteredTax}
+                    onChange={handleTaxInputChange}
+                  />
+                </div>
+                <Button
+                  onClick={handleSaveButtonClick02}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
+              </div>
+
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-80">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between  ">
+                  Add Payment
+                  {/* <span className="text-base font-medium text-green-600 ">
+                    {defaultCurrency}
+                  </span> */}
+                </Typography>
+                <div>
+                  <Typography className=" text-md font-meduim  text-gray-800 ">
+                    Available
+                  </Typography>
+                  <Select value={valuePay} onChange={handlePaymentChange}>
+                    {payment.map((payment) => (
+                      <Option key={payment.p_id} value={payment}>
+                        {payment.p_name}
+                      </Option>
+                    ))}
+                  </Select>
+                  <Typography className="mt-3 text-md font-meduim  text-gray-800 ">
+                    Add New
+                  </Typography>
+                  <Input
+                    placeholder="Add new payment"
+                    required
+                    type="text"
+                    value={enteredPayment}
+                    onChange={handlePaymentInputChange}
+                  />
+                </div>
+                <Button
+                  onClick={handleSaveButtonClick03}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
               </div>
               {/* <div className="bg-white"></div> */}
             </div>

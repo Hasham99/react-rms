@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { Link } from "react-router-dom";
 import { getOrderStatus } from "../lib/helpers/index";
 import { useEffect, useState } from "react";
 import {
@@ -8,9 +6,7 @@ import {
   IconButton,
   Input,
   Dialog,
-  DialogHeader,
   DialogBody,
-  DialogFooter,
 } from "@material-tailwind/react";
 import React from "react";
 import axios from "axios";
@@ -73,10 +69,6 @@ const AdminOrders = () => {
     setItemsPerPage(value);
     setCurrentPage(1); // Step 3: Reset the current page when items per page changes
   };
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleOpen = () => setOpen(!open);
-  // const markAsPaid = async () => {
 
   const [size, setSize] = React.useState(null);
 
@@ -122,6 +114,8 @@ const AdminOrders = () => {
                 <th>Order Date</th>
                 <th>Order Time</th>
                 <th>Order Total</th>
+                <th>Paid Via</th>
+                <th>TX-ID</th>
                 <th>Order Status</th>
                 <th>Bill Status</th>
               </tr>
@@ -132,10 +126,7 @@ const AdminOrders = () => {
                   className="cursor-pointer"
                   key={order.PosOrderID}
                   onClick={() => {
-                    // setOrderID(order.PosOrderID);
-                    // markAsPaid(order);
                     setOrderData(order);
-                    // handleOpen();
                     handleOpen("xl");
                   }}
                 >
@@ -143,8 +134,8 @@ const AdminOrders = () => {
                   <td className="flex">
                     {order.order_items.map((item) => (
                       <div className="" key={item.PosOrderItemID}>
-                        {item.ItemName.length > 10
-                          ? `${item.ItemName.substring(0, 10)}...`
+                        {item.ItemName.length > 7
+                          ? `${item.ItemName.substring(0, 7)}...`
                           : item.ItemName}
                       </div>
                     ))}
@@ -152,6 +143,10 @@ const AdminOrders = () => {
                   <td>{convertToLocaleDate(order.time)}</td>
                   <td>{convertToLocaleTime(order.time)}</td>
                   <td>{order.total_amount}</td>
+                  <td>
+                    {order.paid_via == "un-paid" ? "pending" : order.paid_via}
+                  </td>
+                  <td>{order.tid == "un-paid" ? "XXXXX..." : order.tid}</td>
                   <td>{getOrderStatus(order.order_status)}</td>
                   <td>{getOrderStatus(order.bill_status)}</td>
                 </tr>
@@ -213,26 +208,7 @@ const AdminOrders = () => {
           </CardFooter>
         </div>
       </div>
-      {/* <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Order ID: {OrderID}</DialogHeader>
-        <DialogBody>
-          Would you like to mark Order: {OrderID}, as{" "}
-          <strong className="text-green-600">PAID</strong>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={markAsPaid}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog> */}
+
       <Dialog
         open={
           size === "xs" ||
@@ -246,26 +222,9 @@ const AdminOrders = () => {
         handler={handleOpen}
       >
         {/* <DialogHeader>Its a simple dialog.</DialogHeader> */}
-        <DialogBody className="p-0 m-0">
+        <DialogBody className="p-0 m-0  rounded-xl">
           <AdminDialog onClose={handleClose} orderData={OrderData} />
         </DialogBody>
-        {/* <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={() => handleOpen(null)}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button
-            variant="gradient"
-            color="green"
-            onClick={() => handleOpen(null)}
-          >
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter> */}
       </Dialog>
     </>
   );

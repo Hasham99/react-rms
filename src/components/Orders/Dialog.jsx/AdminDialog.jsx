@@ -1,6 +1,6 @@
-import { Button } from "@material-tailwind/react";
+import { Button, Select } from "@material-tailwind/react";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegWindowClose } from "react-icons/fa";
 
 const AdminDialog = ({ onClose, orderData }) => {
@@ -12,6 +12,8 @@ const AdminDialog = ({ onClose, orderData }) => {
     restaurant_id,
     time,
     total_amount,
+    tid,
+    paid_via,
   } = orderData;
   // Format the time
   const formattedTime = new Date(time);
@@ -39,25 +41,71 @@ const AdminDialog = ({ onClose, orderData }) => {
     time: formattedTimeString,
     total_amount,
     totalPrice,
+    tid,
+    paid_via,
   });
   console.log(CommingOrderData);
-  // Calculate total price
-  const markAsPaid = async (order) => {
-    axios
-      .patch(
-        `https://albadwan.shop/api/posorders/${CommingOrderData.PosOrderID}/paid`
-      )
-      .then((response) => {
-        console.log("PATCH request successful", response.data);
-        // setOpen(!open);
-        window.location.reload(true);
-        // Handle the response data here if needed
-      })
-      .catch((error) => {
-        console.error("Error making PATCH request", error);
-        // Handle errors here if needed
-      });
+
+  const [selectedPayment, setSelectedPayment] = useState("");
+  const [valuePay, setValuePay] = useState(selectedPayment);
+
+  const [payment, setPayment] = useState([]);
+  // Define a state variable to store the input value
+  const [inputValue, setInputValue] = useState("");
+
+  // Define a function to handle input changes
+  const handleInputChange = (e) => {
+    // Update the state with the new input value
+    setInputValue(e.target.value);
   };
+
+  const handlePaymentChange = (e) => {
+    // Update the selectedPayment state
+    setSelectedPayment(e.target.value);
+
+    // Update the valuePay state
+    setValuePay(e.target.value);
+  };
+  useEffect(() => {
+    const fetchPayment = async () => {
+      try {
+        const response = await fetch(
+          "https://albadwan.shop/api/payment/res/1/get"
+        );
+        const data = await response.json();
+        setPayment(data);
+        console.log(JSON.stringify(payment));
+        // console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching time zones:", error);
+      }
+    };
+    fetchPayment();
+  }, []);
+
+  // Calculate total price
+  const markAsPaid = async () => {
+    if (valuePay) {
+      axios
+        .patch(
+          `https://albadwan.shop/api/posorders/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`
+        )
+        .then((response) => {
+          console.log("PATCH request successful", response.data);
+          // setOpen(!open);
+          window.location.reload(true);
+          // Handle the response data here if needed
+        })
+        .catch((error) => {
+          console.error("Error making PATCH request", error);
+          // Handle errors here if needed
+        });
+    } else {
+      alert("Transaction type can't be empty ");
+    }
+  };
+  const isOrderPaid = CommingOrderData.order_status === "paid";
+
   return (
     <div className="py-4 px-6  overflow-y-scroll">
       {/* <div className=""> */}
@@ -115,79 +163,16 @@ const AdminDialog = ({ onClose, orderData }) => {
               </div>
             ))}
           </div>
-          <div className="flex justify-center md:flex-row flex-col items-stretch w-full ">
-            {/* <div className="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
-              <h3 className="text-xl font-semibold leading-5 text-gray-800">
-                Summary
-              </h3>
-              <div className="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
-                <div className="flex justify-between  w-full">
-                  <p className="text-base leading-4 text-gray-800">Subtotal</p>
-                  <p className="text-base leading-4 text-gray-600">
-                    ${CommingOrderData.totalPrice}
-                  </p>
-                </div>
-                <div className="flex justify-between items-center w-full">
-                  <p className="text-base leading-4 text-gray-800">Tax</p>
-                  <p className="text-base leading-4 text-gray-600">
-                    $
-                    {CommingOrderData.total_amount -
-                      CommingOrderData.totalPrice}
-                  </p>
-                </div>
-              </div>
-              <div className="flex justify-between items-center w-full">
-                <p className="text-base font-semibold leading-4 text-gray-800">
-                  Total
-                </p>
-                <p className="text-base font-semibold leading-4 text-gray-600">
-                  ${CommingOrderData.total_amount}
-                </p>
-              </div>
-            </div> */}
-            {/* <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
-              <h3 className="text-xl font-semibold leading-5 text-gray-800">
-                Shipping
-              </h3>
-              <div className="flex justify-between items-start w-full">
-                <div className="flex justify-center items-center space-x-4">
-                  <div class="w-8 h-8">
-                    <img
-                      class="w-full h-full"
-                      alt="logo"
-                      src="https://i.ibb.co/L8KSdNQ/image-3.png"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-start items-center">
-                    <p className="text-lg leading-6 font-semibold text-gray-800">
-                      DPD Delivery
-                      <br />
-                      <span className="font-normal">
-                        Delivery with 24 Hours
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <p className="text-lg font-semibold leading-6 text-gray-800">
-                  $8.00
-                </p>
-              </div>
-              <div className="w-full flex justify-center items-center">
-                <button className="hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">
-                  View Carrier Details
-                </button>
-              </div>
-            </div> */}
-          </div>
+          <div className="flex justify-center md:flex-row flex-col items-stretch w-full "></div>
         </div>
-        <div className="space-y-4 w-80 ">
+        <div className="space-y-4 w-96 ">
           <div className="bg-gray-50 flex justify-between items-start max-h-56 p-4 flex-col rounded-lg">
             <h3 className="text-xl font-semibold leading-5 text-gray-800">
               Summary
             </h3>
             <div className="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
               <div className="">
-                <div className="pt-10 space-y-6">
+                <div className="pt-5 space-y-6">
                   <div className="flex justify-between">
                     <p className="text-base leading-4  text-blue-800">
                       Sub Total
@@ -222,13 +207,13 @@ const AdminDialog = ({ onClose, orderData }) => {
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 flex justify-between items-start max-h-56 p-4 flex-col rounded-lg">
+          <div className="bg-gray-50 flex justify-between items-start max-h-80 p-4 flex-col rounded-lg">
             <h3 className="text-xl font-semibold leading-5 text-gray-800">
               Order Status
             </h3>
             <div className="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
               <div className="">
-                <div className="pt-10 space-y-6">
+                <div className="pt-5 space-y-6">
                   <div className="flex justify-between">
                     <p className="text-base leading-4 text-blue-800">
                       Bill Status
@@ -263,7 +248,60 @@ const AdminDialog = ({ onClose, orderData }) => {
                       {CommingOrderData.order_status}
                     </p>
                   </div>
-                  <Button onClick={markAsPaid} className="w-full bg-green-600">
+                  <div className="flex justify-between items-center">
+                    <p className="text-base leading-4 text-blue-800">
+                      Transaction Type
+                    </p>
+                    {isOrderPaid ? (
+                      <p className="text-base leading-4">
+                        {CommingOrderData.paid_via}
+                      </p>
+                    ) : (
+                      <select
+                        className="block w-20 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        value={valuePay}
+                        onChange={handlePaymentChange}
+                      >
+                        <option value="" disabled>
+                          Select an option
+                        </option>
+                        {payment.map((payment) => (
+                          <option key={payment.p_id} value={payment.name}>
+                            {payment.p_name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-base leading-4 text-blue-800">
+                      Transaction ID
+                    </p>
+                    <p className={`text-base leading-4 `}>
+                      {/* {CommingOrderData.tid} */}
+                      {isOrderPaid ? (
+                        <p className="text-base leading-4">
+                          {CommingOrderData.tid}
+                        </p>
+                      ) : (
+                        <input
+                          type="text"
+                          value={inputValue}
+                          onChange={handleInputChange}
+                          className="block w-20 py-1 px-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        />
+                      )}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={markAsPaid}
+                    className={`w-full bg-green-600 ${
+                      isOrderPaid
+                        ? "cursor-not-allowed opacity-50 bg-gray-600"
+                        : ""
+                    }`}
+                    disabled={isOrderPaid}
+                  >
                     Mark as Paid
                   </Button>
                 </div>

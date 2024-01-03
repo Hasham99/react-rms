@@ -9,79 +9,72 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    name: "Jan",
-    Expense: 4000,
-    Income: 2400,
-  },
-  {
-    name: "Feb",
-    Expense: 3000,
-    Income: 1398,
-  },
-  {
-    name: "Mar",
-    Expense: 2000,
-    Income: 9800,
-  },
-  {
-    name: "Apr",
-    Expense: 2780,
-    Income: 3908,
-  },
-  {
-    name: "May",
-    Expense: 1890,
-    Income: 4800,
-  },
-  {
-    name: "Jun",
-    Expense: 2390,
-    Income: 3800,
-  },
-  {
-    name: "July",
-    Expense: 3490,
-    Income: 4300,
-  },
-  {
-    name: "Aug",
-    Expense: 2000,
-    Income: 9800,
-  },
-  {
-    name: "Sep",
-    Expense: 2780,
-    Income: 3908,
-  },
-  {
-    name: "Oct",
-    Expense: 1890,
-    Income: 4800,
-  },
-  {
-    name: "Nov",
-    Expense: 2390,
-    Income: 3800,
-  },
-  {
-    name: "Dec",
-    Expense: 3490,
-    Income: 4300,
-  },
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
-export default function TransactionChart() {
+const fillMissingMonths = (data) => {
+  const monthSet = new Set(data.map((entry) => entry.name));
+  const missingMonths = MONTHS.filter((month) => !monthSet.has(month));
+
+  return data.concat(
+    missingMonths.map((month) => ({
+      name: month,
+      Expense: 0,
+      Income: 0,
+    }))
+  );
+};
+
+export default function TransactionChart(props) {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${props.url}`);
+
+        if (!response.data || response.data.length === 0) {
+          // Handle empty or missing data
+          setChartData([]);
+          return;
+        }
+
+        const filledData = fillMissingMonths(response.data);
+        setChartData(filledData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="h-[22rem] bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col flex-1">
-      <strong className="text-gray-700 font-medium">Transactions</strong>
+      <strong className="text-gray-700 font-medium">
+        {props.title} Transactions
+      </strong>
       <div className="mt-3 w-full flex-1 text-xs">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={chartData}
             margin={{
               top: 20,
               right: 10,

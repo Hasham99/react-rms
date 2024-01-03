@@ -71,6 +71,7 @@ const ProductsPOS = () => {
 
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null); // Function to close the dialog
+  const currency = localStorage.getItem("currency");
   return (
     <>
       <Card>
@@ -89,7 +90,7 @@ const ProductsPOS = () => {
                 {category.items.map((item) => (
                   <div
                     key={item.item_id}
-                    className="border-r-2 border-green-600 p-4 rounded-md bg-white shadow-md cursor-pointer"
+                    className="space-y-1 border-r-2 border-green-600 p-4 rounded-md bg-white shadow-md cursor-pointer"
                     onClick={() => {
                       handleClick(item, category);
                     }}
@@ -98,7 +99,7 @@ const ProductsPOS = () => {
                       {item.item_name}
                     </Typography>
                     <p className="text-gray-600 text-[14px]">
-                      ${item.item_price}
+                      {currency} {item.item_price}
                     </p>
                   </div>
                 ))}
