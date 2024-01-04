@@ -12,6 +12,8 @@ const StaffDialog = ({ onClose, orderData }) => {
     waiter_id,
     time,
     total_amount,
+    paid_via,
+    tid,
   } = orderData;
 
   // Format the time
@@ -42,6 +44,8 @@ const StaffDialog = ({ onClose, orderData }) => {
     time: formattedTimeString,
     total_amount,
     totalPrice,
+    paid_via,
+    tid,
   });
 
   const markAsPaid = async (order) => {
@@ -55,7 +59,7 @@ const StaffDialog = ({ onClose, orderData }) => {
       console.error("Error making PATCH request", error);
     }
   };
-
+  const currency = localStorage.getItem("currency");
   return (
     <div className="py-4 px-6  overflow-y-scroll">
       <div className="flex justify-between">
@@ -91,13 +95,14 @@ const StaffDialog = ({ onClose, orderData }) => {
                   </div>
                   <div className="flex justify-between items-start w-full">
                     <p className="text-base xl:text-lg leading-6">
-                      ${orderItem.Price.toFixed(2)}
+                      {currency} {orderItem.Price.toFixed(2)}
                     </p>
                     <p className="text-base xl:text-lg leading-6 text-gray-800">
                       {orderItem.Quantity}
                     </p>
                     <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                      ${(orderItem.Quantity * orderItem.Price).toFixed(2)}
+                      {currency}{" "}
+                      {(orderItem.Quantity * orderItem.Price).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -121,13 +126,14 @@ const StaffDialog = ({ onClose, orderData }) => {
                       Sub Total
                     </p>
                     <p className="text-base leading-4 text-gray-600">
-                      ${staffOrderData.totalPrice}
+                      {currency} {staffOrderData.totalPrice}
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base leading-4 text-blue-800">Tax</p>
                     <p className="text-base leading-4 text-gray-600">
-                      ${staffOrderData.total_amount - staffOrderData.totalPrice}
+                      {currency}{" "}
+                      {staffOrderData.total_amount - staffOrderData.totalPrice}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -135,7 +141,7 @@ const StaffDialog = ({ onClose, orderData }) => {
                       Total Cost
                     </p>
                     <p className="text-base leading-4 text-gray-600">
-                      ${staffOrderData.total_amount}
+                      {currency} {staffOrderData.total_amount}
                     </p>
                   </div>
                 </div>
@@ -181,13 +187,17 @@ const StaffDialog = ({ onClose, orderData }) => {
                     <p className="text-base leading-4 text-blue-800">
                       Transaction Type
                     </p>
-                    <p className={`text-base leading-4 `}>Cash</p>
+                    <p className={`text-base leading-4 `}>
+                      {staffOrderData.paid_via}
+                    </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base leading-4 text-blue-800">
                       Transaction ID
                     </p>
-                    <p className={`text-base leading-4 `}>XXXXXXX</p>
+                    <p className={`text-base leading-4 `}>
+                      {staffOrderData.tid}
+                    </p>
                   </div>
                 </div>
               </div>

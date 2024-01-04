@@ -471,7 +471,7 @@ const Settings = () => {
 
               <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
                 <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between  ">
-                  Tex percentage
+                  Tax percentage
                   <span className="text-base font-medium text-green-600 ">
                     {tax}%
                   </span>

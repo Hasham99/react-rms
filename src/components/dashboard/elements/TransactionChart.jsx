@@ -54,7 +54,7 @@ export default function TransactionChart(props) {
           return;
         }
 
-        const filledData = fillMissingMonths(response.data);
+        const filledData = fillMissingMonths([response.data]);
         setChartData(filledData);
       } catch (error) {
         console.error("Error fetching data:", error);

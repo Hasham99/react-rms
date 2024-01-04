@@ -7,21 +7,18 @@ import axios from "axios";
 
 const CartTest = () => {
   const [totalAmount, setTotalAmount] = useState(0); // Total payable amount
-
   const [Product, setProduct] = useState([]);
   const cartItems = useSelector((state) => state.cart);
   const cartItemsCount = useSelector((state) => state.cart.length);
-  // State for discount percentage
+  const [tax, setTax] = useState(null);
   const [discountPercentage, setDiscountPercentage] = useState("");
-  // console.log(discountPercentage);
-  // Function to handle input change and update state
-  const handleDiscountChange = (e) => {
-    // Ensure that the entered value is a valid number
-    const enteredValue = e.target.value;
-    if (!isNaN(enteredValue) || enteredValue === "") {
-      setDiscountPercentage(enteredValue);
-    }
-  };
+  // const handleDiscountChange = (e) => {
+  //   // Ensure that the entered value is a valid number
+  //   const enteredValue = e.target.value;
+  //   // if (!isNaN(enteredValue) || enteredValue === "") {
+  //   //   setDiscountPercentage(enteredValue);
+  //   // }
+  // };
 
   const dispatch = useDispatch(); // Initialize useDispatch hook
 
@@ -43,9 +40,9 @@ const CartTest = () => {
   }, [cartItems]);
 
   const amountAfterTax = parseFloat(
-    totalAmount - (totalAmount * discountPercentage) / 100
+    totalAmount + (totalAmount * parseFloat(tax)) / 100
   ).toFixed(4);
-
+  console.log(amountAfterTax);
   const jsonData = {
     // time: new Date().toLocaleString(),
     total_amount: amountAfterTax,
@@ -65,6 +62,26 @@ const CartTest = () => {
         // Handle errors here if needed
       });
   };
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://albadwan.shop/api/timezones/res/1"
+        );
+        const data = response.data;
+
+        // Extract values from the response and set them in state
+        if (data && data.timezone && data.timezone.length > 0) {
+          const timezoneData = data.timezone[0];
+          setTax(timezoneData.tax);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
   const currency = localStorage.getItem("currency");
   return (
     <div className="h-screen mx-auto ">
@@ -186,12 +203,13 @@ const CartTest = () => {
               Tax
             </label>
             <input
-              type="number"
+              disabled
               id="promo"
               placeholder="%"
-              className="p-1 text-sm w-10"
-              value={discountPercentage}
-              onChange={handleDiscountChange}
+              className="bg-white p-1 text-sm w-10"
+              // value={discountPercentage}
+              value={`${tax} %`}
+              // onChange={handleDiscountChange}
             />
           </div>
           <div className="border-t ">
@@ -199,9 +217,12 @@ const CartTest = () => {
               <span>Total cost</span>
               <span>
                 {currency}{" "}
-                {parseFloat(
+                {/* {parseFloat(
                   totalAmount - (totalAmount * discountPercentage) / 100
-                ).toFixed(2)}
+                ).toFixed(2)} */}
+                {/* {parseFloat(amountAfterTax).toFixed(2)} */}
+                {/* {parseFloat(totalAmount + parseFloat(tax)).toFixed(2)} */}
+                {parseFloat(amountAfterTax).toFixed(2)}
               </span>
             </div>
             <button

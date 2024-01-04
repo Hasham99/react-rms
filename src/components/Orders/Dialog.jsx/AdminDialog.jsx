@@ -105,7 +105,7 @@ const AdminDialog = ({ onClose, orderData }) => {
     }
   };
   const isOrderPaid = CommingOrderData.order_status === "paid";
-
+  const currency = localStorage.getItem("currency");
   return (
     <div className="py-4 px-6  overflow-y-scroll">
       {/* <div className=""> */}
@@ -150,13 +150,14 @@ const AdminDialog = ({ onClose, orderData }) => {
                   </div>
                   <div className="flex justify-between items-start w-full">
                     <p className="text-base xl:text-lg leading-6">
-                      ${orderItem.Price.toFixed(2)}
+                      {currency} {orderItem.Price.toFixed(2)}
                     </p>
                     <p className="text-base xl:text-lg leading-6 text-gray-800">
                       {orderItem.Quantity}
                     </p>
                     <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                      ${(orderItem.Quantity * orderItem.Price).toFixed(2)}
+                      {currency}{" "}
+                      {(orderItem.Quantity * orderItem.Price).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -178,13 +179,13 @@ const AdminDialog = ({ onClose, orderData }) => {
                       Sub Total
                     </p>
                     <p className="text-base leading-4 text-gray-600">
-                      ${CommingOrderData.totalPrice}
+                      {currency} {CommingOrderData.totalPrice}
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base leading-4 text-blue-800">Tax</p>
                     <p className="text-base leading-4 text-gray-600">
-                      $
+                      {currency}{" "}
                       {CommingOrderData.total_amount -
                         CommingOrderData.totalPrice}
                     </p>
@@ -194,7 +195,7 @@ const AdminDialog = ({ onClose, orderData }) => {
                       Total Cost
                     </p>
                     <p className="text-base leading-4 text-gray-600">
-                      ${CommingOrderData.total_amount}
+                      {currency} {CommingOrderData.total_amount}
                     </p>
                   </div>
                 </div>

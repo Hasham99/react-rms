@@ -1,7 +1,40 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import { IoBagHandle, IoPieChart, IoPeople, IoCart } from "react-icons/io5";
 
 const GridStats = () => {
+  const [incomeExpenseDailyData, setIncomeExpenseDailyData] = useState(null);
+  const [incomeExpenseMonthlyData, setIncomeExpenseMonthlyData] =
+    useState(null);
+
+  useEffect(() => {
+    const fetchMonthlyIncomeExpenseData = async () => {
+      try {
+        const response = await fetch(
+          "https://albadwan.shop/api/expense/res/1/pos/monthly"
+        );
+        const data = await response.json();
+        setIncomeExpenseMonthlyData(data);
+      } catch (error) {
+        console.error("Error fetching income and expense data:", error);
+      }
+    };
+    const fetchDailyIncomeExpenseData = async () => {
+      try {
+        const response = await fetch(
+          "https://albadwan.shop/api/expense/res/1/pos/daily"
+        );
+        const data = await response.json();
+        setIncomeExpenseDailyData(data);
+      } catch (error) {
+        console.error("Error fetching income and expense data:", error);
+      }
+    };
+
+    fetchMonthlyIncomeExpenseData();
+    fetchDailyIncomeExpenseData();
+  }, []);
+  const currency = localStorage.getItem("currency");
   return (
     <div className=" flex gap-4">
       <BoxWrapper>
@@ -9,12 +42,13 @@ const GridStats = () => {
           <IoBagHandle className="text-2xl text-white" />
         </div>
         <div className="pl-4">
-          <span className="text-sm text-gray-500 font-light">Total Sales</span>
+          <span className="text-sm text-gray-500 font-light">Daily Sales</span>
           <div className="flex items-center">
-            <strong className="text-xl text-gray-700 font-semibold">
-              $54232
+            <strong className="text-lg text-gray-700 font-semibold">
+              {currency}{" "}
+              {incomeExpenseDailyData ? incomeExpenseDailyData.Income : 0}
             </strong>
-            <span className="text-sm text-green-500 pl-2">+343</span>
+            {/* <span className="text-sm text-green-500 pl-2">+343</span> */}
           </div>
         </div>
       </BoxWrapper>
@@ -24,43 +58,49 @@ const GridStats = () => {
         </div>
         <div className="pl-4">
           <span className="text-sm text-gray-500 font-light">
-            Total Expenses
+            Daily Expenses
           </span>
           <div className="flex items-center">
-            <strong className="text-xl text-gray-700 font-semibold">
-              $3423
+            <strong className="text-lg text-gray-700 font-semibold">
+              {currency}{" "}
+              {incomeExpenseDailyData ? incomeExpenseDailyData.Expense : 0}
+              {/* {`${currency} ${incomeExpenseDailyData.Expense}`} */}
             </strong>
-            <span className="text-sm text-green-500 pl-2">-343</span>
+            {/* <span className="text-sm text-green-500 pl-2">-343</span> */}
           </div>
         </div>
       </BoxWrapper>
       <BoxWrapper>
-        <div className="rounded-full h-12 w-12 flex items-center justify-center bg-yellow-400">
-          <IoPeople className="text-2xl text-white" />
+        <div className="rounded-full h-12 w-12 flex items-center justify-center bg-[#0ea5e9]">
+          <IoBagHandle className="text-2xl text-white" />
         </div>
         <div className="pl-4">
           <span className="text-sm text-gray-500 font-light">
-            Total Customers
+            Monthly Sales
           </span>
           <div className="flex items-center">
-            <strong className="text-xl text-gray-700 font-semibold">
-              12313
+            <strong className="text-lg text-gray-700 font-semibold">
+              {currency}{" "}
+              {incomeExpenseMonthlyData ? incomeExpenseMonthlyData.Income : 0}
             </strong>
-            <span className="text-sm text-red-500 pl-2">-30</span>
+            {/* <span className="text-sm text-green-500 pl-2">+343</span> */}
           </div>
         </div>
       </BoxWrapper>
       <BoxWrapper>
-        <div className="rounded-full h-12 w-12 flex items-center justify-center bg-green-600">
-          <IoCart className="text-2xl text-white" />
+        <div className="rounded-full h-12 w-12 flex items-center justify-center bg-orange-600">
+          <IoPieChart className="text-2xl text-white" />
         </div>
         <div className="pl-4">
-          <span className="text-sm text-gray-500 font-light">Total Orders</span>
+          <span className="text-sm text-gray-500 font-light">
+            Monthly Expenses
+          </span>
           <div className="flex items-center">
-            <strong className="text-xl text-gray-700 font-semibold">
-              16432
+            <strong className="text-lg text-gray-700 font-semibold">
+              {currency}{" "}
+              {incomeExpenseMonthlyData ? incomeExpenseMonthlyData.Expense : 0}
             </strong>
-            <span className="text-sm text-red-500 pl-2">-43</span>
+            {/* <span className="text-sm text-green-500 pl-2">-343</span> */}
           </div>
         </div>
       </BoxWrapper>

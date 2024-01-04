@@ -24,7 +24,7 @@ const StaffOrders = () => {
         const res = await fetch(`https://albadwan.shop/api/order`);
         const data = await res.json();
         // Sort orders by PosOrderID in descending order
-        const sortedOrders = data.sort((a, b) => b.PosOrderID - a.PosOrderID);
+        const sortedOrders = data.sort((a, b) => b.OrderID - a.OrderID);
         setOrdersData(sortedOrders);
         // if (sortedOrders) {
         //   localStorage.setItem("staff-orders", JSON.stringify(sortedOrders));
@@ -41,12 +41,22 @@ const StaffOrders = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  // Filter orders based on search term
-  const filteredOrders = ordersData.filter((order) =>
-    order.items.some((item) =>
+  // Filter orders based on search term (order items, transaction ID, or transaction type)
+  const filteredOrders = ordersData.filter((order) => {
+    const includesOrderItem = order.items.some((item) =>
       item.ItemName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+    );
+    const includesTransactionId = order.tid
+      ? order.tid.toLowerCase().includes(searchTerm.toLowerCase())
+      : false;
+    const includesTransactionType = order.paid_via
+      ? order.paid_via.toLowerCase().includes(searchTerm.toLowerCase())
+      : false;
+
+    return (
+      includesOrderItem || includesTransactionId || includesTransactionType
+    );
+  });
 
   const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -118,6 +128,7 @@ const StaffOrders = () => {
                 <th>Order Total</th>
                 <th>Waiter Id</th>
                 <th>TX-ID</th>
+                <th>TX-Type</th>
                 <th>Order Status</th>
                 <th>Bill Status</th>
               </tr>
@@ -149,7 +160,8 @@ const StaffOrders = () => {
                   <td>{order.total_amount}</td>
                   {/* <td>{getOrderStatus(order.waiter_id)}</td> */}
                   <td>{order.waiter_id}</td>
-                  <td>XXXXXXXXXX</td>
+                  <td>{order.tid}</td>
+                  <td>{order.paid_via}</td>
                   <td>{getOrderStatus(order.order_status)}</td>
                   <td>{getOrderStatus(order.bill_status)}</td>
                 </tr>

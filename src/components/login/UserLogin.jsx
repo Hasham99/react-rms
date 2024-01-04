@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({});
@@ -17,18 +18,33 @@ const UserLogin = () => {
       [name]: value,
     });
   };
+  const navigate = useNavigate();
   const handleSubmit = () => {
     axios
       .post(`https://albadwan.shop/admin/login`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/admin/login`, jsonData)
-      .then(() => {
-        window.location.href = "/";
+      .then((response) => {
+        if (response.data.token) {
+          localStorage.setItem("token", true);
+          localStorage.setItem("currency", response.data.currency);
+          localStorage.setItem("tax", response.data.tax);
+          localStorage.setItem(
+            "restaurant_name",
+            response.data.restaurant_name
+          );
+          navigate("/dashboard");
+        } else {
+          localStorage.setItem("token", false);
+        }
+        console.log(response);
+
         // Handle the response data here if needed
       })
       .catch((error) => {
+        localStorage.setItem("token", false);
         // console.error("Error making post request", error);
         // Handle errors here if needed
-        alert(error);
+        // alert(error);
       });
   };
   return (

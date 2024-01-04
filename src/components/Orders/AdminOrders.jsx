@@ -41,12 +41,22 @@ const AdminOrders = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // Filter orders based on search term
-  const filteredOrders = ordersData.filter((order) =>
-    order.order_items.some((item) =>
+
+  // Filter orders based on search term (order items, transaction ID, or transaction type)
+  const filteredOrders = ordersData.filter((order) => {
+    const includesOrderItem = order.order_items.some((item) =>
       item.ItemName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+    );
+    const includesTransactionId =
+      order.tid && order.tid.toLowerCase().includes(searchTerm.toLowerCase());
+    const includesTransactionType =
+      order.paid_via &&
+      order.paid_via.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return (
+      includesOrderItem || includesTransactionId || includesTransactionType
+    );
+  });
   const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to convert a UTC timestamp to local date

@@ -19,29 +19,63 @@ import StaffOrders from "./components/Orders/StaffOrders";
 import AdminOrders from "./components/Orders/AdminOrders";
 import ContactUs from "./components/contact-us/ContactUs";
 import CartTest from "./components/CartTest";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/cart01" element={<CartTest />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+        <Route index path="/" element={<Login />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
+        <Route path="/cart01" element={<PrivateRoute Component={CartTest} />} />
+        <Route path="/" element={<PrivateRoute Component={Layout} />}>
+          <Route
+            path="/dashboard"
+            element={<PrivateRoute Component={Dashboard} />}
+          />
           {/* <Route path="/cost-management" element={<newFile />} /> */}
-          <Route path="/orders/admin" element={<AdminOrders />} />
-          <Route path="/orders/staff" element={<StaffOrders />} />
-          <Route path="/pos" element={<Pos />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/staff-management" element={<StaffManagement />} />
-          <Route path="/menu-management" element={<MenuManagement />} />
-          <Route path="/ingredients" element={<Ingredients />} />
-          <Route path="/cost-management" element={<CostManagement />} />
-          <Route path="/transactions" element={<Transactions />} />
+          <Route
+            path="/orders/admin"
+            element={<PrivateRoute Component={AdminOrders} />}
+          />
+          <Route
+            path="/orders/staff"
+            element={<PrivateRoute Component={StaffOrders} />}
+          />
+          <Route path="/pos" element={<PrivateRoute Component={Pos} />} />
+          <Route
+            path="/inventory"
+            element={<PrivateRoute Component={Inventory} />}
+          />
+          <Route
+            path="/staff-management"
+            element={<PrivateRoute Component={StaffManagement} />}
+          />
+          <Route
+            path="/menu-management"
+            element={<PrivateRoute Component={MenuManagement} />}
+          />
+          <Route
+            path="/ingredients"
+            element={<PrivateRoute Component={Ingredients} />}
+          />
+          <Route
+            path="/cost-management"
+            element={<PrivateRoute Component={CostManagement} />}
+          />
+          <Route
+            path="/transactions"
+            element={<PrivateRoute Component={Transactions} />}
+          />
           {/* <Route path="/settings" element={<SettingsLayout />}> */}
-          <Route path="/support" element={<ContactUs />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/support"
+            element={<PrivateRoute Component={ContactUs} />}
+          />
+          <Route
+            path="/settings"
+            element={<PrivateRoute Component={Settings} />}
+          />
           {/* </Route> */}
         </Route>
       </Routes>

@@ -31,7 +31,7 @@ export default function RecentOrders() {
         const data = await res.json();
 
         // Sort orders by PosOrderID in descending order
-        const sortedOrders = data.sort((a, b) => b.PosOrderID - a.PosOrderID);
+        const sortedOrders = data.sort((a, b) => b.OrderID - a.OrderID);
 
         setOrdersData(sortedOrders);
       } catch (error) {
@@ -76,6 +76,9 @@ export default function RecentOrders() {
               <th>Order Date</th>
               <th>Order Time</th>
               <th>Order Total</th>
+              <th>TX-ID</th>
+              <th>Tx-Type</th>
+              <th>Waiter</th>
               <th>Order Status</th>
             </tr>
           </thead>
@@ -95,6 +98,9 @@ export default function RecentOrders() {
                 <td>{convertToLocaleDate(order.time)}</td>
                 <td>{convertToLocaleTime(order.time)}</td>
                 <td>{order.total_amount}</td>
+                <td>{order.tid}</td>
+                <td>{order.paid_via}</td>
+                <td>{order.waiter_id}</td>
                 <td>{getOrderStatus(order.order_status)}</td>
               </tr>
             ))}
