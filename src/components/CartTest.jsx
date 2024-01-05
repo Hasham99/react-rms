@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
 import { remove, clearAll } from "../redux/CartSlice"; //path to your cart slice
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CartTest = () => {
@@ -48,13 +48,15 @@ const CartTest = () => {
     total_amount: amountAfterTax,
     items: Product,
   };
+  const navigate = useNavigate();
   const submitData = () => {
     axios
       .post(`https://albadwan.shop/api/posorders/1`, jsonData)
       // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
-        alert(JSON.stringify(jsonData));
-        window.location.href = "/";
+        // alert(JSON.stringify(jsonData));
+        // window.location.href = "/admin-orders";
+        navigate("/admin-orders");
       })
       .catch((error) => {
         alert("Error making post request", error);

@@ -141,7 +141,6 @@ const StaffOrders = () => {
                   onClick={() => {
                     markAsPaid(order);
                     setOrderData(order);
-
                     handleOpen("xl");
                   }}
                 >
@@ -150,7 +149,7 @@ const StaffOrders = () => {
                     {order.items.map((item) => (
                       <div className="" key={item.MenuItemID}>
                         {item.ItemName.length > 7
-                          ? `${item.ItemName.substring(0, 7)}...`
+                          ? `${item.ItemName.substring(0, 5)}..`
                           : item.ItemName}
                       </div>
                     ))}

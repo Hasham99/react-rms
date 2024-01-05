@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route index path="/" element={<Login />} />
         {/* <Route path="/cart" element={<Cart />} /> */}
-        <Route path="/cart01" element={<PrivateRoute Component={CartTest} />} />
+        <Route path="/cart" element={<PrivateRoute Component={CartTest} />} />
         <Route path="/" element={<PrivateRoute Component={Layout} />}>
           <Route
             path="/dashboard"
@@ -35,11 +35,11 @@ function App() {
           />
           {/* <Route path="/cost-management" element={<newFile />} /> */}
           <Route
-            path="/orders/admin"
+            path="/admin-orders"
             element={<PrivateRoute Component={AdminOrders} />}
           />
           <Route
-            path="/orders/staff"
+            path="/staff-orders"
             element={<PrivateRoute Component={StaffOrders} />}
           />
           <Route path="/pos" element={<PrivateRoute Component={Pos} />} />

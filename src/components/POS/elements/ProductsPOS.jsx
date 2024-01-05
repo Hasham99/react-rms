@@ -3,14 +3,21 @@ import {
   CardBody,
   Typography,
   Button,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Checkbox,
   Dialog,
   DialogBody,
   Input,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 // import React, { useState } from "react";
 import { addToCart } from "../../../redux/CartSlice";
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
+
 // import POSDialog from "./ProductDialog/POSDialog";
 
 const ProductsPOS = () => {
@@ -18,6 +25,27 @@ const ProductsPOS = () => {
   const dispatch = useDispatch();
   const handleInputChange = (e) => {
     setFormData(e.target.value);
+  };
+  const listItems = ["React.js", "Vue.js", "Svelte.js", "Angular.js"];
+
+  const [selectedListItems, setSelectedListItems] = useState([]);
+
+  const handleListItemClick = (item) => {
+    setSelectedListItems((prevSelected) => {
+      if (prevSelected.includes(item)) {
+        // If the item is already selected, remove it
+        return prevSelected.filter((selected) => selected !== item);
+      } else {
+        // If the item is not selected, add it
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  const handleLogSelectedListItems = () => {
+    console.log("Selected List Items:", selectedListItems);
+    // You can customize this logic based on your requirements
+    alert("Selected List Items:\n" + selectedListItems.join("\n"));
   };
 
   const handleSubmit = () => {
@@ -29,11 +57,13 @@ const ProductsPOS = () => {
       quantity: parseInt(formData),
       kitchenID: itemData.item.kitchen_id,
       categoryID: itemData.subcategory_id,
+      itemExtras: [{}],
       note: "",
       // },
     };
     // alert(JSON.stringify(jsonData));
-    dispatch(addToCart(jsonData));
+    console.log(jsonData);
+    // dispatch(addToCart(jsonData));
     setFormData("");
     handleClose();
   };
@@ -109,6 +139,7 @@ const ProductsPOS = () => {
         </CardBody>
       </Card>
       <Dialog
+        className="z-50"
         open={
           size === "xs" ||
           size === "sm" ||
@@ -120,9 +151,9 @@ const ProductsPOS = () => {
         size={size || "md"}
         handler={handleOpen}
       >
-        <DialogBody className="p-10">
+        <DialogBody className="p-10 h-[85vh] overflow-y-scroll">
           {/* <POSDialog itemDetails={itemData} /> */}
-          <Card color="transparent" shadow={false}>
+          <Card className="space-y-2" color="transparent" shadow={false}>
             <div className="text-center">
               <Typography variant="h4" className=" text-sidebar">
                 Enter Quantity
@@ -145,6 +176,40 @@ const ProductsPOS = () => {
               value={formData}
               onChange={handleInputChange}
             />
+            <List className="bg-gray-200">
+              {listItems.map((item) => (
+                <ListItem key={item} className="p-0">
+                  <label
+                    htmlFor={`vertical-list-${item.toLowerCase()}`}
+                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                  >
+                    <ListItemPrefix className="mr-3">
+                      <Checkbox
+                        id={`vertical-list-${item.toLowerCase()}`}
+                        ripple={false}
+                        className="hover:before:opacity-0"
+                        containerProps={{
+                          className: "p-0",
+                        }}
+                        onChange={() => handleListItemClick(item)}
+                      />
+                    </ListItemPrefix>
+                    <Typography color="blue-gray" className="font-medium">
+                      {item}
+                    </Typography>
+                  </label>
+                </ListItem>
+              ))}
+              {/* ... (similar ListItem components for Vue.js and Svelte.js) */}
+            </List>
+            <Button
+              onClick={handleLogSelectedListItems}
+              className="mt-6"
+              fullWidth
+              type="button"
+            >
+              Click Me
+            </Button>
             <Button
               onClick={handleSubmit}
               className="mt-6"

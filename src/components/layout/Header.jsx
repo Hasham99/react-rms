@@ -52,7 +52,7 @@ const Header = () => {
         )} */}
 
         <Popover className="flex justify-between ">
-          <Link to={"/cart01"}>
+          <Link to={"/cart"}>
             <span className="flex items-center cursor-pointer">
               <HiOutlineShoppingCart
                 className="text-gray-700"
