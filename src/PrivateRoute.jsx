@@ -7,7 +7,7 @@ const PrivateRoute = (props) => {
   useEffect(() => {
     let login = localStorage.getItem("token");
     if (login == `true`) {
-      navigate("/dashboard");
+      // navigate("/dashboard");
     } else {
       navigate("/");
     }

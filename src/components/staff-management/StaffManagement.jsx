@@ -30,8 +30,8 @@ const StaffManagement = () => {
   };
   return (
     <>
-      <Card className="w-full">
-        <CardHeader floated={false} shadow={false} className="rounded-none">
+      <Card className="w-full ">
+        <CardHeader floated={false} shadow={false} className="rounded-none ">
           <div className=" flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
@@ -42,20 +42,20 @@ const UserLogin = () => {
       })
       .catch((error) => {
         localStorage.setItem("token", false);
-        // console.error("Error making post request", error);
+        console.error("Error making post request", error);
         // Handle errors here if needed
         // alert(error);
       });
   };
   return (
-    <div className="h-screen w-screen bg-black flex items-center justify-center">
+    <div className="h-screen w-screen bg-blue-gray-50 flex items-center justify-center">
       <div className="relative h-fit flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
-        <div className="relative grid mx-4 mb-4 -mt-6 overflow-hidden text-white shadow-lg h-28 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
+        {/* bg-gradient-to-tr from-gray-900 to-gray-800 */}
+        <div className="relative grid mx-4 mb-4 -mt-6 overflow-hidden text-white shadow-lg h-28 place-items-center rounded-xl bg-sidebar bg-clip-border shadow-gray-900/20">
           <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-white">
             Sign In
           </h3>
         </div>
-
         <div className="flex flex-col gap-4 p-6">
           <div className="relative h-11 w-full min-w-[200px]">
             <input
@@ -103,12 +103,12 @@ const UserLogin = () => {
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     stroke="currentColor"
-                    stroke-width="1"
+                    strokeWidth="1"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     ></path>
                   </svg>
                 </span>
@@ -124,13 +124,13 @@ const UserLogin = () => {
         </div>
         <div className="p-6 pt-0">
           <button
-            className="block w-full select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            className="block w-full select-none rounded-lg bg-sidebar py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             // type="submit"
             onClick={handleSubmit}
           >
             Sign In
           </button>
-          <p className="flex justify-center mt-6 font-sans text-sm antialiased font-light leading-normal text-inherit">
+          {/* <p className="flex justify-center mt-6 font-sans text-sm antialiased font-light leading-normal text-inherit">
             Don't have an account?
             <a
               href="#signup"
@@ -138,7 +138,7 @@ const UserLogin = () => {
             >
               Sign up
             </a>
-          </p>
+          </p> */}
         </div>
         {/* </form> */}
       </div>

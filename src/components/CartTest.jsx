@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
 import { remove, clearAll } from "../redux/CartSlice"; //path to your cart slice
@@ -11,14 +10,6 @@ const CartTest = () => {
   const cartItems = useSelector((state) => state.cart);
   const cartItemsCount = useSelector((state) => state.cart.length);
   const [tax, setTax] = useState(null);
-  const [discountPercentage, setDiscountPercentage] = useState("");
-  // const handleDiscountChange = (e) => {
-  //   // Ensure that the entered value is a valid number
-  //   const enteredValue = e.target.value;
-  //   // if (!isNaN(enteredValue) || enteredValue === "") {
-  //   //   setDiscountPercentage(enteredValue);
-  //   // }
-  // };
 
   const dispatch = useDispatch(); // Initialize useDispatch hook
 
@@ -42,7 +33,7 @@ const CartTest = () => {
   const amountAfterTax = parseFloat(
     totalAmount + (totalAmount * parseFloat(tax)) / 100
   ).toFixed(4);
-  console.log(amountAfterTax);
+  // console.log(amountAfterTax);
   const jsonData = {
     // time: new Date().toLocaleString(),
     total_amount: amountAfterTax,
@@ -56,12 +47,11 @@ const CartTest = () => {
       .then(() => {
         // alert(JSON.stringify(jsonData));
         // window.location.href = "/admin-orders";
+        dispatch(clearAll());
         navigate("/admin-orders");
       })
       .catch((error) => {
-        alert("Error making post request", error);
-        // alert(JSON.stringify(jsonData));
-        // Handle errors here if needed
+        console.log(error);
       });
   };
   useEffect(() => {
@@ -105,6 +95,9 @@ const CartTest = () => {
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
               Product Details
             </h3>
+            <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 ">
+              Extras
+            </h3>
             <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">
               Quantity
             </h3>
@@ -139,13 +132,24 @@ const CartTest = () => {
                   </Link>
                 </div>
               </div>
+              <div className="flex flex-col  w-1/5">
+                {subcategory.itemExtras.map((newItem, index) => (
+                  <div
+                    className=" font-semibold text-gray-500 py-[2px]  text-xs"
+                    key={index}
+                  >
+                    {newItem.extras_name}
+                  </div>
+                ))}
+              </div>
               <div className="flex justify-center w-1/5">
                 <input
                   className="mx-2 border text-center w-8"
                   type="text"
-                  value={subcategory.quantity}
+                  defaultValue={subcategory.quantity}
                 />
               </div>
+
               <span className="text-center w-1/5 font-semibold text-sm">
                 {parseFloat(subcategory.price).toFixed(2)}
               </span>
@@ -199,7 +203,7 @@ const CartTest = () => {
           </div> */}
           <div className="flex justify-between my-10 items-end">
             <label
-              for="promo"
+              htmlFor="promo"
               className="font-semibold inline-block my-auto text-sm uppercase"
             >
               Tax

@@ -149,13 +149,13 @@ const AdminDialog = ({ onClose, orderData }) => {
                     </h3>
                   </div>
                   <div className="flex justify-between items-start w-full">
-                    <p className="text-base xl:text-lg leading-6">
+                    <p className="text-base  leading-6">
                       {currency} {orderItem.Price.toFixed(2)}
                     </p>
-                    <p className="text-base xl:text-lg leading-6 text-gray-800">
+                    <p className="text-base  leading-6 text-gray-800">
                       {orderItem.Quantity}
                     </p>
-                    <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">
+                    <p className="text-base  font-semibold leading-6 text-gray-800">
                       {currency}{" "}
                       {(orderItem.Quantity * orderItem.Price).toFixed(2)}
                     </p>

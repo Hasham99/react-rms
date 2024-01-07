@@ -10,6 +10,7 @@ module.exports = withMT({
 
       colors: {
         'sidebar': '#092635',
+        // 'main-color':'#092635'
       },
     },
   },

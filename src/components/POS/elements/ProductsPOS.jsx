@@ -10,44 +10,44 @@ import {
   Dialog,
   DialogBody,
   Input,
-  Select,
-  Option,
+  // Select,
+  // Option,
 } from "@material-tailwind/react";
-// import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { addToCart } from "../../../redux/CartSlice";
 import { useDispatch } from "react-redux";
-import React, { useState, useEffect } from "react";
 
 // import POSDialog from "./ProductDialog/POSDialog";
 
 const ProductsPOS = () => {
   const [formData, setFormData] = useState(null);
+  const [Note, setNote] = useState("");
+  const [itemExtras, setItemExtras] = useState([]);
   const dispatch = useDispatch();
   const handleInputChange = (e) => {
     setFormData(e.target.value);
   };
-  const listItems = ["React.js", "Vue.js", "Svelte.js", "Angular.js"];
+  const handleInputChange01 = (e) => {
+    setNote(e.target.value);
+  };
+  const handleListItemClick = (extra) => {
+    setItemExtras((prevExtras) => {
+      // Check if the extra is already selected
+      const isExtraSelected = prevExtras.some(
+        (selectedExtra) => selectedExtra.extras_id === extra.extras_id
+      );
 
-  const [selectedListItems, setSelectedListItems] = useState([]);
-
-  const handleListItemClick = (item) => {
-    setSelectedListItems((prevSelected) => {
-      if (prevSelected.includes(item)) {
-        // If the item is already selected, remove it
-        return prevSelected.filter((selected) => selected !== item);
+      if (isExtraSelected) {
+        // If the extra is already selected, remove it
+        return prevExtras.filter(
+          (selectedExtra) => selectedExtra.extras_id !== extra.extras_id
+        );
       } else {
-        // If the item is not selected, add it
-        return [...prevSelected, item];
+        // If the extra is not selected, add it
+        return [...prevExtras, extra];
       }
     });
   };
-
-  const handleLogSelectedListItems = () => {
-    console.log("Selected List Items:", selectedListItems);
-    // You can customize this logic based on your requirements
-    alert("Selected List Items:\n" + selectedListItems.join("\n"));
-  };
-
   const handleSubmit = () => {
     const jsonData = {
       // item: {
@@ -57,14 +57,14 @@ const ProductsPOS = () => {
       quantity: parseInt(formData),
       kitchenID: itemData.item.kitchen_id,
       categoryID: itemData.subcategory_id,
-      itemExtras: [{}],
-      note: "",
-      // },
+      itemExtras: itemExtras,
+      note: `${Note}`,
     };
-    // alert(JSON.stringify(jsonData));
-    console.log(jsonData);
-    // dispatch(addToCart(jsonData));
+    dispatch(addToCart(jsonData));
+    // console.log(jsonData);
     setFormData("");
+    setNote("");
+    setItemExtras([]);
     handleClose();
   };
 
@@ -72,13 +72,14 @@ const ProductsPOS = () => {
   const [itemData, setItemData] = useState([]);
 
   const handleClick = (item, category) => {
-    handleOpen("sm");
+    handleOpen("xs");
     const jsonData = {
       subcategory_id: category.subcategory_id,
       item: item,
     };
     // alert(JSON.stringify(jsonData));
     setItemData(jsonData);
+    // console.log(itemData.item.extras);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -139,7 +140,6 @@ const ProductsPOS = () => {
         </CardBody>
       </Card>
       <Dialog
-        className="z-50"
         open={
           size === "xs" ||
           size === "sm" ||
@@ -148,77 +148,105 @@ const ProductsPOS = () => {
           size === "xl" ||
           size === "xxl"
         }
-        size={size || "md"}
+        size={size || "sm"}
         handler={handleOpen}
       >
-        <DialogBody className="p-10 h-[85vh] overflow-y-scroll">
+        <DialogBody className="px-7 py-8 max-h-[85vh]">
           {/* <POSDialog itemDetails={itemData} /> */}
           <Card className="space-y-2" color="transparent" shadow={false}>
             <div className="text-center">
-              <Typography variant="h4" className=" text-sidebar">
-                Enter Quantity
+              <Typography variant="h4" className="pb-4 text-left text-sidebar">
+                Product Details
               </Typography>
             </div>
 
-            <Typography variant="h6" color="blue-gray" className="">
+            <Typography variant="h6" color="" className="font-normal">
               Quantity
             </Typography>
             <Input
-              required
+              required={true}
               type="number"
-              size="lg"
+              size="md"
               placeholder="Quantity"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-600"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              // name="quantity"
               value={formData}
               onChange={handleInputChange}
             />
-            <List className="bg-gray-200">
-              {listItems.map((item) => (
-                <ListItem key={item} className="p-0">
-                  <label
-                    htmlFor={`vertical-list-${item.toLowerCase()}`}
-                    className="flex w-full cursor-pointer items-center px-3 py-2"
-                  >
-                    <ListItemPrefix className="mr-3">
-                      <Checkbox
-                        id={`vertical-list-${item.toLowerCase()}`}
-                        ripple={false}
-                        className="hover:before:opacity-0"
-                        containerProps={{
-                          className: "p-0",
-                        }}
-                        onChange={() => handleListItemClick(item)}
-                      />
-                    </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
-                      {item}
-                    </Typography>
-                  </label>
-                </ListItem>
-              ))}
-              {/* ... (similar ListItem components for Vue.js and Svelte.js) */}
-            </List>
-            <Button
-              onClick={handleLogSelectedListItems}
-              className="mt-6"
-              fullWidth
-              type="button"
-            >
-              Click Me
-            </Button>
+            <Typography variant="h6" color="" className="font-normal">
+              Note
+            </Typography>
+            <Input
+              required
+              type="text"
+              size="md"
+              placeholder="Add Note"
+              className=" !border-t-blue-gray-200 focus:!border-t-gray-600"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+              value={Note}
+              onChange={handleInputChange01}
+            />
+            {itemData &&
+              itemData.item &&
+              itemData.item.extras &&
+              itemData.item.extras.length > 0 && (
+                <Typography
+                  variant="h6"
+                  color=""
+                  className="font-normal pt-2 pb-0"
+                >
+                  Add Extras
+                </Typography>
+              )}
+
+            {itemData &&
+              itemData.item &&
+              itemData.item.extras &&
+              itemData.item.extras.length > 0 && (
+                <List className="p-0">
+                  {/* Iterate through itemData.item.extras and render a ListItem for each extras_name */}
+                  {itemData.item.extras.map((extra) => (
+                    <ListItem key={extra.extras_id} className="p-0">
+                      <label
+                        htmlFor={`extra-${extra.extras_id}`}
+                        className="flex w-full cursor-pointer items-center px-3 py-2"
+                      >
+                        <ListItemPrefix className="mr-3">
+                          <Checkbox
+                            id={`extra-${extra.extras_id}`}
+                            ripple={false}
+                            className="hover:before:opacity-0"
+                            containerProps={{
+                              className: "p-0",
+                            }}
+                            onChange={() => handleListItemClick(extra)}
+                          />
+                        </ListItemPrefix>
+                        <Typography color="blue-gray" className="font-medium">
+                          {extra.extras_name}
+                        </Typography>
+                      </label>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+          </Card>
+          <div
+          // className="flex justify-center items-end"
+          >
             <Button
               onClick={handleSubmit}
-              className="mt-6"
-              fullWidth
+              className="mt-6 bg-sidebar "
+              // fullWidth
               type="submit"
             >
-              Add Item
+              Add to Cart
             </Button>
-          </Card>
+          </div>
         </DialogBody>
       </Dialog>
     </>

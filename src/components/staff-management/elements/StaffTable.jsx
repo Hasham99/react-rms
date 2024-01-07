@@ -40,7 +40,7 @@ const StaffTable = () => {
   };
   return (
     <div>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-scroll p-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -60,10 +60,10 @@ const StaffTable = () => {
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {staffData.map((item) => (
               <tr key={item.waiter_id}>
-                <td className={"p-4"}>
+                <td className={"px-4"}>
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col">
                       <Typography
