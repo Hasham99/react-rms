@@ -11,7 +11,7 @@ const GridStats = () => {
     const fetchMonthlyIncomeExpenseData = async () => {
       try {
         const response = await fetch(
-          "https://albadwan.shop/api/expense/res/1/pos/monthly"
+          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`
         );
         const data = await response.json();
         setIncomeExpenseMonthlyData(data);
@@ -22,7 +22,7 @@ const GridStats = () => {
     const fetchDailyIncomeExpenseData = async () => {
       try {
         const response = await fetch(
-          "https://albadwan.shop/api/expense/res/1/pos/daily"
+          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/daily`
         );
         const data = await response.json();
         setIncomeExpenseDailyData(data);
@@ -35,6 +35,7 @@ const GridStats = () => {
     fetchDailyIncomeExpenseData();
   }, []);
   const currency = localStorage.getItem("currency");
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className=" flex gap-4">
       <BoxWrapper>

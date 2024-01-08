@@ -13,6 +13,7 @@ import axios from "axios";
 export function AddInventoryItem(props) {
   // Define state variables to store form data
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [Value, setValue] = useState([]);
   const [selectedOption, setSelectedOption] = useState({
     itemId: null,
     itemName: "",
@@ -36,28 +37,33 @@ export function AddInventoryItem(props) {
   const jsonData = {
     menuitem_id: `${selectedOption.itemId}`,
     unit: `${formData.unit}`,
-    available: `${formData.available}`,
-    reserved: `${formData.reserved}`,
-    on_hand: `${on_Hand}`,
+    // available: `${formData.available}`,
+    // reserved: `${formData.reserved}`,
+    // on_hand: `${on_Hand}`,
+    on_hand: `${formData.available}`,
   };
 
   // Event handler for form submission
   const handleSubmit = () => {
+    // alert(JSON.stringify(jsonData));
     axios
-      .post(`https://albadwan.shop/api/inventory/create`, jsonData)
+      .post(
+        `https://albadwan.shop/api/inventory/res/${restaurantId}/create`,
+        jsonData
+      )
       // .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
       .then((response) => {
         console.log("Post request successful", response.data);
+        window.location.reload();
         // Handle the response data here if needed
       })
       .catch((error) => {
         console.error("Error making post request", error);
         // Handle errors here if needed
       });
-    alert(JSON.stringify(jsonData));
 
     // Handle the response, e.g., show a success message
-    alert("POST request successful");
+    // alert("POST request successful");
     // alert(
     //   `
     //   'Item ID '${selectedOption.itemId}
@@ -71,53 +77,100 @@ export function AddInventoryItem(props) {
   };
   // const { handleClose } = props;
 
+  // useEffect(() => {
+  //   const fetchInventoryData = async () => {
+  //     // Fetch data from your API
+  //     await fetch(`https://albadwan.shop/api/cai`)
+  //       // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
+  //       // .then((response) => response.json())
+  //       .then((data) => {
+  //         // Extract "item_name" from the menu items
+  //         const extractedItemNames = data.reduce((accumulator, category) => {
+  //           return [
+  //             ...accumulator,
+  //             ...category.subcategories.reduce(
+  //               (subAccumulator, subcategory) => {
+  //                 return [
+  //                   ...subAccumulator,
+  //                   ...subcategory.menu.map((item) => ({
+  //                     itemId: item.item_id,
+  //                     itemName: item.item_name,
+  //                   })),
+  //                 ];
+  //               },
+  //               []
+  //             ),
+  //           ];
+  //         }, []);
+
+  //         // localStorage.setItem(
+  //         //   "inventory-Items",
+  //         //   JSON.stringify(extractedItemNames)
+  //         // );
+
+  //         // const local_inventory_items = JSON.parse(
+  //         //   localStorage.getItem("inventory-Items")
+  //         // );
+  //         // setCategoryOptions(local_inventory_items);
+  //         console.log(extractedItemNames);
+  //         setCategoryOptions(extractedItemNames);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching data from API", error);
+  //       });
+  //   };
+  //   fetchInventoryData();
+  // }, []);
+
   useEffect(() => {
     const fetchInventoryData = async () => {
-      // Fetch data from your API
-      await fetch(`https://albadwan.shop/api/cai`)
-        // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
-        .then((response) => response.json())
-        .then((data) => {
-          // Extract "item_name" from the menu items
-          const extractedItemNames = data.reduce((accumulator, category) => {
+      try {
+        const response = await axios.get(
+          `https://albadwan.shop/api/cai/res/${restaurantId}`
+        );
+        const data = response.data;
+
+        if (!data || !Array.isArray(data)) {
+          console.error("Invalid data format:", data);
+          return;
+        }
+
+        const extractedItemNames = data.reduce((accumulator, category) => {
+          if (category.subcategories && Array.isArray(category.subcategories)) {
             return [
               ...accumulator,
               ...category.subcategories.reduce(
                 (subAccumulator, subcategory) => {
-                  return [
-                    ...subAccumulator,
-                    ...subcategory.menu.map((item) => ({
-                      itemId: item.item_id,
-                      itemName: item.item_name,
-                    })),
-                  ];
+                  if (subcategory.menu && Array.isArray(subcategory.menu)) {
+                    return [
+                      ...subAccumulator,
+                      ...subcategory.menu.map((item) => ({
+                        itemId: item.item_id,
+                        itemName: item.item_name,
+                      })),
+                    ];
+                  }
+                  return subAccumulator;
                 },
                 []
               ),
             ];
-          }, []);
+          }
+          return accumulator;
+        }, []);
 
-          localStorage.setItem(
-            "inventory-Items",
-            JSON.stringify(extractedItemNames)
-          );
-
-          const local_inventory_items = JSON.parse(
-            localStorage.getItem("inventory-Items")
-          );
-          setCategoryOptions(local_inventory_items);
-        })
-        .catch((error) => {
-          console.error("Error fetching data from API", error);
-        });
+        setCategoryOptions(extractedItemNames);
+      } catch (error) {
+        console.error("Error fetching data from API", error);
+      }
     };
     fetchInventoryData();
   }, []);
 
-  const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const handleSelectChange = (value) => {
+    setSelectedOption(value);
   };
-
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
@@ -134,11 +187,7 @@ export function AddInventoryItem(props) {
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Menu Item
         </Typography>
-        <Select
-          color="teal"
-          value={selectedOption}
-          onChange={handleSelectChange}
-        >
+        <Select color="teal" value={Value} onChange={handleSelectChange}>
           {/* {categoryOptions.map((item, index) => (
               <Option key={index} value={item}>
                 {item.itemName}
@@ -182,24 +231,24 @@ export function AddInventoryItem(props) {
           value={formData.available}
           onChange={handleInputChange}
         />
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
-          Reserved
-        </Typography>
-        <Input
-          required
-          type="number"
-          size="lg"
-          placeholder="Reserved Quantity"
-          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          name="reserved"
-          value={formData.reserved}
-          onChange={handleInputChange}
-        />
+        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Reserved
+          </Typography>
+          <Input
+            required
+            type="number"
+            size="lg"
+            placeholder="Reserved Quantity"
+            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            name="reserved"
+            value={formData.reserved}
+            onChange={handleInputChange}
+          /> */}
       </div>
-      <Button className="mt-6" fullWidth type="submit">
+      <Button className="mt-6" fullWidth onClick={handleSubmit}>
         Add Item
       </Button>
     </form>

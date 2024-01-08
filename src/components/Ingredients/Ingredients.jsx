@@ -33,6 +33,8 @@ const Ingredients = () => {
       (parseFloat(formData.itemWeight01) * 1000)
   ).toFixed(4);
 
+  //  total amount (250) / (2 * 1000)grams
+
   const jsonData01 = {
     IngredientName: `${formData.itemName01}`,
     PricePerGm: `${ItemPerGram01}`,
@@ -52,7 +54,10 @@ const Ingredients = () => {
 
   const handleSubmit01 = () => {
     axios
-      .post(`https://albadwan.shop/api/ingredients`, jsonData01)
+      .post(
+        `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+        jsonData01
+      )
       // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
       .then(() => {
         // console.log("Post request successful", response.data);
@@ -74,7 +79,10 @@ const Ingredients = () => {
 
   const handleSubmit02 = () => {
     axios
-      .post(`https://albadwan.shop/api/ingredients`, jsonData02)
+      .post(
+        `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+        jsonData02
+      )
       // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
       .then(() => {
         // console.log("Post request successful", response.data);
@@ -93,6 +101,7 @@ const Ingredients = () => {
         // Handle errors here if needed
       });
   };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <>
       <div className="grid grid-cols-2 ">
@@ -138,10 +147,15 @@ const Ingredients = () => {
                 {/* <div>In Gram: {inputValue * 1000}</div> */}
                 <div>
                   Per Gram:{" "}
-                  {/* {inputValue.itemAmount01 / (inputValue.itemWeight01 * 1000)} */}
-                  {parseFloat(
-                    formData.itemAmount01 / (formData.itemWeight01 * 1000)
-                  ).toFixed(4)}
+                  {isNaN(
+                    parseFloat(
+                      formData.itemAmount01 / (formData.itemWeight01 * 1000)
+                    )
+                  )
+                    ? 0
+                    : parseFloat(
+                        formData.itemAmount01 / (formData.itemWeight01 * 1000)
+                      ).toFixed(4)}
                 </div>
               </div>
             </div>
@@ -198,9 +212,13 @@ const Ingredients = () => {
                 {/* <div>In Gram: {inputValue * 1000}</div> */}
                 <div>
                   Per Gram:{" "}
-                  {parseFloat(
-                    formData.itemAmount02 / formData.itemWeight02
-                  ).toFixed(4)}
+                  {isNaN(
+                    parseFloat(formData.itemAmount02 / formData.itemWeight02)
+                  )
+                    ? 0
+                    : parseFloat(
+                        formData.itemAmount02 / formData.itemWeight02
+                      ).toFixed(4)}
                 </div>
               </div>
             </div>

@@ -46,7 +46,8 @@ const UpdateStaff = (props) => {
       )
       .then((response) => {
         console.log("PATCH request successful", response.data);
-        alert("POST request successful");
+        // alert("POST request successful");
+        window.location.reload();
         // Handle the response data here if needed
       })
       .catch((error) => {
@@ -111,7 +112,7 @@ const UpdateStaff = (props) => {
           required
           type=""
           size="lg"
-          placeholder="Available Quantity"
+          placeholder="Update Password"
           className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
           labelProps={{
             className: "before:content-none after:content-none",
@@ -150,7 +151,7 @@ const UpdateStaff = (props) => {
             onChange={handleInputChange}
           /> */}
       </div>
-      <Button className="mt-6" fullWidth type="submit">
+      <Button className="mt-6" fullWidth onClick={handleSubmit}>
         Update Item
       </Button>
     </form>

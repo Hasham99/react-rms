@@ -60,18 +60,22 @@ const Settings = () => {
   const [timeZones, setTimeZones] = useState([]);
   const [currency, setCurrency] = useState([]);
   const [payment, setPayment] = useState([]);
+  const [kitchen, setKitchen] = useState([]);
   const [selectedTimeZone, setSelectedTimeZone] = useState("");
   const [selectedCurrency, setSelectedCurrency] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedKitchen, setSelectedKitchen] = useState("");
   const [value, setValue] = useState([]);
   const [valueCurr, setValueCurr] = useState([]);
   const [valuePay, setValuePay] = useState([]);
+  const [valueKit, setValueKit] = useState([]);
   const [name, setName] = useState("");
   const [defaultCurrency, setDefaultCurrency] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [tax, setTax] = useState(null);
   const [enteredTax, setEnteredTax] = useState(null); // State to store entered tax percentage
   const [enteredPayment, setEnteredPayment] = useState(""); // State to store entered Payment
+  const [enteredKitchen, setEnteredKitchen] = useState(""); // State to store entered Kitchen
 
   useEffect(() => {
     // Fetch data from the API
@@ -204,10 +208,21 @@ const Settings = () => {
         console.error("Error fetching time zones:", error);
       }
     };
+    const fetchKitchen = async () => {
+      try {
+        const response = await fetch("https://albadwan.shop/api/kitchen/res/1");
+        const data = await response.json();
+        setKitchen(data);
+        // console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error fetching time zones:", error);
+      }
+    };
 
     fetchTimeZones();
     fetchCurrency();
     fetchPayment();
+    fetchKitchen();
   }, []);
 
   const handleTimeZoneChange = (value) => {
@@ -220,6 +235,10 @@ const Settings = () => {
 
   const handlePaymentChange = (value) => {
     setSelectedPayment(value.p_name);
+  };
+
+  const handleKitchenChangeNew = (value) => {
+    setSelectedKitchen(value.Name);
   };
 
   const handleSaveButtonClick = async () => {
@@ -310,11 +329,33 @@ const Settings = () => {
         });
     } else alert("Payment Type can't be empty ");
   };
+  const handleSaveButtonClick04 = async () => {
+    if (enteredKitchen) {
+      const jsonData = {
+        name: `${enteredKitchen}`,
+      };
+      // alert(JSON.stringify(jsonData));
+      // Make the PATCH request
+      await axios
+        .post(`https://albadwan.shop/api/kitchen/res/1`, jsonData)
+        .then(() => {
+          setEnteredKitchen("");
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+          // alert(JSON.stringify(jsonData));
+        });
+    } else alert("Kitchen Name can't be empty ");
+  };
   const handleTaxInputChange = (e) => {
     setEnteredTax(e.target.value);
   };
   const handlePaymentInputChange = (e) => {
     setEnteredPayment(e.target.value);
+  };
+  const handleKitchenInputChange = (e) => {
+    setEnteredKitchen(e.target.value);
   };
   return (
     <Tabs value="basic_setup">
@@ -534,6 +575,42 @@ const Settings = () => {
                 </Button>
               </div>
               {/* <div className="bg-white"></div> */}
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-80">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between  ">
+                  Add Kitchen
+                </Typography>
+                <div>
+                  <Typography className=" text-md font-meduim  text-gray-800 ">
+                    Available
+                  </Typography>
+                  <Select
+                  // value={valueKit} onChange={handleKitchenChangeNew}
+                  >
+                    {kitchen.map((kitchen) => (
+                      <Option key={kitchen.KitchenID} value={kitchen}>
+                        {kitchen.Name}
+                      </Option>
+                    ))}
+                    {/* <Option>1</Option> */}
+                  </Select>
+                  <Typography className="mt-3 text-md font-meduim  text-gray-800 ">
+                    Add New
+                  </Typography>
+                  <Input
+                    placeholder="Add new Kitchen"
+                    required
+                    type="text"
+                    value={enteredKitchen}
+                    onChange={handleKitchenInputChange}
+                  />
+                </div>
+                <Button
+                  onClick={handleSaveButtonClick04}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </Card>
         </TabPanel>

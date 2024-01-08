@@ -25,7 +25,9 @@ const StaffTable = () => {
   useEffect(() => {
     const fetchStaffData = async () => {
       try {
-        const res = await fetch(`https://albadwan.shop/api/waiter`);
+        const res = await fetch(
+          `https://albadwan.shop/api/waiter/res/${restaurantId}`
+        );
         // const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/waiter`);
         const data = await res.json();
         setStaffData(data);
@@ -38,6 +40,7 @@ const StaffTable = () => {
   const handleEditClick = async (dataToUpdate) => {
     setGetStaffData(dataToUpdate);
   };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div>
       <CardBody className="overflow-scroll p-0">

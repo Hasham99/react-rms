@@ -104,24 +104,6 @@ export default function RecentOrders() {
                 <td>{getOrderStatus(order.order_status)}</td>
               </tr>
             ))}
-            {/* {currentItems.map((order) => (
-              <tr key={order.OrderID}>
-                <td>{order.OrderID}</td>
-                <td className="flex">
-                  {order.items.map((item) => (
-                    <div className="" key={item.MenuItemID}>
-                      {item.ItemName.length > 10
-                        ? `${item.ItemName.substring(0, 10)}...`
-                        : item.ItemName}
-                    </div>
-                  ))}
-                </td>
-                <td>{convertToLocaleDate(order.time)}</td>
-                <td>{convertToLocaleTime(order.time)}</td>
-                <td>{order.total_amount}</td>
-                <td>{getOrderStatus(order.order_status)}</td>
-              </tr>
-            ))} */}
           </tbody>
         </table>
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
@@ -174,39 +156,6 @@ export default function RecentOrders() {
           </Button>
         </CardFooter>
       </div>
-      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button
-          variant="outlined"
-          size="sm"
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <div className="flex items-center gap-2">
-          {Array.from(
-            { length: Math.ceil(ordersData.length / itemsPerPage) },
-            (_, index) => (
-              <IconButton
-                key={index}
-                variant={currentPage === index + 1 ? "outlined" : "text"}
-                size="sm"
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </IconButton>
-            )
-          )}
-        </div>
-        <Button
-          variant="outlined"
-          size="sm"
-          onClick={() => paginate(currentPage + 1)}
-          disabled={indexOfLastItem >= ordersData.length}
-        >
-          Next
-        </Button>
-      </CardFooter> */}
     </div>
   );
 }

@@ -17,42 +17,42 @@ const ItemIngredients = () => {
   const [PriceOne, setPriceOne] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceTwo, setPriceTwo] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceThree, setPriceThree] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceFour, setPriceFour] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceFive, setPriceFive] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceSix, setPriceSix] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceSeven, setPriceSeven] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [PriceEight, setPriceEight] = useState({
     IngredientID: null,
     IngredientName: "",
-    PricePerGm: null,
+    PricePerGm: 0,
   });
   const [value, setValue] = useState([]);
   const [newValue, setNewValue] = useState([]);
@@ -73,7 +73,9 @@ const ItemIngredients = () => {
 
   useEffect(() => {
     const fetchItemName = async () => {
-      await fetch(`https://albadwan.shop/api/items/recipewise`)
+      await fetch(
+        `https://albadwan.shop/api/items/res/${restaurantId}/recipewise`
+      )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/items/recipewise`)
         .then((response) => response.json())
         .then((data) => {
@@ -84,7 +86,7 @@ const ItemIngredients = () => {
         });
     };
     const fetchIngredientName = async () => {
-      await fetch(`https://albadwan.shop/api/ingredients/`)
+      await fetch(`https://albadwan.shop/api/ingredients/res/${restaurantId}`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/ingredients/`)
         .then((response) => response.json())
         .then((data) => {
@@ -151,7 +153,10 @@ const ItemIngredients = () => {
   };
   const handleSubmit = () => {
     axios
-      .post(`https://albadwan.shop/api/recipeitems`, jsonData)
+      .post(
+        `https://albadwan.shop/api/recipeitems/res/${restaurantId}`,
+        jsonData
+      )
       // .post(`${import.meta.env.VITE_API_KEY}/api/recipeitems`, jsonData)
       .then(() => {
         alert(JSON.stringify(jsonData));
@@ -159,7 +164,7 @@ const ItemIngredients = () => {
       })
       .catch((error) => {
         console.error("Error making post request", error);
-        alert(error);
+        // alert(JSON.stringify(jsonData));
         // Handle errors here if needed
       });
   };
@@ -221,14 +226,19 @@ const ItemIngredients = () => {
       });
     }
   }, [formData]);
-
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className="grid grid-cols-2">
       <Card className="m-4 p-2  ">
         <CardBody>
-          <Typography variant="h4" className="text-center text-gray-800">
+          <Typography variant="h4" className="text-center py-4 text-gray-900">
             Add Item Ingredients{" "}
-            <span className="text-yellow-900">{totalPrice}</span>
+            <span className="text-xl text-yellow-900">
+              {/* {totalPrice} */}
+              {parseFloat(totalPrice) > 0
+                ? parseFloat(totalPrice).toFixed(4)
+                : null}
+            </span>
           </Typography>
           <div className="">
             <div className="">
@@ -264,17 +274,25 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {
-                          isNaN(PriceOne.PricePerGm)
-                            ? 0
-                            : parseFloat(PriceOne.PricePerGm).toFixed(4)
-                          // parseFloat(PriceOne.PricePerGm).toFixed(4) || 0
-                        }
+                        {/* {parseFloat(PriceOne.PricePerGm).toFixed(4)} */}
+                        {parseFloat(PriceOne.PricePerGm) > 0
+                          ? parseFloat(PriceOne.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
-                        {parseFloat(
-                          PriceOne.PricePerGm * formData.itemName01
-                        ).toFixed(4)}
+                        {/* {isNaN(
+                          parseFloat(PriceOne.PricePerGm * formData.itemName01)
+                        )
+                          ? 0
+                          : parseFloat(
+                              PriceOne.PricePerGm * formData.itemName01
+                            ).toFixed(4)} */}
+                        {parseFloat(PriceOne.PricePerGm * formData.itemName01) >
+                        0
+                          ? parseFloat(
+                              PriceOne.PricePerGm * formData.itemName01
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -283,7 +301,7 @@ const ItemIngredients = () => {
                       onChange={handleInputChange}
                       type="number"
                       placeholder="in gram"
-                    ></Input>
+                    />
                   </div>
                 </div>
 
@@ -306,12 +324,26 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceTwo.PricePerGm).toFixed(4)}
+                        {/* {parseFloat(PriceTwo.PricePerGm).toFixed(4)} */}
+
+                        {parseFloat(PriceTwo.PricePerGm) > 0
+                          ? parseFloat(PriceTwo.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
-                        {parseFloat(
-                          PriceTwo.PricePerGm * formData.itemName02
-                        ).toFixed(4)}
+                        {/* {isNaN(
+                          parseFloat(PriceTwo.PricePerGm * formData.itemName02)
+                        )
+                          ? 0
+                          : parseFloat(
+                              PriceTwo.PricePerGm * formData.itemName02
+                            ).toFixed(4)} */}
+                        {parseFloat(PriceTwo.PricePerGm * formData.itemName02) >
+                        0
+                          ? parseFloat(
+                              PriceTwo.PricePerGm * formData.itemName02
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -343,12 +375,18 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceThree.PricePerGm).toFixed(4)}
+                        {parseFloat(PriceThree.PricePerGm) > 0
+                          ? parseFloat(PriceThree.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
                         {parseFloat(
                           PriceThree.PricePerGm * formData.itemName03
-                        ).toFixed(4)}
+                        ) > 0
+                          ? parseFloat(
+                              PriceThree.PricePerGm * formData.itemName03
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -380,12 +418,18 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceFour.PricePerGm).toFixed(4)}
+                        {parseFloat(PriceFour.PricePerGm) > 0
+                          ? parseFloat(PriceFour.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
                         {parseFloat(
                           PriceFour.PricePerGm * formData.itemName04
-                        ).toFixed(4)}
+                        ) > 0
+                          ? parseFloat(
+                              PriceFour.PricePerGm * formData.itemName04
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -417,12 +461,18 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceFive.PricePerGm).toFixed(4)}
+                        {parseFloat(PriceFive.PricePerGm) > 0
+                          ? parseFloat(PriceFive.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
                         {parseFloat(
                           PriceFive.PricePerGm * formData.itemName05
-                        ).toFixed(4)}
+                        ) > 0
+                          ? parseFloat(
+                              PriceFive.PricePerGm * formData.itemName05
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -454,12 +504,17 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceSix.PricePerGm).toFixed(4)}
+                        {parseFloat(PriceSix.PricePerGm) > 0
+                          ? parseFloat(PriceSix.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
-                        {parseFloat(
-                          PriceSix.PricePerGm * formData.itemName06
-                        ).toFixed(4)}
+                        {parseFloat(PriceSix.PricePerGm * formData.itemName06) >
+                        0
+                          ? parseFloat(
+                              PriceSix.PricePerGm * formData.itemName06
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -491,12 +546,18 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceSeven.PricePerGm).toFixed(4)}
+                        {parseFloat(PriceSeven.PricePerGm) > 0
+                          ? parseFloat(PriceSeven.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
                         {parseFloat(
                           PriceSeven.PricePerGm * formData.itemName07
-                        ).toFixed(4)}
+                        ) > 0
+                          ? parseFloat(
+                              PriceSeven.PricePerGm * formData.itemName07
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input
@@ -528,12 +589,18 @@ const ItemIngredients = () => {
                     <Typography variant="h6" className=" text-gray-800">
                       Quantity{" "}
                       <span className="text-red-600">
-                        {parseFloat(PriceEight.PricePerGm).toFixed(4) || 0}
+                        {parseFloat(PriceEight.PricePerGm) > 0
+                          ? parseFloat(PriceEight.PricePerGm).toFixed(4)
+                          : null}
                       </span>{" "}
                       <span className="text-green-600">
                         {parseFloat(
                           PriceEight.PricePerGm * formData.itemName08
-                        ).toFixed(4) || 0}
+                        ) > 0
+                          ? parseFloat(
+                              PriceEight.PricePerGm * formData.itemName08
+                            ).toFixed(4)
+                          : null}
                       </span>
                     </Typography>
                     <Input

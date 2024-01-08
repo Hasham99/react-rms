@@ -32,6 +32,7 @@ const UserLogin = () => {
             "restaurant_name",
             response.data.restaurant_name
           );
+          localStorage.setItem("restaurant_id", response.data.restaurant_id);
           navigate("/dashboard");
         } else {
           localStorage.setItem("token", false);

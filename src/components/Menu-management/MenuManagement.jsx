@@ -59,7 +59,7 @@ function MenuManagement() {
     //     console.error("Error fetching data:", error);
     //   });
     const fetchKitchen = async () => {
-      await fetch(`https://albadwan.shop/api/kitchen/res/1`)
+      await fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
         .then((response) => response.json())
         .then((data) => {
@@ -98,7 +98,8 @@ function MenuManagement() {
 
   const handleSubmit = () => {
     axios
-      .post(`https://albadwan.shop/api/items`, jsonData)
+      .post(`https://albadwan.shop/api/items/res/${restaurantId}`, jsonData)
+      // .post(`https://albadwan.shop/api/items`, jsonData)
       // .post(`http://54.196.226.78:3000/api/items`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
       .then(() => {
@@ -110,9 +111,10 @@ function MenuManagement() {
         // Handle errors here if needed
         alert(error);
       });
-    alert(JSON.stringify(jsonData));
+    // alert(JSON.stringify(jsonData));
     // alert(`${selectedOptionOne} ${selectedOptionTwo} ${selectedOptionThree}`);
   };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     // <div>
     //   <h1>Filter Item Names by Subcategory</h1>

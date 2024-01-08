@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Dashboard = () => {
+  const restaurantId = localStorage.getItem("restaurant_id");
   // const [defaultCurrency, setDefaultCurrency] = useState("");
   // useEffect(() => {
   //   // Fetch data from the API
@@ -35,11 +36,11 @@ const Dashboard = () => {
       <div className="flex flex-row gap-4 w-full">
         <TransactionChart
           title={`POS`}
-          url={`https://albadwan.shop/api/expense/res/1/pos/monthly`}
+          url={`https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`}
         />
         <TransactionChart
           title={`Waiter`}
-          url={`https://albadwan.shop/api/expense/res/1/waiter/monthly/admin`}
+          url={`https://albadwan.shop/api/expense/res/${restaurantId}/waiter/monthly/admin`}
         />
         {/* <BuyerProfilePieChart /> */}
       </div>{" "}

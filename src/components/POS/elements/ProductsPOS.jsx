@@ -61,7 +61,8 @@ const ProductsPOS = () => {
       note: `${Note}`,
     };
     dispatch(addToCart(jsonData));
-    // console.log(jsonData);
+
+    // console.log(itemExtras.map((item) => item.extras_id));
     setFormData("");
     setNote("");
     setItemExtras([]);

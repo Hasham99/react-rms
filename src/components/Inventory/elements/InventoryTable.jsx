@@ -22,8 +22,8 @@ const TABLE_HEAD = [
   "Category",
   // "Location",
   "Available",
-  "Reserved",
-  "On Hand",
+  // "Reserved",
+  // "On Hand",
   "Actions",
 ];
 
@@ -34,7 +34,7 @@ const InventoryTable = () => {
     const fetchInventoryData = async () => {
       try {
         const res = await fetch(
-          `https://albadwan.shop/api/inventory/get`
+          `https://albadwan.shop/api/inventory/res/${restaurantId}/get`
           // `${import.meta.env.VITE_API_KEY}/api/inventory/get`
         );
         const data = await res.json();
@@ -54,6 +54,7 @@ const InventoryTable = () => {
 
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null);
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <>
       <Card className=" w-full overflow-scroll">
@@ -103,10 +104,11 @@ const InventoryTable = () => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {data.available}
+                    {data.on_hand}
+                    {/* {data.available} */}
                   </Typography>
                 </td>
-                <td className="p-4">
+                {/* <td className="p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -114,8 +116,8 @@ const InventoryTable = () => {
                   >
                     {data.reserved}
                   </Typography>
-                </td>
-                <td className="p-4">
+                </td> */}
+                {/* <td className="p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -123,7 +125,7 @@ const InventoryTable = () => {
                   >
                     {data.on_hand}
                   </Typography>
-                </td>
+                </td> */}
                 <td className="p-2">
                   <Typography
                     variant="small"
@@ -171,7 +173,7 @@ const InventoryTable = () => {
           <Card color="transparent" shadow={false}>
             <div className="flex justify-between items-center">
               <Typography variant="h4" className="text-sidebar">
-                Add Inventory Item
+                Update Inventory Item
               </Typography>
               <div onClick={handleClose}>
                 <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />

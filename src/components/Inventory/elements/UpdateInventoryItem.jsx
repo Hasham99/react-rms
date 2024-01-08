@@ -29,41 +29,49 @@ export function UpdateInventoryItem(props) {
       [name]: value,
     });
   };
-  const jsonData = {
-    menuitem_id: `${InputValue.menuitem_id}`,
-    category_id: `${InputValue.category_id}`,
-    available: `${Availability}`,
-    reserved: `${ReservedItems}`,
-    on_hand: `${onHand}`,
-  };
 
   // Event handler for form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const jsonData = {
+      menuitem_id: `${InputValue.menuitem_id}`,
+      // category_id: `${InputValue.category_id}`,
+      // available: `${Availability}`,
+      // reserved: `${ReservedItems}`,
+      // on_hand: `${onHand}`,
+      on_hand: `${formData.available}`,
+    };
     // Make a POST request to your server endpoint
-    axios
-      .patch(`https://albadwan.shop/api/inventory/update`, jsonData)
+    await axios
+      .patch(
+        `https://albadwan.shop/api/inventory/res/${restaurantId}/update`,
+        jsonData
+      )
       // .patch(`${import.meta.env.VITE_API_KEY}/api/inventory/update`, jsonData)
-      .then((response) => {
-        console.log("PATCH request successful", response.data);
+      .then(() => {
+        window.location.reload();
+        // console.log("PATCH request successful", response.data);
         // Handle the response data here if needed
-        alert("POST request successful");
+        // alert("POST request successful");
       })
       .catch((error) => {
-        console.error("Error making PATCH request", error);
+        alert("Error making PATCH request", error);
         // Handle errors here if needed
       });
+    // alert(JSON.stringify(jsonData));
   };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
       onSubmit={() => {
         try {
-          handleSubmit();
+          handleSubmit;
         } catch (error) {
           console.log(error);
         }
       }}
     >
+      {/* // <> */}
       <div className="mb-1 flex flex-col gap-3">
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Item Name
@@ -121,7 +129,7 @@ export function UpdateInventoryItem(props) {
           value={formData.available}
           onChange={handleInputChangeTwo}
         />
-        <Typography variant="h6" color="blue-gray" className="-mb-3">
+        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
           <div className="flex justify-between ">
             <div>Reserved</div>
             <div className="text-green-400 text-sm ">{InputValue.reserved}</div>
@@ -140,7 +148,7 @@ export function UpdateInventoryItem(props) {
           // value={InputValue.reserved}
           value={formData.reserved}
           onChange={handleInputChangeTwo}
-        />
+        /> */}
         {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             On Hand
           </Typography>
@@ -158,9 +166,11 @@ export function UpdateInventoryItem(props) {
             onChange={handleInputChange}
           /> */}
       </div>
-      <Button className="mt-6" fullWidth type="submit">
+      <Button className="mt-6" fullWidth onClick={handleSubmit}>
+        {/* <Button className="mt-6" fullWidth type="submit"> */}
         Update Item
       </Button>
+      {/* </> */}{" "}
     </form>
   );
 }

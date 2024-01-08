@@ -55,14 +55,15 @@ const AddStaff = () => {
         waiter_name: `${formData.waiter_name}`,
         login_id: `${formData.login_id}`,
         login_pass: `${formData.password}`,
-        restaurant_id: 1,
+        restaurant_id: `${restaurantId}`,
       };
       axios
         .post(`https://albadwan.shop/api/waiter`, jsonData)
         // .post(`${import.meta.env.VITE_API_KEY}/api/waiter`, jsonData)
         .then((response) => {
           console.log("PATCH request successful", response.data);
-          alert("successfull");
+          window.location.reload();
+          // alert("successfull");
           // Handle the response data here if needed
         })
         .catch((error) => {
@@ -78,7 +79,7 @@ const AddStaff = () => {
 
     // alert("POST request successful");
   };
-
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"
@@ -179,8 +180,8 @@ const AddStaff = () => {
             onChange={handleInputChange}
           /> */}
       </div>
-      <Button className="mt-6" fullWidth type="submit">
-        Update Item
+      <Button className="mt-6" fullWidth onClick={handleSubmit}>
+        Add Waiter
       </Button>
     </form>
   );

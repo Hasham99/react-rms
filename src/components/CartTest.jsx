@@ -10,6 +10,7 @@ const CartTest = () => {
   const cartItems = useSelector((state) => state.cart);
   const cartItemsCount = useSelector((state) => state.cart.length);
   const [tax, setTax] = useState(null);
+  // const [TotalExtrasPrice, setTotalExtrasPrice] = useState(0);
 
   const dispatch = useDispatch(); // Initialize useDispatch hook
 
@@ -20,27 +21,64 @@ const CartTest = () => {
     dispatch(clearAll());
   };
   useEffect(() => {
-    console.log(cartItems);
+    console.log("cart", cartItems);
     setProduct(cartItems);
-    // Calculate total amount
-    const newTotalAmount = cartItems.reduce((acc, item) => {
-      return acc + item.price * item.quantity;
+    // Calculate the total cost for all items in the cart
+    const totalCostForAllItems = cartItems.reduce((total, subcategory) => {
+      const itemTotal =
+        (parseFloat(subcategory.price) +
+          subcategory.itemExtras.reduce(
+            (extraTotal, extra) => extraTotal + extra.extras_price,
+            0
+          )) *
+        subcategory.quantity;
+      return total + itemTotal;
     }, 0);
 
-    setTotalAmount(newTotalAmount);
+    setTotalAmount(totalCostForAllItems);
   }, [cartItems]);
 
+  // useEffect(() => {
+  // const extrasPriceTotal = Product.reduce((total, item) => {
+  //   if (item.itemExtras && item.itemExtras.length > 0) {
+  //     const extrasTotal = item.itemExtras.reduce(
+  //       (itemTotal, extra) => itemTotal + extra.extras_price,
+  //       0
+  //     );
+  //     return total + extrasTotal;
+  //   }
+  //   return total;
+  // }, 0);
+  // const extrasPriceTotalNum = parseFloat(extrasPriceTotal);
+  // setTotalExtrasPrice(extrasPriceTotalNum);
+  // }, []);
+
   const amountAfterTax = parseFloat(
-    totalAmount + (totalAmount * parseFloat(tax)) / 100
+    totalAmount + (totalAmount * tax) / 100
   ).toFixed(4);
+
   // console.log(amountAfterTax);
   const jsonData = {
     // time: new Date().toLocaleString(),
     total_amount: amountAfterTax,
-    items: Product,
+    items: Product.map((item) => ({
+      categoryID: item.categoryID,
+      menuitemID: item.menuitemID,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      kitchenID: item.kitchenID,
+      extras: item.itemExtras.map((extra) => ({
+        extras_id: extra.extras_id,
+        // extras_name: extra.extras_name,
+        // extras_price: extra.extras_price,
+      })),
+      note: item.note,
+    })),
   };
   const navigate = useNavigate();
   const submitData = () => {
+    // Calculate total extras price and update state
     axios
       .post(`https://albadwan.shop/api/posorders/1`, jsonData)
       // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
@@ -53,6 +91,7 @@ const CartTest = () => {
       .catch((error) => {
         console.log(error);
       });
+    // console.log(jsonData);
   };
   useEffect(() => {
     // Fetch data from the API
@@ -75,6 +114,13 @@ const CartTest = () => {
     fetchData();
   }, []);
   const currency = localStorage.getItem("currency");
+
+  // const AllTotalBef = parseFloat(subcategory.price + TotalExtrasPrice).toFixed(
+  //   2
+  // );
+
+  // const AllTotal = AllTotalBef * subcategory.quantity;
+  console.log(JSON.stringify(Product));
   return (
     <div className="h-screen mx-auto ">
       <div className="flex shadow-md h-screen">
@@ -154,9 +200,15 @@ const CartTest = () => {
                 {parseFloat(subcategory.price).toFixed(2)}
               </span>
               <span className="text-center w-1/5 font-semibold text-sm">
-                {parseFloat(subcategory.price * subcategory.quantity).toFixed(
-                  2
-                )}
+                {/* {(subcategory.price + 0) * subcategory.quantity} */}
+                {(
+                  (parseFloat(subcategory.price) +
+                    subcategory.itemExtras.reduce(
+                      (total, extra) => total + extra.extras_price,
+                      0
+                    )) *
+                  subcategory.quantity
+                ).toFixed(2)}
               </span>
             </div>
           ))}
@@ -173,10 +225,13 @@ const CartTest = () => {
               </svg>
               Go Back
             </Link>
-            <div className="items-end font-semibold text-gray-600 text-sm uppercase mr-14">
+            <div className="items-end font-semibold text-gray-600 text-sm uppercase mr-10">
               <span className="">Sub Total:</span>
               <span className="font-bold text-green-300"> {currency} </span>
-              <span className="font-bold text-green-600">{totalAmount}</span>
+              <span className="font-bold text-green-600">
+                {parseFloat(totalAmount).toFixed(2)}
+              </span>
+              {/* <span className="font-bold text-green-600">{totalCostForAllItems}</span> */}
             </div>
           </div>
         </div>
