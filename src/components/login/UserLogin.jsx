@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "@material-tailwind/react";
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [showAlertTrue, setShowAlertTrue] = useState(false);
 
   const jsonData = {
     login_id: `${formData.email}`,
@@ -33,7 +36,11 @@ const UserLogin = () => {
             response.data.restaurant_name
           );
           localStorage.setItem("restaurant_id", response.data.restaurant_id);
-          navigate("/dashboard");
+          setShowAlertTrue(true);
+          setTimeout(() => {
+            setShowAlertTrue(false);
+            navigate("/dashboard");
+          }, 2000);
         } else {
           localStorage.setItem("token", false);
         }
@@ -43,6 +50,10 @@ const UserLogin = () => {
       })
       .catch((error) => {
         localStorage.setItem("token", false);
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 2000);
         console.error("Error making post request", error);
         // Handle errors here if needed
         // alert(error);
@@ -141,10 +152,48 @@ const UserLogin = () => {
             </a>
           </p> */}
         </div>
+        {/* Alert to show when user is not logged in */}
+
         {/* </form> */}
       </div>
+      {showAlert && (
+        <div className="fixed top-4 right-4 z-50">
+          <Alert
+            icon={<Icon />}
+            className="transition-opacity rounded-md border-l-4 border-[#ff5252] bg-[#ff5252]/10 font-medium text-[#ff5252]"
+          >
+            Invalid email or password. Please try again.
+          </Alert>
+        </div>
+      )}
+      {showAlertTrue && (
+        <div className="fixed top-4 right-4 z-50">
+          <Alert
+            icon={<Icon />}
+            className="transition-opacity rounded-none border-l-4 border-green-500 bg-green-100 font-medium text-green-500"
+          >
+            Login Successful
+          </Alert>
+        </div>
+      )}
+      {/* </div> */}
     </div>
   );
 };
-
+function Icon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        fillRule="evenodd"
+        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
 export default UserLogin;

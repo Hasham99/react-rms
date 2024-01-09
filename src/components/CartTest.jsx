@@ -80,7 +80,7 @@ const CartTest = () => {
   const submitData = () => {
     // Calculate total extras price and update state
     axios
-      .post(`https://albadwan.shop/api/posorders/1`, jsonData)
+      .post(`https://albadwan.shop/api/posorders/${restaurantId}`, jsonData)
       // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
         // alert(JSON.stringify(jsonData));
@@ -95,31 +95,28 @@ const CartTest = () => {
   };
   useEffect(() => {
     // Fetch data from the API
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://albadwan.shop/api/timezones/res/1"
-        );
-        const data = response.data;
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       "https://albadwan.shop/api/timezones/res/1"
+    //     );
+    //     const data = response.data;
 
-        // Extract values from the response and set them in state
-        if (data && data.timezone && data.timezone.length > 0) {
-          const timezoneData = data.timezone[0];
-          setTax(timezoneData.tax);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
+    //     // Extract values from the response and set them in state
+    //     if (data && data.timezone && data.timezone.length > 0) {
+    //       const timezoneData = data.timezone[0];
+    //       setTax(timezoneData.tax);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
+    // fetchData();
+    setTax(localTax);
   }, []);
   const currency = localStorage.getItem("currency");
+  const localTax = localStorage.getItem("tax");
 
-  // const AllTotalBef = parseFloat(subcategory.price + TotalExtrasPrice).toFixed(
-  //   2
-  // );
-
-  // const AllTotal = AllTotalBef * subcategory.quantity;
   console.log(JSON.stringify(Product));
   return (
     <div className="h-screen mx-auto ">

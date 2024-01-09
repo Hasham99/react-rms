@@ -28,7 +28,19 @@ const ProductsPOS = () => {
     setFormData(e.target.value);
   };
   const handleInputChange01 = (e) => {
-    setNote(e.target.value);
+    // setNote(e.target.value);
+    const inputValue = e.target.value;
+
+    // Check if the inputValue contains any disallowed characters
+    const disallowedCharacters = /[{&$%}]/g;
+
+    if (!disallowedCharacters.test(inputValue)) {
+      setNote(inputValue);
+    } else {
+      // If disallowed characters are found, don't update the state
+      // You can also show an alert or provide feedback to the user
+      console.log("Note should not contain {, }, %, &, $");
+    }
   };
   const handleListItemClick = (extra) => {
     setItemExtras((prevExtras) => {
@@ -60,13 +72,16 @@ const ProductsPOS = () => {
       itemExtras: itemExtras,
       note: `${Note}`,
     };
-    dispatch(addToCart(jsonData));
-
+    if (formData > 0) {
+      dispatch(addToCart(jsonData));
+      setFormData("");
+      setNote("");
+      setItemExtras([]);
+      handleClose();
+    } else {
+      alert(`Add Quantity`);
+    }
     // console.log(itemExtras.map((item) => item.extras_id));
-    setFormData("");
-    setNote("");
-    setItemExtras([]);
-    handleClose();
   };
 
   const [categories, setCategories] = useState([]);
@@ -85,7 +100,9 @@ const ProductsPOS = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://albadwan.shop/api/cai/v2/res/1`);
+        const response = await fetch(
+          `https://albadwan.shop/api/cai/v2/res/${restaurantId}`
+        );
         const data = await response.json();
         // localStorage.setItem("products", JSON.stringify(data));
         // const data1 = localStorage.getItem("products");
@@ -104,6 +121,7 @@ const ProductsPOS = () => {
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null); // Function to close the dialog
   const currency = localStorage.getItem("currency");
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <>
       <Card>
@@ -165,7 +183,7 @@ const ProductsPOS = () => {
               Quantity
             </Typography>
             <Input
-              required={true}
+              required
               type="number"
               size="md"
               placeholder="Quantity"

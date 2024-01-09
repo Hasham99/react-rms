@@ -27,7 +27,9 @@ export default function RecentOrders() {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
-        const res = await fetch(`https://albadwan.shop/api/order`);
+        const res = await fetch(
+          `https://albadwan.shop/api/order/res/${restaurantId}`
+        );
         const data = await res.json();
 
         // Sort orders by PosOrderID in descending order
@@ -62,6 +64,7 @@ export default function RecentOrders() {
     setCurrentPage(pageNumber);
   };
 
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
       <strong className="text-gray-800 text-lg font-medium">

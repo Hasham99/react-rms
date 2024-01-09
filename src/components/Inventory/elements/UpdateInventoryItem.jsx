@@ -32,13 +32,17 @@ export function UpdateInventoryItem(props) {
 
   // Event handler for form submission
   const handleSubmit = async () => {
+    const onHand = parseInt(InputValue.on_hand);
+    const AvailableQty = parseInt(formData.available);
+    const AddBoth = onHand + AvailableQty;
     const jsonData = {
       menuitem_id: `${InputValue.menuitem_id}`,
       // category_id: `${InputValue.category_id}`,
       // available: `${Availability}`,
       // reserved: `${ReservedItems}`,
       // on_hand: `${onHand}`,
-      on_hand: `${formData.available}`,
+      // on_hand: `${onHand}+${AvailableQty}`,
+      on_hand: `${AddBoth}`,
     };
     // Make a POST request to your server endpoint
     await axios
@@ -57,7 +61,7 @@ export function UpdateInventoryItem(props) {
         alert("Error making PATCH request", error);
         // Handle errors here if needed
       });
-    // alert(JSON.stringify(jsonData));
+    // alert(JSON.stringify(InputValue.on_hand));
   };
   const restaurantId = localStorage.getItem("restaurant_id");
   return (
@@ -110,9 +114,7 @@ export function UpdateInventoryItem(props) {
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           <div className="flex justify-between ">
             <div>Available</div>
-            <div className="text-green-400 text-sm ">
-              {InputValue.available}
-            </div>
+            <div className="text-green-400 text-sm ">{InputValue.on_hand}</div>
           </div>
         </Typography>
         <Input

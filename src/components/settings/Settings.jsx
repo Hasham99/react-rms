@@ -65,24 +65,32 @@ const Settings = () => {
   const [selectedCurrency, setSelectedCurrency] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("");
   const [selectedKitchen, setSelectedKitchen] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [value, setValue] = useState([]);
   const [valueCurr, setValueCurr] = useState([]);
   const [valuePay, setValuePay] = useState([]);
   const [valueKit, setValueKit] = useState([]);
+  const [valueCat, setValueCat] = useState([]);
+  const [valueSubCat, setValueSubCat] = useState([]);
   const [name, setName] = useState("");
   const [defaultCurrency, setDefaultCurrency] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [tax, setTax] = useState(null);
   const [enteredTax, setEnteredTax] = useState(null); // State to store entered tax percentage
   const [enteredPayment, setEnteredPayment] = useState(""); // State to store entered Payment
+  const [enteredCategory, setEnteredCategory] = useState(""); // State to store entered Category
+  const [enteredSubCategory, setEnteredSubCategory] = useState(""); // State to store entered SubCategory
   const [enteredKitchen, setEnteredKitchen] = useState(""); // State to store entered Kitchen
+  const [Category, setCategory] = useState([]); // State to store entered Kitchen
+  const [SubCategory, setSubCategory] = useState([]); // State to store entered Kitchen
 
   useEffect(() => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://albadwan.shop/api/timezones/res/1"
+          `https://albadwan.shop/api/timezones/res/${restaurantId}`
         );
         const data = response.data;
 
@@ -126,7 +134,9 @@ const Settings = () => {
     // Fetch kitchen data from the API
     const fetchKitchenData = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/kitchen/res/1");
+        const response = await fetch(
+          `https://albadwan.shop/api/kitchen/res/${restaurantId}`
+        );
         const data = await response.json();
         setKitchenData(data);
         setActiveKitchen(data[0]); // Set the first kitchen as active by default
@@ -199,7 +209,7 @@ const Settings = () => {
     const fetchPayment = async () => {
       try {
         const response = await fetch(
-          "https://albadwan.shop/api/payment/res/1/get"
+          `https://albadwan.shop/api/payment/res/${restaurantId}/get`
         );
         const data = await response.json();
         setPayment(data);
@@ -208,9 +218,33 @@ const Settings = () => {
         console.error("Error fetching time zones:", error);
       }
     };
+    const fetchCategory = async () => {
+      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
+        .then((response) => response.json())
+        .then((data) => {
+          setCategory(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
+    const fetchSubCategory = async () => {
+      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`)
+        // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSubCategory(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
     const fetchKitchen = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/kitchen/res/1");
+        const response = await fetch(
+          `https://albadwan.shop/api/kitchen/res/${restaurantId}`
+        );
         const data = await response.json();
         setKitchen(data);
         // console.log(JSON.stringify(data));
@@ -222,6 +256,8 @@ const Settings = () => {
     fetchTimeZones();
     fetchCurrency();
     fetchPayment();
+    fetchCategory();
+    fetchSubCategory();
     fetchKitchen();
   }, []);
 
@@ -235,6 +271,12 @@ const Settings = () => {
 
   const handlePaymentChange = (value) => {
     setSelectedPayment(value.p_name);
+  };
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value.CategoryName);
+  };
+  const handleSubCategoryChange = (value) => {
+    setSelectedSubCategory(value.SubCategoryName);
   };
 
   const handleKitchenChangeNew = (value) => {
@@ -250,7 +292,7 @@ const Settings = () => {
 
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/timezones/1`, jsonData)
+        .patch(`https://albadwan.shop/api/timezones/${restaurantId}`, jsonData)
         .then(() => {
           // Alert after successful request
           alert(`Selected Time Zone: ${selectedTimeZone}`);
@@ -276,7 +318,7 @@ const Settings = () => {
 
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/currency/1`, jsonData)
+        .patch(`https://albadwan.shop/api/currency/${restaurantId}`, jsonData)
         .then(() => {
           // Alert after successful request
           alert(`Selected Currency: ${selectedCurrency}`);
@@ -301,7 +343,10 @@ const Settings = () => {
       };
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/tax/res/1/update`, jsonData)
+        .patch(
+          `https://albadwan.shop/api/tax/res/${restaurantId}/update`,
+          jsonData
+        )
         .then(() => {
           setEnteredTax(null);
           window.location.reload();
@@ -319,7 +364,10 @@ const Settings = () => {
       // alert(JSON.stringify(jsonData));
       // Make the PATCH request
       await axios
-        .post(`https://albadwan.shop/api/payment/res/1/create`, jsonData)
+        .post(
+          `https://albadwan.shop/api/payment/res/${restaurantId}/create`,
+          jsonData
+        )
         .then(() => {
           setEnteredPayment(null);
           window.location.reload();
@@ -337,7 +385,8 @@ const Settings = () => {
       // alert(JSON.stringify(jsonData));
       // Make the PATCH request
       await axios
-        .post(`https://albadwan.shop/api/kitchen/res/1`, jsonData)
+        .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
+        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
           setEnteredKitchen("");
           window.location.reload();
@@ -348,15 +397,71 @@ const Settings = () => {
         });
     } else alert("Kitchen Name can't be empty ");
   };
+  const handleSaveButtonClick05 = async () => {
+    if (enteredCategory) {
+      const jsonData = {
+        categoryName: `${enteredCategory}`,
+        description: "-",
+      };
+      // alert(JSON.stringify(jsonData));
+      // Make the PATCH request
+      await axios
+        .post(
+          `https://albadwan.shop/api/category/res/${restaurantId}/create`,
+          jsonData
+        )
+        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
+        .then(() => {
+          setEnteredCategory("");
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("Error", error);
+          // alert(JSON.stringify(jsonData));
+        });
+    } else alert("Kitchen Name can't be empty ");
+  };
+  const handleSaveButtonClick06 = async () => {
+    if (enteredSubCategory) {
+      const jsonData = {
+        subcategoryName: `${enteredSubCategory}`,
+        description: "-",
+      };
+      // alert(JSON.stringify(jsonData));
+      // Make the PATCH request
+      await axios
+        .post(
+          `https://albadwan.shop/api/subcategory/res/${restaurantId}/create`,
+          jsonData
+        )
+        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
+        .then(() => {
+          setEnteredSubCategory("");
+          window.location.reload();
+        })
+        .catch((error) => {
+          // alert(JSON.stringify(jsonData));
+          alert("Error", error);
+          // alert(JSON.stringify(jsonData));
+        });
+    } else alert("SubCategory can't be empty ");
+  };
   const handleTaxInputChange = (e) => {
     setEnteredTax(e.target.value);
   };
   const handlePaymentInputChange = (e) => {
     setEnteredPayment(e.target.value);
   };
+  const handleCategoryInputChange = (e) => {
+    setEnteredCategory(e.target.value);
+  };
+  const handleSubCategoryInputChange = (e) => {
+    setEnteredSubCategory(e.target.value);
+  };
   const handleKitchenInputChange = (e) => {
     setEnteredKitchen(e.target.value);
   };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <Tabs value="basic_setup">
       <TabsHeader>
@@ -370,88 +475,8 @@ const Settings = () => {
         ))}
       </TabsHeader>
       <TabsBody>
-        <TabPanel value="whatsapp">
-          {activeKitchen && (
-            <Card
-              color="transparent"
-              shadow={false}
-              className="flex justify-center items-center"
-            >
-              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
-                <div className=" shadow-md rounded-lg p-4 text-center">
-                  <Typography variant="h4" color="blue-gray">
-                    Access Token
-                  </Typography>
-                  <Typography color="gray" className="mt-1 font-normal">
-                    AB6HBEDEX*********
-                  </Typography>
-                </div>
-                <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
-                  <Typography
-                    className="text-center"
-                    variant="h4"
-                    color="blue-gray"
-                  >
-                    Instance Token
-                  </Typography>
-                  <div className=" grid grid-cols-4 my-1 gap-1">
-                    {instanceId.map((item) => (
-                      <Typography key={item.instance_id} className="  ">
-                        {
-                          <div>
-                            <span className="font-bold">
-                              {item.instance_id}
-                              {". "}
-                            </span>
-                            <span className="font-medium">
-                              {`${item.instance_number.substring(0, 7)}****`}
-                            </span>
-                          </div>
-                        }
-                      </Typography>
-                    ))}
-                  </div>
-                </div>
-
-                <form className=" mb-2 w-[500px]">
-                  <div className="mb-1 flex-col gap-6">
-                    {kitchenData.map((kitchen) => (
-                      <div
-                        key={kitchen.KitchenID}
-                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
-                        onClick={() => handleKitchenChange(kitchen)}
-                      >
-                        <div className="col-span-4">
-                          <Input
-                            size="lg"
-                            placeholder="Group Id"
-                            label={kitchen.Name}
-                            className=""
-                            value={inputValues[kitchen.KitchenID] || ""}
-                            onChange={(e) =>
-                              handleInputChange(
-                                kitchen.KitchenID,
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <Button
-                          className="mx-2"
-                          onClick={() => handleAddButtonClick()}
-                        >
-                          Add
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </form>
-              </CardBody>
-            </Card>
-          )}
-        </TabPanel>
         <TabPanel value="basic_setup">
-          <Card color="transparent" shadow={false} className="h-screen">
+          <Card color="transparent" shadow={false} className="h-fit">
             <div className="grid grid-cols-3  h-4/5">
               <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-56">
                 <Typography className="text-xl font-bold flex items-center justify-between  text-gray-900">
@@ -583,15 +608,22 @@ const Settings = () => {
                   <Typography className=" text-md font-meduim  text-gray-800 ">
                     Available
                   </Typography>
-                  <Select
-                  // value={valueKit} onChange={handleKitchenChangeNew}
-                  >
-                    {kitchen.map((kitchen) => (
-                      <Option key={kitchen.KitchenID} value={kitchen}>
-                        {kitchen.Name}
+                  <Select value={valueKit} onChange={handleKitchenChangeNew}>
+                    {kitchen.length == null ? (
+                      <Option
+                        key="default"
+                        value="default"
+                        className="text-red-500"
+                      >
+                        Kitchens not found
                       </Option>
-                    ))}
-                    {/* <Option>1</Option> */}
+                    ) : (
+                      kitchen.map((kitchen) => (
+                        <Option key={kitchen.KitchenID} value={kitchen}>
+                          {kitchen.Name}
+                        </Option>
+                      ))
+                    )}
                   </Select>
                   <Typography className="mt-3 text-md font-meduim  text-gray-800 ">
                     Add New
@@ -611,8 +643,192 @@ const Settings = () => {
                   Save
                 </Button>
               </div>
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-80">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between">
+                  Add Category
+                </Typography>
+                <div>
+                  <Typography className=" text-md font-meduim  text-gray-800 ">
+                    Available
+                  </Typography>
+                  <Select value={valueCat} onChange={handleCategoryChange}>
+                    {/* {Category.map((Category) => (
+                      <Option value={Category} key={Category.CategoryID}>
+                        {Category.CategoryName}
+                      </Option>
+                    ))} */}
+
+                    {Category.length == null ? (
+                      <Option
+                        key="default"
+                        value="default"
+                        className="text-red-500"
+                      >
+                        Category not found
+                      </Option>
+                    ) : (
+                      Category.map((Category) => (
+                        <Option value={Category} key={Category.CategoryID}>
+                          {Category.CategoryName}
+                        </Option>
+                      ))
+                    )}
+                  </Select>
+                  <Typography className="mt-3 text-md font-meduim  text-gray-800 ">
+                    Add New
+                  </Typography>
+                  <Input
+                    placeholder="Add new category"
+                    required
+                    type="text"
+                    value={enteredCategory}
+                    onChange={handleCategoryInputChange}
+                  />
+                </div>
+                <Button
+                  onClick={handleSaveButtonClick05}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
+              </div>
+              <div className="bg-white m-2 p-6 space-y-4 rounded-md max-h-80">
+                <Typography className="text-xl font-bold  text-gray-900 flex items-center justify-between">
+                  Add Subcategory
+                </Typography>
+                <div>
+                  <Typography className=" text-md font-meduim  text-gray-800 ">
+                    Available
+                  </Typography>
+                  <Select
+                    value={valueSubCat}
+                    onChange={handleSubCategoryChange}
+                  >
+                    {/* {Category.map((Category) => (
+                      <Option value={Category} key={Category.CategoryID}>
+                        {Category.CategoryName}
+                      </Option>
+                    ))} */}
+
+                    {SubCategory.length == null ? (
+                      <Option
+                        key="default"
+                        value="default"
+                        className="text-red-500"
+                      >
+                        Subcategory not found
+                      </Option>
+                    ) : (
+                      SubCategory.map((SubCategory) => (
+                        <Option
+                          value={SubCategory}
+                          key={SubCategory.SubCategoryID}
+                        >
+                          {SubCategory.SubCategoryName}
+                        </Option>
+                      ))
+                    )}
+                  </Select>
+                  <Typography className="mt-3 text-md font-meduim  text-gray-800 ">
+                    Add New
+                  </Typography>
+                  <Input
+                    placeholder="Add new sub category"
+                    required
+                    type="text"
+                    value={enteredSubCategory}
+                    onChange={handleSubCategoryInputChange}
+                  />
+                </div>
+                <Button
+                  onClick={handleSaveButtonClick06}
+                  className="bg-[#092635]"
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </Card>
+        </TabPanel>
+        <TabPanel value="whatsapp">
+          {activeKitchen && (
+            <Card
+              color="transparent"
+              shadow={false}
+              className=" flex justify-center items-center"
+            >
+              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
+                <div className=" shadow-md rounded-lg p-4 text-center">
+                  <Typography variant="h4" color="blue-gray">
+                    Access Token
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    AB6HBEDEX*********
+                  </Typography>
+                </div>
+                <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
+                  <Typography
+                    className="text-center"
+                    variant="h4"
+                    color="blue-gray"
+                  >
+                    Instance Token
+                  </Typography>
+                  <div className=" grid grid-cols-4 my-1 gap-1">
+                    {instanceId.map((item) => (
+                      <Typography key={item.instance_id} className="  ">
+                        {
+                          <div>
+                            <span className="font-bold">
+                              {item.instance_id}
+                              {". "}
+                            </span>
+                            <span className="font-medium">
+                              {`${item.instance_number.substring(0, 7)}****`}
+                            </span>
+                          </div>
+                        }
+                      </Typography>
+                    ))}
+                  </div>
+                </div>
+
+                <form className=" mb-2 w-[500px]">
+                  <div className="mb-1 flex-col gap-6">
+                    {kitchenData.map((kitchen) => (
+                      <div
+                        key={kitchen.KitchenID}
+                        className={`py-3 grid grid-cols-5 items-end my-4  p-2 `}
+                        onClick={() => handleKitchenChange(kitchen)}
+                      >
+                        <div className="col-span-4">
+                          <Input
+                            size="lg"
+                            placeholder="Group Id"
+                            label={kitchen.Name}
+                            className=""
+                            value={inputValues[kitchen.KitchenID] || ""}
+                            onChange={(e) =>
+                              handleInputChange(
+                                kitchen.KitchenID,
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                        <Button
+                          className="mx-2"
+                          onClick={() => handleAddButtonClick()}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </form>
+              </CardBody>
+            </Card>
+          )}
         </TabPanel>
         <TabPanel value="telegram">
           {activeKitchen && (

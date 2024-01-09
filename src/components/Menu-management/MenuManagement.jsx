@@ -70,7 +70,7 @@ function MenuManagement() {
         });
     };
     const fetchCategory = async () => {
-      await fetch(`https://albadwan.shop/api/category`)
+      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -81,7 +81,7 @@ function MenuManagement() {
         });
     };
     const fetchSubCategory = async () => {
-      await fetch(`https://albadwan.shop/api/subcategory`)
+      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`)
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
         .then((response) => response.json())
         .then((data) => {
@@ -218,11 +218,22 @@ function MenuManagement() {
           <div className="p-2">
             <Typography variant="h6">Kitchen</Typography>
             <Select onChange={handleChange02} value={valueTwo}>
-              {Kitchen.map((item) => (
+              {Kitchen.length == null ? (
+                <Option key="default" value="default" className="text-red-500">
+                  Kitchens not found
+                </Option>
+              ) : (
+                Kitchen.map((kitchen) => (
+                  <Option key={kitchen.KitchenID} value={kitchen}>
+                    {kitchen.Name}
+                  </Option>
+                ))
+              )}
+              {/* {Kitchen.map((item) => (
                 <Option value={item} key={item.KitchenID}>
                   {item.Name}
                 </Option>
-              ))}
+              ))} */}
             </Select>
           </div>
         </div>
