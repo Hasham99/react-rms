@@ -53,13 +53,13 @@ const Header = () => {
 
         <Popover className="flex justify-between ">
           <Link to={"/cart"}>
-            <span className="flex items-center cursor-pointer">
+            <span className="flex items-start cursor-pointer">
               <HiOutlineShoppingCart
                 className="text-gray-700"
                 fontSize={24}
                 onClick={() => setCartDialogOpen(true)}
               />
-              <span className="text-green-300">
+              <span className="text-white bg-green-500 rounded-full text-[12px]  px-1">
                 {cartItems == 0 ? "" : cartItems}
               </span>
             </span>
