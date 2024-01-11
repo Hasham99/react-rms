@@ -13,13 +13,15 @@ import {
   Checkbox,
   Select,
   Option,
+  Dialog,
+  DialogBody,
 } from "@material-tailwind/react";
 import {
   Square3Stack3DIcon,
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import { FaTelegramPlane } from "react-icons/fa";
+import { FaRegWindowClose, FaTelegramPlane } from "react-icons/fa";
 import { RiWhatsappFill } from "react-icons/ri";
 import axios from "axios";
 
@@ -95,6 +97,28 @@ const Settings = () => {
   const [selectedInstanceNum, setSelectedInstanceNum] = useState([]);
   const [accessTokens, setAccessTokens] = useState([]);
   const [groupsData, setGroupsData] = useState([]);
+  // States for each kitchen
+  const [kitchen01, setKitchen01] = useState(null);
+  const [kitchen02, setKitchen02] = useState(null);
+  const [kitchen03, setKitchen03] = useState(null);
+  const [kitchen04, setKitchen04] = useState(null);
+  const [kitchen05, setKitchen05] = useState(null);
+  const [kitchen06, setKitchen06] = useState(null);
+  const [kitchen07, setKitchen07] = useState(null);
+
+  // States for each w_group_number
+  const [Kitchen01InputValue, setKitchen01InputValue] = useState("");
+  const [Kitchen02InputValue, setKitchen02InputValue] = useState("");
+  const [Kitchen03InputValue, setKitchen03InputValue] = useState("");
+  const [Kitchen04InputValue, setKitchen04InputValue] = useState("");
+  const [Kitchen05InputValue, setKitchen05InputValue] = useState("");
+  const [Kitchen06InputValue, setKitchen06InputValue] = useState("");
+  const [Kitchen07InputValue, setKitchen07InputValue] = useState("");
+
+  const [size, setSize] = useState(null);
+
+  const handleOpen = (value) => setSize(value);
+  const handleClose = () => setSize(null);
 
   useEffect(() => {
     // Fetch data from the API
@@ -188,9 +212,64 @@ const Settings = () => {
         .catch((error) => console.error("Error fetching data:", error));
     };
 
+    const fetchKitchenDataViaIndex = async () => {
+      const apiUrl = `https://albadwan.shop/api/kitchen/res/${restaurantId}`;
+
+      fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setKitchen01(data[0]);
+          setKitchen02(data[1]);
+          setKitchen03(data[2]);
+          setKitchen04(data[3]);
+          setKitchen05(data[4]);
+          setKitchen06(data[5]);
+          setKitchen07(data[6]);
+          // Check if data is an array
+          // if (Array.isArray(data)) {
+          //   // Iterate over the data and set states
+          //   for (let i = 0; i < Math.min(data.length, 6); i++) {
+          //     const kitchenIndex = padIndex(i + 1);
+          //     const kitchenData = data[i];
+
+          //     // Set state for each kitchen
+          //     switch (kitchenIndex) {
+          //       case "01":
+          //         setKitchen01(kitchenData);
+          //         break;
+          //       case "02":
+          //         setKitchen02(kitchenData);
+          //         break;
+          //       case "03":
+          //         setKitchen03(kitchenData);
+          //         break;
+          //       case "04":
+          //         setKitchen04(kitchenData);
+          //         break;
+          //       case "05":
+          //         setKitchen05(kitchenData);
+          //         break;
+          //       case "06":
+          //         setKitchen06(kitchenData);
+          //         break;
+          //       case "07":
+          //         setKitchen07(kitchenData);
+          //         break;
+          //       default:
+          //         break;
+          //     }
+          //   }
+          // } else {
+          //   console.error("Invalid data format from the API.");
+          // }
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    };
+
     fetchKitchenData();
     InstanceId();
     AccessToken();
+    fetchKitchenDataViaIndex();
   }, []);
   const handleInputChange = (kitchenId, value) => {
     setInputValues((prevInputValues) => ({
@@ -198,7 +277,20 @@ const Settings = () => {
       [kitchenId]: value,
     }));
   };
-  const handleTestAddButtonClick = () => {
+  const handleAddButtonClick01 = () => {
+    // alert("this");
+    const jsonData = {
+      KitchenID: `${kitchen01.KitchenID}`,
+      w_group_number: `${Kitchen01InputValue}`,
+      instance_id: `${selectedInstanceNum}`,
+    };
+    alert(JSON.stringify(jsonData));
+  };
+
+  const handleKitchen01InputChange = (event) => {
+    setKitchen01InputValue(event.target.value);
+  };
+  const handleTestUpdateButtonClick = () => {
     alert("this");
   };
   const handleAddButtonClick = () => {
@@ -1059,30 +1151,23 @@ const Settings = () => {
                     ))}
                   </div>
                 </div>
-                <form className="mb-2 w-[650px]">
+                <form className="mb-2 w-[680px]">
                   <div className="mb-1 flex-col gap-6">
                     <div
                       // key={kitchen.KitchenID}
-                      className="grid grid-cols-5 items-end my-2 p-2"
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
                       // onClick={() => handleKitchenChange(kitchen)}
                     >
-                      <div className="col-span-2 px-2 text-end">
+                      <div className="col-span-2 pr-2 text-end">
                         <div>
-                          {/* <span className="text-sm font-bold text-green-400">
-                            121313
-                          </span> */}
                           <Input
+                            type="text"
                             size="md"
                             placeholder="Group Id"
                             label="Group Id"
                             className=""
-                            // value={inputValues[kitchen.KitchenID] || ""}
-                            // onChange={(e) =>
-                            //   handleInputChange(
-                            //     kitchen.KitchenID,
-                            //     e.target.value
-                            //   )
-                            // }
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
                           />
                         </div>
                       </div>
@@ -1098,12 +1183,125 @@ const Settings = () => {
                           ))}
                         </Select>
                       </div>
-                      <Button
-                        className="mx-2"
-                        onClick={() => handleTestAddButtonClick()}
-                      >
-                        Add
-                      </Button>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                      {/* <Button
+                          className="mx-2"
+                          onClick={() => handleUpdateButtonClick()}
+                        >
+                          Update
+                        </Button> */}
+                    </div>
+                    <div
+                      // key={kitchen.KitchenID}
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
+                      // onClick={() => handleKitchenChange(kitchen)}
+                    >
+                      <div className="col-span-2 pr-2 text-end">
+                        <div>
+                          <Input
+                            type="text"
+                            size="md"
+                            placeholder="Group Id"
+                            label="Group Id"
+                            className=""
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-2 px-2">
+                        <Select
+                          label="Instance Id"
+                          onChange={(value) => handleInstanceChange(value)}
+                        >
+                          {instanceId.map((item) => (
+                            <Option key={item.instance_id} value={item}>
+                              {item.instance_number}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                      {/* <Button
+                          className="mx-2"
+                          onClick={() => handleUpdateButtonClick()}
+                        >
+                          Update
+                        </Button> */}
+                    </div>
+                    <div
+                      // key={kitchen.KitchenID}
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
+                      // onClick={() => handleKitchenChange(kitchen)}
+                    >
+                      <div className="col-span-2 pr-2 text-end">
+                        <div>
+                          <Input
+                            type="text"
+                            size="md"
+                            placeholder="Group Id"
+                            label="Group Id"
+                            className=""
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-2 px-2">
+                        <Select
+                          label="Instance Id"
+                          onChange={(value) => handleInstanceChange(value)}
+                        >
+                          {instanceId.map((item) => (
+                            <Option key={item.instance_id} value={item}>
+                              {item.instance_number}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
                       {/* <Button
                           className="mx-2"
                           onClick={() => handleUpdateButtonClick()}
@@ -1112,10 +1310,51 @@ const Settings = () => {
                         </Button> */}
                     </div>
                   </div>
-                </form>{" "}
+                </form>
               </CardBody>
             </Card>
           )}
+          <Dialog
+            open={
+              size === "xs" ||
+              size === "sm" ||
+              size === "md" ||
+              size === "lg" ||
+              size === "xl" ||
+              size === "xxl"
+            }
+            size={size || "md"}
+            handler={handleOpen}
+          >
+            <DialogBody className=" p-5">
+              <Card color="transparent" shadow={false}>
+                <div className="flex justify-between items-center">
+                  <Typography variant="h4" className="text-sidebar">
+                    Add Inventory Item
+                  </Typography>
+                  {/* // onClick={handleClose} */}
+                  <div onClick={handleClose}>
+                    <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
+                  </div>
+                </div>
+                <CardBody className="space-y-4">
+                  <div className="space-y-1">
+                    <Typography>Update Group Id</Typography>
+                    <Input />
+                    <Button>Update</Button>
+                  </div>
+                  <div className="space-y-1">
+                    <Typography>Update Instance Id</Typography>
+                    <Select>
+                      <Option>1</Option>
+                    </Select>
+                    <Button>Update</Button>
+                  </div>
+                </CardBody>
+                {/* <AddInventoryItem /> */}
+              </Card>
+            </DialogBody>
+          </Dialog>
         </TabPanel>
       </TabsBody>
     </Tabs>
