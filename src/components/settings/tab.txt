@@ -1,0 +1,249 @@
+<TabPanel value="whatsapptest">
+          {activeKitchen && (
+            <Card
+              color="transparent"
+              shadow={false}
+              className="flex justify-center items-center"
+            >
+              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
+                <div className="shadow-md rounded-lg p-4 text-center">
+                  <Typography variant="h4" color="blue-gray">
+                    Access Token
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    {accessTokens.length > 0
+                      ? accessTokens[0].substring(0, 10) +
+                        "*".repeat(accessTokens[0].length - 10)
+                      : "Loading..."}
+                  </Typography>
+                </div>
+                <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
+                  <Typography
+                    className="text-center"
+                    variant="h4"
+                    color="blue-gray"
+                  >
+                    Instance Token
+                  </Typography>
+                  <div className="grid grid-cols-4 my-1 gap-1">
+                    {instanceId.map((item, index) => (
+                      <Typography key={item.instance_id} className="  ">
+                        <div>
+                          <span className="font-bold">{`${index + 1}. `}</span>
+                          <span className="font-medium">
+                            {`${item.instance_number.substring(0, 7)}****`}
+                          </span>
+                        </div>
+                      </Typography>
+                    ))}
+                  </div>
+                </div>
+                <form className="mb-2 w-[680px]">
+                  <div className="mb-1 flex-col gap-6">
+                    <div
+                      // key={kitchen.KitchenID}
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
+                      // onClick={() => handleKitchenChange(kitchen)}
+                    >
+                      <div className="col-span-2 pr-2 text-end">
+                        <div>
+                          <span className="text-sm font-bold text-green-500">
+                            {group1.w_group_number}
+                          </span>
+                          <Input
+                            type="text"
+                            size="md"
+                            placeholder="Group Id"
+                            label="Group Id"
+                            className=""
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-2 px-2">
+                        <Select
+                          label="Instance Id"
+                          onChange={(value) => handleInstanceChange(value)}
+                        >
+                          {instanceId.map((item) => (
+                            <Option key={item.instance_id} value={item}>
+                              {item.instance_number}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                          disabled={isAddButtonDisabled}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                      {/* <Button
+                          className="mx-2"
+                          onClick={() => handleUpdateButtonClick()}
+                        >
+                          Update
+                        </Button> */}
+                    </div>
+                    <div
+                      // key={kitchen.KitchenID}
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
+                      // onClick={() => handleKitchenChange(kitchen)}
+                    >
+                      <div className="col-span-2 pr-2 text-end">
+                        <div>
+                          <Input
+                            type="text"
+                            size="md"
+                            placeholder="Group Id"
+                            label="Group Id"
+                            className=""
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-2 px-2">
+                        <Select
+                          label="Instance Id"
+                          onChange={(value) => handleInstanceChange(value)}
+                        >
+                          {instanceId.map((item) => (
+                            <Option key={item.instance_id} value={item}>
+                              {item.instance_number}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                      {/* <Button
+                          className="mx-2"
+                          onClick={() => handleUpdateButtonClick()}
+                        >
+                          Update
+                        </Button> */}
+                    </div>
+                    <div
+                      // key={kitchen.KitchenID}
+                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
+                      // onClick={() => handleKitchenChange(kitchen)}
+                    >
+                      <div className="col-span-2 pr-2 text-end">
+                        <div>
+                          <Input
+                            type="text"
+                            size="md"
+                            placeholder="Group Id"
+                            label="Group Id"
+                            className=""
+                            value={Kitchen01InputValue}
+                            onChange={handleKitchen01InputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-2 px-2">
+                        <Select
+                          label="Instance Id"
+                          onChange={(value) => handleInstanceChange(value)}
+                        >
+                          {instanceId.map((item) => (
+                            <Option key={item.instance_id} value={item}>
+                              {item.instance_number}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                      <div className="flex space-x-1 ">
+                        <Button
+                          className="px-4"
+                          onClick={() => handleAddButtonClick01()}
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          className="p-3"
+                          // onClick={() => handleTestUpdateButtonClick()}
+                          onClick={() => handleOpen("sm")}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                      {/* <Button
+                          className="mx-2"
+                          onClick={() => handleUpdateButtonClick()}
+                        >
+                          Update
+                        </Button> */}
+                    </div>
+                  </div>
+                </form>
+              </CardBody>
+            </Card>
+          )}
+          <Dialog
+            open={
+              size === "xs" ||
+              size === "sm" ||
+              size === "md" ||
+              size === "lg" ||
+              size === "xl" ||
+              size === "xxl"
+            }
+            size={size || "md"}
+            handler={handleOpen}
+          >
+            <DialogBody className=" p-5">
+              <Card color="transparent" shadow={false}>
+                <div className="flex justify-between items-center">
+                  <Typography variant="h4" className="text-sidebar">
+                    Add Inventory Item
+                  </Typography>
+                  {/* // onClick={handleClose} */}
+                  <div onClick={handleClose}>
+                    <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
+                  </div>
+                </div>
+                <CardBody className="space-y-4">
+                  <div className="space-y-1">
+                    <Typography>Update Group Id</Typography>
+                    <Input />
+                    <Button>Update</Button>
+                  </div>
+                  <div className="space-y-1">
+                    <Typography>Update Instance Id</Typography>
+                    <Select>
+                      <Option>1</Option>
+                    </Select>
+                    <Button>Update</Button>
+                  </div>
+                </CardBody>
+                {/* <AddInventoryItem /> */}
+              </Card>
+            </DialogBody>
+          </Dialog>
+        </TabPanel>

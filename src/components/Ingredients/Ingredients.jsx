@@ -53,10 +53,15 @@ const Ingredients = () => {
   };
 
   const handleSubmit01 = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     axios
       .post(
         `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
-        jsonData01
+        jsonData01,
+        { headers }
       )
       // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
       .then(() => {
@@ -78,10 +83,15 @@ const Ingredients = () => {
   };
 
   const handleSubmit02 = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     axios
       .post(
         `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
-        jsonData02
+        jsonData02,
+        { headers }
       )
       // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
       .then(() => {
@@ -102,6 +112,7 @@ const Ingredients = () => {
       });
   };
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <>
       <div className="grid grid-cols-2 ">

@@ -73,8 +73,13 @@ const ItemIngredients = () => {
 
   useEffect(() => {
     const fetchItemName = async () => {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       await fetch(
-        `https://albadwan.shop/api/items/res/${restaurantId}/recipewise`
+        `https://albadwan.shop/api/items/res/${restaurantId}/recipewise`,
+        { headers }
       )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/items/recipewise`)
         .then((response) => response.json())
@@ -86,7 +91,13 @@ const ItemIngredients = () => {
         });
     };
     const fetchIngredientName = async () => {
-      await fetch(`https://albadwan.shop/api/ingredients/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/ingredients/res/${restaurantId}`, {
+        headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/ingredients/`)
         .then((response) => response.json())
         .then((data) => {
@@ -152,14 +163,19 @@ const ItemIngredients = () => {
     items: [],
   };
   const handleSubmit = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     axios
       .post(
         `https://albadwan.shop/api/recipeitems/res/${restaurantId}`,
-        jsonData
+        jsonData,
+        { headers }
       )
       // .post(`${import.meta.env.VITE_API_KEY}/api/recipeitems`, jsonData)
       .then(() => {
-        alert(JSON.stringify(jsonData));
+        // alert(JSON.stringify(jsonData));
         window.location.href = "/ingredients";
       })
       .catch((error) => {
@@ -227,6 +243,7 @@ const ItemIngredients = () => {
     }
   }, [formData]);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className="grid grid-cols-2">
       <Card className="m-4 p-2  ">

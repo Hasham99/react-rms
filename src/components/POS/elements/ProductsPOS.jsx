@@ -100,8 +100,13 @@ const ProductsPOS = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/cai/v2/res/${restaurantId}`
+          `https://albadwan.shop/api/cai/v2/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = await response.json();
         // localStorage.setItem("products", JSON.stringify(data));
@@ -122,6 +127,7 @@ const ProductsPOS = () => {
   const handleClose = () => setSize(null); // Function to close the dialog
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <>
       <Card>

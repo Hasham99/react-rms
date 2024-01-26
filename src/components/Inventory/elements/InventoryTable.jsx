@@ -33,8 +33,13 @@ const InventoryTable = () => {
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const res = await fetch(
-          `https://albadwan.shop/api/inventory/res/${restaurantId}/get`
+          `https://albadwan.shop/api/inventory/res/${restaurantId}/get`,
+          { headers: headers }
           // `${import.meta.env.VITE_API_KEY}/api/inventory/get`
         );
         const data = await res.json();
@@ -55,6 +60,7 @@ const InventoryTable = () => {
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <>
       <Card className=" w-full overflow-scroll">

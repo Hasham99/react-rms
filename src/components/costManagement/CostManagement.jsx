@@ -24,8 +24,13 @@ const CostManagement = () => {
     // fetchItemCostManagement();
     const fetchData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/recipeitems/res/${restaurantId}/ing`
+          `https://albadwan.shop/api/recipeitems/res/${restaurantId}/ing`,
+          { headers: headers }
           // `${import.meta.env.VITE_API_KEY}/api/recipeitems/ing`
         );
         setAllData(response.data);
@@ -38,6 +43,7 @@ const CostManagement = () => {
   }, []);
   const restaurantId = localStorage.getItem("restaurant_id");
   const currency = localStorage.getItem("currency");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className="grid grid-cols-4 p-4">
       {/* <div>

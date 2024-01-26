@@ -78,9 +78,15 @@ const CartTest = () => {
   };
   const navigate = useNavigate();
   const submitData = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     // Calculate total extras price and update state
     axios
-      .post(`https://albadwan.shop/api/posorders/${restaurantId}`, jsonData)
+      .post(`https://albadwan.shop/api/posorders/${restaurantId}`, jsonData, {
+        headers,
+      })
       // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
         // alert(JSON.stringify(jsonData));
@@ -116,8 +122,9 @@ const CartTest = () => {
   }, []);
   const currency = localStorage.getItem("currency");
   const localTax = localStorage.getItem("tax");
-
   console.log(JSON.stringify(Product));
+  const BearerToken = localStorage.getItem("BearerToken");
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className="h-screen mx-auto ">
       <div className="flex shadow-md h-screen">

@@ -38,11 +38,16 @@ const UpdateStaff = (props) => {
   };
 
   const handleSubmit = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     axios
       .patch(
         `https://albadwan.shop/api/waiter/${InputValue.waiter_id}`,
         // `${import.meta.env.VITE_API_KEY}/api/waiter/${InputValue.waiter_id}`,
-        jsonData
+        jsonData,
+        { headers: headers }
       )
       .then((response) => {
         console.log("PATCH request successful", response.data);
@@ -56,7 +61,7 @@ const UpdateStaff = (props) => {
         // Handle errors here if needed
       });
   };
-
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"

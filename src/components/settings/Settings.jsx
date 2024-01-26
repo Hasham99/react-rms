@@ -50,14 +50,14 @@ const Settings = () => {
               We're constantly growing. We're constantly making mistakes. We're
               constantly trying to express ourselves and actualize our dreams.`,
     },
-    {
-      label: "Test",
-      value: "whatsapptest",
-      icon: RiWhatsappFill,
-      desc: `We're not always in the position that we want to be at.
-              We're constantly growing. We're constantly making mistakes. We're
-              constantly trying to express ourselves and actualize our dreams.`,
-    },
+    // {
+    //   label: "Test",
+    //   value: "whatsapptest",
+    //   icon: RiWhatsappFill,
+    //   desc: `We're not always in the position that we want to be at.
+    //           We're constantly growing. We're constantly making mistakes. We're
+    //           constantly trying to express ourselves and actualize our dreams.`,
+    // },
   ];
   const handleKitchenChange = (kitchen) => {
     setActiveKitchen(kitchen);
@@ -115,6 +115,46 @@ const Settings = () => {
   const [Kitchen06InputValue, setKitchen06InputValue] = useState("");
   const [Kitchen07InputValue, setKitchen07InputValue] = useState("");
 
+  // States for individual objects
+  const [group1, setGroup1] = useState({});
+  const [group2, setGroup2] = useState({});
+  const [group3, setGroup3] = useState({});
+  const [group4, setGroup4] = useState({});
+  const [group5, setGroup5] = useState({});
+  const [group6, setGroup6] = useState({});
+  const [group7, setGroup7] = useState({});
+
+  const [isAddButtonDisabled, setIsAddButtonDisabled] = useState(false);
+
+  const [apiData, setApiData] = useState([]);
+  const [FilteredData, setFilteredData] = useState([]);
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await fetch(
+          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          { headers: headers }
+        );
+        const data = await response.json();
+        setApiData(data);
+        console.log(`apidata ${apiData}`);
+
+        // Filter the data based on KitchenID
+        const filteredData = data.filter((item) => item.KitchenID === 1);
+        setFilteredData(filteredData);
+        console.log(`filteredData ${FilteredData}`);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAllData();
+  }, []);
+
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
@@ -124,8 +164,13 @@ const Settings = () => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/timezones/res/${restaurantId}`
+          `https://albadwan.shop/api/timezones/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = response.data;
 
@@ -145,14 +190,22 @@ const Settings = () => {
     // Fetch groups data from the API
     const fetchGroupsData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          "https://albadwan.shop/api/whatsapp/res/1/group"
+          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          { headers: headers }
         );
         setGroupsData(response.data);
       } catch (error) {
         console.error("Error fetching groups data:", error);
       }
     };
+
+    // Fetch API data
+
     // const fetchCurrencyData = async () => {
     //   try {
     //     const response = await axios.get("https://albadwan.shop/api/currency");
@@ -176,13 +229,50 @@ const Settings = () => {
     fetchGroupsData();
     // fetchCurrencyData();
   }, []); // Empty dependency array to run the effect only once on mount
+  useEffect(() => {
+    const fetchGroupDataIndex = async () => {
+      try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await fetch(
+          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          { headers: headers }
+        );
+        const data = await response.json();
+
+        // Set API data to state
+        // setApiData(data);
+
+        // Store each object in a separate state
+        if (data.length >= 1) setGroup1(data[0]);
+        if (data.length >= 2) setGroup2(data[1]);
+        if (data.length >= 3) setGroup3(data[2]);
+        if (data.length >= 4) setGroup3(data[3]);
+        if (data.length >= 5) setGroup3(data[4]);
+        if (data.length >= 6) setGroup3(data[5]);
+        if (data.length >= 7) setGroup3(data[6]);
+        // Add more conditions for other groups as needed...
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchGroupDataIndex();
+  }, [data]);
 
   useEffect(() => {
     // Fetch kitchen data from the API
     const fetchKitchenData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/kitchen/res/${restaurantId}`
+          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = await response.json();
         setKitchenData(data);
@@ -193,7 +283,13 @@ const Settings = () => {
     };
     const InstanceId = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/whatsapp");
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await fetch("https://albadwan.shop/api/whatsapp", {
+          headers: headers,
+        });
         const data = await response.json();
         setInstanceId(data);
         // setActiveKitchen(data[0]); // Set the first kitchen as active by default
@@ -202,8 +298,12 @@ const Settings = () => {
       }
     };
     const AccessToken = async () => {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Fetch data from your API and update state
-      fetch("https://albadwan.shop/api/whatsapp/instances")
+      fetch("https://albadwan.shop/api/whatsapp/instances", { headers })
         .then((response) => response.json())
         .then((data) => {
           setAccessTokens(data.map((item) => item.access_token));
@@ -214,8 +314,13 @@ const Settings = () => {
 
     const fetchKitchenDataViaIndex = async () => {
       const apiUrl = `https://albadwan.shop/api/kitchen/res/${restaurantId}`;
-
-      fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, {
+        headers,
+      })
         .then((response) => response.json())
         .then((data) => {
           setKitchen01(data[0]);
@@ -376,7 +481,13 @@ const Settings = () => {
   useEffect(() => {
     const fetchTimeZones = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/timezones");
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await fetch("https://albadwan.shop/api/timezones", {
+          headers: headers,
+        });
         const data = await response.json();
         setTimeZones(data);
         // console.log(JSON.stringify(data));
@@ -386,7 +497,13 @@ const Settings = () => {
     };
     const fetchCurrency = async () => {
       try {
-        const response = await fetch("https://albadwan.shop/api/currency");
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await fetch("https://albadwan.shop/api/currency", {
+          headers: headers,
+        });
         const data = await response.json();
         setCurrency(data);
         // console.log(JSON.stringify(data));
@@ -396,8 +513,13 @@ const Settings = () => {
     };
     const fetchPayment = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/get`
+          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          { headers: headers }
         );
         const data = await response.json();
         setPayment(data);
@@ -407,7 +529,13 @@ const Settings = () => {
       }
     };
     const fetchCategory = async () => {
-      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`, {
+        headers: headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -418,7 +546,13 @@ const Settings = () => {
         });
     };
     const fetchSubCategory = async () => {
-      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`, {
+        headers: headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -430,8 +564,13 @@ const Settings = () => {
     };
     const fetchKitchen = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/kitchen/res/${restaurantId}`
+          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = await response.json();
         setKitchen(data);
@@ -654,8 +793,12 @@ const Settings = () => {
     // alert(`Selected Instance: ${selectedInstance}`);
     setSelectedInstanceNum(selectedInstance.instance_id);
   };
-
+  useEffect(() => {
+    // Check if group1 has data and update isAddButtonDisabled accordingly
+    setIsAddButtonDisabled(Object.keys(group1).length > 0);
+  }, [group1]);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <Tabs value="basic_setup">
       <TabsHeader>
@@ -1056,6 +1199,7 @@ const Settings = () => {
             </Card>
           )}
         </TabPanel>
+
         <TabPanel value="telegram">
           {activeKitchen && (
             <Card
@@ -1110,251 +1254,6 @@ const Settings = () => {
               </CardBody>
             </Card>
           )}
-        </TabPanel>
-        <TabPanel value="whatsapptest">
-          {activeKitchen && (
-            <Card
-              color="transparent"
-              shadow={false}
-              className="flex justify-center items-center"
-            >
-              <CardBody className="bg-white shadow-md rounded-lg mt-6 py-10">
-                <div className="shadow-md rounded-lg p-4 text-center">
-                  <Typography variant="h4" color="blue-gray">
-                    Access Token
-                  </Typography>
-                  <Typography color="gray" className="mt-1 font-normal">
-                    {accessTokens.length > 0
-                      ? accessTokens[0].substring(0, 10) +
-                        "*".repeat(accessTokens[0].length - 10)
-                      : "Loading..."}
-                  </Typography>
-                </div>
-                <div className="flex flex-col p-4 h-20 my-2 rounded-lg justify-center shadow-md">
-                  <Typography
-                    className="text-center"
-                    variant="h4"
-                    color="blue-gray"
-                  >
-                    Instance Token
-                  </Typography>
-                  <div className="grid grid-cols-4 my-1 gap-1">
-                    {instanceId.map((item, index) => (
-                      <Typography key={item.instance_id} className="  ">
-                        <div>
-                          <span className="font-bold">{`${index + 1}. `}</span>
-                          <span className="font-medium">
-                            {`${item.instance_number.substring(0, 7)}****`}
-                          </span>
-                        </div>
-                      </Typography>
-                    ))}
-                  </div>
-                </div>
-                <form className="mb-2 w-[680px]">
-                  <div className="mb-1 flex-col gap-6">
-                    <div
-                      // key={kitchen.KitchenID}
-                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
-                      // onClick={() => handleKitchenChange(kitchen)}
-                    >
-                      <div className="col-span-2 pr-2 text-end">
-                        <div>
-                          <Input
-                            type="text"
-                            size="md"
-                            placeholder="Group Id"
-                            label="Group Id"
-                            className=""
-                            value={Kitchen01InputValue}
-                            onChange={handleKitchen01InputChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-span-2 px-2">
-                        <Select
-                          label="Instance Id"
-                          onChange={(value) => handleInstanceChange(value)}
-                        >
-                          {instanceId.map((item) => (
-                            <Option key={item.instance_id} value={item}>
-                              {item.instance_number}
-                            </Option>
-                          ))}
-                        </Select>
-                      </div>
-                      <div className="flex space-x-1 ">
-                        <Button
-                          className="px-4"
-                          onClick={() => handleAddButtonClick01()}
-                        >
-                          Add
-                        </Button>
-                        <Button
-                          className="p-3"
-                          // onClick={() => handleTestUpdateButtonClick()}
-                          onClick={() => handleOpen("sm")}
-                        >
-                          Update
-                        </Button>
-                      </div>
-                      {/* <Button
-                          className="mx-2"
-                          onClick={() => handleUpdateButtonClick()}
-                        >
-                          Update
-                        </Button> */}
-                    </div>
-                    <div
-                      // key={kitchen.KitchenID}
-                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
-                      // onClick={() => handleKitchenChange(kitchen)}
-                    >
-                      <div className="col-span-2 pr-2 text-end">
-                        <div>
-                          <Input
-                            type="text"
-                            size="md"
-                            placeholder="Group Id"
-                            label="Group Id"
-                            className=""
-                            value={Kitchen01InputValue}
-                            onChange={handleKitchen01InputChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-span-2 px-2">
-                        <Select
-                          label="Instance Id"
-                          onChange={(value) => handleInstanceChange(value)}
-                        >
-                          {instanceId.map((item) => (
-                            <Option key={item.instance_id} value={item}>
-                              {item.instance_number}
-                            </Option>
-                          ))}
-                        </Select>
-                      </div>
-                      <div className="flex space-x-1 ">
-                        <Button
-                          className="px-4"
-                          onClick={() => handleAddButtonClick01()}
-                        >
-                          Add
-                        </Button>
-                        <Button
-                          className="p-3"
-                          // onClick={() => handleTestUpdateButtonClick()}
-                          onClick={() => handleOpen("sm")}
-                        >
-                          Update
-                        </Button>
-                      </div>
-                      {/* <Button
-                          className="mx-2"
-                          onClick={() => handleUpdateButtonClick()}
-                        >
-                          Update
-                        </Button> */}
-                    </div>
-                    <div
-                      // key={kitchen.KitchenID}
-                      className="grid grid-cols-5 items-end my-2 p-2  bg-blue-gray-100"
-                      // onClick={() => handleKitchenChange(kitchen)}
-                    >
-                      <div className="col-span-2 pr-2 text-end">
-                        <div>
-                          <Input
-                            type="text"
-                            size="md"
-                            placeholder="Group Id"
-                            label="Group Id"
-                            className=""
-                            value={Kitchen01InputValue}
-                            onChange={handleKitchen01InputChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-span-2 px-2">
-                        <Select
-                          label="Instance Id"
-                          onChange={(value) => handleInstanceChange(value)}
-                        >
-                          {instanceId.map((item) => (
-                            <Option key={item.instance_id} value={item}>
-                              {item.instance_number}
-                            </Option>
-                          ))}
-                        </Select>
-                      </div>
-                      <div className="flex space-x-1 ">
-                        <Button
-                          className="px-4"
-                          onClick={() => handleAddButtonClick01()}
-                        >
-                          Add
-                        </Button>
-                        <Button
-                          className="p-3"
-                          // onClick={() => handleTestUpdateButtonClick()}
-                          onClick={() => handleOpen("sm")}
-                        >
-                          Update
-                        </Button>
-                      </div>
-                      {/* <Button
-                          className="mx-2"
-                          onClick={() => handleUpdateButtonClick()}
-                        >
-                          Update
-                        </Button> */}
-                    </div>
-                  </div>
-                </form>
-              </CardBody>
-            </Card>
-          )}
-          <Dialog
-            open={
-              size === "xs" ||
-              size === "sm" ||
-              size === "md" ||
-              size === "lg" ||
-              size === "xl" ||
-              size === "xxl"
-            }
-            size={size || "md"}
-            handler={handleOpen}
-          >
-            <DialogBody className=" p-5">
-              <Card color="transparent" shadow={false}>
-                <div className="flex justify-between items-center">
-                  <Typography variant="h4" className="text-sidebar">
-                    Add Inventory Item
-                  </Typography>
-                  {/* // onClick={handleClose} */}
-                  <div onClick={handleClose}>
-                    <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
-                  </div>
-                </div>
-                <CardBody className="space-y-4">
-                  <div className="space-y-1">
-                    <Typography>Update Group Id</Typography>
-                    <Input />
-                    <Button>Update</Button>
-                  </div>
-                  <div className="space-y-1">
-                    <Typography>Update Instance Id</Typography>
-                    <Select>
-                      <Option>1</Option>
-                    </Select>
-                    <Button>Update</Button>
-                  </div>
-                </CardBody>
-                {/* <AddInventoryItem /> */}
-              </Card>
-            </DialogBody>
-          </Dialog>
         </TabPanel>
       </TabsBody>
     </Tabs>

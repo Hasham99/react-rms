@@ -44,11 +44,16 @@ export function UpdateInventoryItem(props) {
       // on_hand: `${onHand}+${AvailableQty}`,
       on_hand: `${AddBoth}`,
     };
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     // Make a POST request to your server endpoint
     await axios
       .patch(
         `https://albadwan.shop/api/inventory/res/${restaurantId}/update`,
-        jsonData
+        jsonData,
+        { headers }
       )
       // .patch(`${import.meta.env.VITE_API_KEY}/api/inventory/update`, jsonData)
       .then(() => {
@@ -64,6 +69,7 @@ export function UpdateInventoryItem(props) {
     // alert(JSON.stringify(InputValue.on_hand));
   };
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"

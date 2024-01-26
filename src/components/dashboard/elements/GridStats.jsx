@@ -10,8 +10,13 @@ const GridStats = () => {
   useEffect(() => {
     const fetchMonthlyIncomeExpenseData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`
+          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`,
+          { headers: headers }
         );
         const data = await response.json();
         setIncomeExpenseMonthlyData(data);
@@ -21,8 +26,13 @@ const GridStats = () => {
     };
     const fetchDailyIncomeExpenseData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/daily`
+          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/daily`,
+          { headers: headers }
         );
         const data = await response.json();
         setIncomeExpenseDailyData(data);
@@ -34,8 +44,10 @@ const GridStats = () => {
     fetchMonthlyIncomeExpenseData();
     fetchDailyIncomeExpenseData();
   }, []);
+  // const monthlyIncome = parseFloat(incomeExpenseMonthlyData.Income).toFixed(2);
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className=" flex gap-4">
       <BoxWrapper>
@@ -83,6 +95,7 @@ const GridStats = () => {
             <strong className="text-lg text-gray-700 font-semibold">
               {currency}{" "}
               {incomeExpenseMonthlyData ? incomeExpenseMonthlyData.Income : 0}
+              {/* {monthlyIncome} */}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">+343</span> */}
           </div>
@@ -99,7 +112,9 @@ const GridStats = () => {
           <div className="flex items-center">
             <strong className="text-lg text-gray-700 font-semibold">
               {currency}{" "}
-              {incomeExpenseMonthlyData ? incomeExpenseMonthlyData.Expense : 0}
+              {incomeExpenseMonthlyData !== null
+                ? incomeExpenseMonthlyData.Expense
+                : 0}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">-343</span> */}
           </div>

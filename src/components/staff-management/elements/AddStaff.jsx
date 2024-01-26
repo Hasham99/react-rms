@@ -57,8 +57,14 @@ const AddStaff = () => {
         login_pass: `${formData.password}`,
         restaurant_id: `${restaurantId}`,
       };
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       axios
-        .post(`https://albadwan.shop/api/waiter`, jsonData)
+        .post(`https://albadwan.shop/api/waiter`, jsonData, {
+          headers: headers,
+        })
         // .post(`${import.meta.env.VITE_API_KEY}/api/waiter`, jsonData)
         .then((response) => {
           console.log("PATCH request successful", response.data);
@@ -80,6 +86,7 @@ const AddStaff = () => {
     // alert("POST request successful");
   };
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"

@@ -29,6 +29,7 @@ const UserLogin = () => {
       .then((response) => {
         if (response.data.token) {
           localStorage.setItem("token", true);
+          localStorage.setItem("BearerToken", response.data.token);
           localStorage.setItem("currency", response.data.currency);
           localStorage.setItem("tax", response.data.tax);
           localStorage.setItem(

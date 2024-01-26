@@ -45,11 +45,16 @@ export function AddInventoryItem(props) {
 
   // Event handler for form submission
   const handleSubmit = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     // alert(JSON.stringify(jsonData));
     axios
       .post(
         `https://albadwan.shop/api/inventory/res/${restaurantId}/create`,
-        jsonData
+        jsonData,
+        { headers }
       )
       // .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
       .then((response) => {
@@ -123,12 +128,18 @@ export function AddInventoryItem(props) {
   // }, []);
 
   useEffect(() => {
-    const fetchInventoryData = async () => {
+    const fetchInventoryData01 = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/cai/res/${restaurantId}`
+          `https://albadwan.shop/api/cai/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = response.data;
+        console.log(JSON.stringify(data));
 
         if (!data || !Array.isArray(data)) {
           console.error("Invalid data format:", data);
@@ -164,6 +175,50 @@ export function AddInventoryItem(props) {
         console.error("Error fetching data from API", error);
       }
     };
+    const fetchInventoryData = async () => {
+      try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
+        const response = await axios.get(
+          `https://albadwan.shop/api/cai/res/${restaurantId}`,
+          { headers: headers }
+        );
+        const data = response.data;
+
+        if (!data || !Array.isArray(data)) {
+          console.error("Invalid data format:", data);
+          return;
+        }
+
+        const extractedItemNames = data.reduce((accumulator, category) => {
+          if (category.subcategories && Array.isArray(category.subcategories)) {
+            category.subcategories.forEach((subcategory) => {
+              if (subcategory.menu && Array.isArray(subcategory.menu)) {
+                subcategory.menu.forEach((item) => {
+                  // Check if item already exists in accumulator
+                  const existingItem = accumulator.find(
+                    (accItem) => accItem.itemId === item.item_id
+                  );
+                  if (!existingItem) {
+                    accumulator.push({
+                      itemId: item.item_id,
+                      itemName: item.item_name,
+                    });
+                  }
+                });
+              }
+            });
+          }
+          return accumulator;
+        }, []);
+
+        setCategoryOptions(extractedItemNames);
+      } catch (error) {
+        console.error("Error fetching data from API", error);
+      }
+    };
     fetchInventoryData();
   }, []);
 
@@ -171,6 +226,7 @@ export function AddInventoryItem(props) {
     setSelectedOption(value);
   };
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <form
       className="mt-4 mb-2 w-80 max-w-screen-lg sm:w-96"

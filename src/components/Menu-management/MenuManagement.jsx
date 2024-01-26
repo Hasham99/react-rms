@@ -59,7 +59,13 @@ function MenuManagement() {
     //     console.error("Error fetching data:", error);
     //   });
     const fetchKitchen = async () => {
-      await fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, {
+        headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
         .then((response) => response.json())
         .then((data) => {
@@ -70,7 +76,13 @@ function MenuManagement() {
         });
     };
     const fetchCategory = async () => {
-      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`, {
+        headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -81,7 +93,13 @@ function MenuManagement() {
         });
     };
     const fetchSubCategory = async () => {
-      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`)
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`, {
+        headers,
+      })
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
         .then((response) => response.json())
         .then((data) => {
@@ -97,8 +115,14 @@ function MenuManagement() {
   }, []);
 
   const handleSubmit = () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
     axios
-      .post(`https://albadwan.shop/api/items/res/${restaurantId}`, jsonData)
+      .post(`https://albadwan.shop/api/items/res/${restaurantId}`, jsonData, {
+        headers,
+      })
       // .post(`https://albadwan.shop/api/items`, jsonData)
       // .post(`http://54.196.226.78:3000/api/items`, jsonData)
       // .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
@@ -115,6 +139,7 @@ function MenuManagement() {
     // alert(`${selectedOptionOne} ${selectedOptionTwo} ${selectedOptionThree}`);
   };
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     // <div>
     //   <h1>Filter Item Names by Subcategory</h1>
