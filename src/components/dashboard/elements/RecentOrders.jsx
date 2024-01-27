@@ -27,8 +27,13 @@ export default function RecentOrders() {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const res = await fetch(
-          `https://albadwan.shop/api/order/res/${restaurantId}`
+          `https://albadwan.shop/api/order/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = await res.json();
 
@@ -65,6 +70,7 @@ export default function RecentOrders() {
   };
 
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
       <strong className="text-gray-800 text-lg font-medium">

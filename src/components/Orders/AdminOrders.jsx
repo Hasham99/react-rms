@@ -28,13 +28,14 @@ const AdminOrders = () => {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/posorders/res/${restaurantId}`
-          // { headers: headers }
+          `https://albadwan.shop/api/posorders/res/${restaurantId}`,
+          { headers: headers }
         );
         const data = await res.json();
         // Sort orders by PosOrderID in descending order
         const sortedOrders = data.sort((a, b) => b.PosOrderID - a.PosOrderID);
         setOrdersData(sortedOrders);
+        // setOrdersData(data);
         // if (sortedOrders) {
         //   localStorage.setItem("admin-orders", JSON.stringify(sortedOrders));
         // }
@@ -51,7 +52,7 @@ const AdminOrders = () => {
 
   // Filter orders based on search term (order items, transaction ID, or transaction type)
   const filteredOrders = ordersData.filter((order) => {
-    const includesOrderItem = order.order_items.some((item) =>
+    const includesOrderItem = order.items.some((item) =>
       item.ItemName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     const includesTransactionId =
@@ -130,7 +131,7 @@ const AdminOrders = () => {
               <tr>
                 <th>ID</th>
                 <th>Order Items</th>
-                <th>Order Extras</th>
+                {/* <th>Order Extras</th> */}
                 <th>Order Date</th>
                 <th>Order Time</th>
                 <th>Order Total</th>
@@ -152,7 +153,7 @@ const AdminOrders = () => {
                 >
                   <td>{order.PosOrderID}</td>
                   <td className="flex">
-                    {order.order_items.map((item) => (
+                    {order.items.map((item) => (
                       <div className="" key={item.PosOrderItemID}>
                         {item.ItemName.length > 7
                           ? `${item.ItemName.substring(0, 7)}...`

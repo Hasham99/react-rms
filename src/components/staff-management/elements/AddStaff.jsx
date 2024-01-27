@@ -50,7 +50,11 @@ const AddStaff = () => {
   };
 
   const handleSubmit = () => {
-    if (formData.password == formData.confirm_password) {
+    if (
+      formData.waiter_name &&
+      formData.login_id &&
+      formData.password == formData.confirm_password
+    ) {
       const jsonData = {
         waiter_name: `${formData.waiter_name}`,
         login_id: `${formData.login_id}`,
@@ -77,7 +81,7 @@ const AddStaff = () => {
           // Handle errors here if needed
         });
     } else {
-      alert("password & Confirm pass does not match");
+      alert("fields empty or Password not matched");
     }
 
     // // alert(JSON.stringify(jsonData));

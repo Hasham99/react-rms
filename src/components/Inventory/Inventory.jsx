@@ -23,7 +23,7 @@ const Inventory = () => {
         <div className="text-2xl text-[#092635] font-bold py-4">Inventory</div>
         {/* <div className=" "> */}
         <Button
-          onClick={() => handleOpen("sm")}
+          onClick={() => handleOpen("xs")}
           className="flex items-center gap-3"
           size="md"
         >

@@ -46,7 +46,7 @@ const StaffManagement = () => {
               view all
             </Button> */}
               <Button
-                onClick={() => handleOpen("sm")}
+                onClick={() => handleOpen("xs")}
                 className="flex items-center gap-3"
                 size="sm"
               >

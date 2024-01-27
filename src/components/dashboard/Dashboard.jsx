@@ -1,10 +1,12 @@
 import BuyerProfilePieChart from "./elements/BuyerProfilePieChart";
 import GridStats from "./elements/GridStats";
-import TransactionChart from "./elements/TransactionChart";
+import TransactionChart from "./elements/TransactionChartWaiter";
 import RecentOrders from "./elements/RecentOrders";
 import PopularProducts from "./elements/PopularProducts";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import TransactionChartWaiter from "./elements/TransactionChartWaiter";
+import TransactionChartPos from "./elements/TransactionChartPos";
 
 const Dashboard = () => {
   const restaurantId = localStorage.getItem("restaurant_id");
@@ -34,14 +36,15 @@ const Dashboard = () => {
     <div className=" flex flex-col gap-4 no-scrollbar">
       <GridStats />
       <div className="flex flex-row gap-4 w-full">
-        <TransactionChart
-          title={`POS`}
-          url={`https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`}
-        />
-        <TransactionChart
+        <TransactionChartWaiter
           title={`Waiter`}
-          url={`https://albadwan.shop/api/expense/res/${restaurantId}/waiter/monthly/admin`}
+          // url={`https://albadwan.shop/api/expense/res/${restaurantId}/waiter/monthly/admin`}
         />
+        <TransactionChartPos
+          title={`POS`}
+          // url={`https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`}
+        />
+
         {/* <BuyerProfilePieChart /> */}
       </div>{" "}
       {/* <div className="flex flex-row gap-4 w-full">

@@ -53,63 +53,71 @@ const Ingredients = () => {
   };
 
   const handleSubmit01 = () => {
-    const headers = {
-      Authorization: `${BearerToken}`,
-      "Content-Type": "application/json",
-    };
-    axios
-      .post(
-        `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
-        jsonData01,
-        { headers }
-      )
-      // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
-      .then(() => {
-        // console.log("Post request successful", response.data);
-        setFormData({
-          ...formData,
-          itemName01: "", // Clear the item name field
-          itemWeight01: "", // Clear the item weight field
-          itemAmount01: "", // Clear the total amount field
+    if (formData.itemName01 && formData.itemWeight01 && formData.itemAmount01) {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      axios
+        .post(
+          `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+          jsonData01,
+          { headers }
+        )
+        // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
+        .then(() => {
+          // console.log("Post request successful", response.data);
+          setFormData({
+            ...formData,
+            itemName01: "", // Clear the item name field
+            itemWeight01: "", // Clear the item weight field
+            itemAmount01: "", // Clear the total amount field
+          });
+          window.location.href = "/ingredients";
+          // alert(JSON.stringify(jsonData01));
+          // Handle the response data here if needed
+        })
+        .catch((error) => {
+          console.error("Error making post request", error);
+          // Handle errors here if needed
         });
-        window.location.href = "/ingredients";
-        // alert(JSON.stringify(jsonData01));
-        // Handle the response data here if needed
-      })
-      .catch((error) => {
-        console.error("Error making post request", error);
-        // Handle errors here if needed
-      });
+    } else {
+      alert("fields can not be empty");
+    }
   };
 
   const handleSubmit02 = () => {
-    const headers = {
-      Authorization: `${BearerToken}`,
-      "Content-Type": "application/json",
-    };
-    axios
-      .post(
-        `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
-        jsonData02,
-        { headers }
-      )
-      // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
-      .then(() => {
-        // console.log("Post request successful", response.data);
-        setFormData({
-          ...formData,
-          itemName02: "", // Clear the item name field
-          itemWeight02: "", // Clear the item weight field
-          itemAmount02: "", // Clear the total amount field
+    if (formData.itemName02 && formData.itemWeight02 && formData.itemAmount02) {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      axios
+        .post(
+          `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+          jsonData02,
+          { headers }
+        )
+        // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
+        .then(() => {
+          // console.log("Post request successful", response.data);
+          setFormData({
+            ...formData,
+            itemName02: "", // Clear the item name field
+            itemWeight02: "", // Clear the item weight field
+            itemAmount02: "", // Clear the total amount field
+          });
+          window.location.href = "/ingredients";
+          // alert(JSON.stringify(jsonData01));
+          // Handle the response data here if needed
+        })
+        .catch((error) => {
+          console.error("Error making post request", error);
+          // Handle errors here if needed
         });
-        window.location.href = "/ingredients";
-        // alert(JSON.stringify(jsonData01));
-        // Handle the response data here if needed
-      })
-      .catch((error) => {
-        console.error("Error making post request", error);
-        // Handle errors here if needed
-      });
+    } else {
+      alert("fields can not be empty");
+    }
   };
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");

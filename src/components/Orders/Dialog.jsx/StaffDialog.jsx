@@ -50,8 +50,13 @@ const StaffDialog = ({ onClose, orderData }) => {
 
   const markAsPaid = async (order) => {
     try {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       const response = await axios.patch(
-        `https://albadwan.shop/api/order/${staffOrderData.OrderID}/paid`
+        `https://albadwan.shop/api/order/${staffOrderData.OrderID}/paid`,
+        { headers: headers }
       );
       console.log("PATCH request successful", response.data);
       window.location.reload(true);
@@ -60,6 +65,8 @@ const StaffDialog = ({ onClose, orderData }) => {
     }
   };
   const currency = localStorage.getItem("currency");
+  // const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className="py-4 px-6  overflow-y-scroll">
       <div className="flex justify-between">

@@ -37,13 +37,22 @@ export default function SideBar() {
   return (
     // bg-[#092635]
     <div className="bg-[#092635] w-60 p-3 flex flex-col">
-      <div className="flex items-center gap-2 px-1 py-3 ">
-        <IoRestaurantOutline className="text-green-600 ml-3" fontSize={24} />
-        <span className="text-white font-medium text-lg uppercase">
-          {restaurantName}
-        </span>
+      <div className="flex-col items-center ml-3 gap-2 px-1 py-2">
+        <div className="flex items-center gap-2">
+          <IoRestaurantOutline className="text-green-600 my-1 " fontSize={20} />
+
+          <div className="flex-col">
+            <div className="text-white font-medium text-[20px] uppercase ">
+              Restaurant
+            </div>
+            <div className="text-white font-medium text-[14px] ">
+              {restaurantName}
+              {/* Live Cafe */}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="pt-5 flex flex-1 flex-col gap-0.5">
+      <div className="pt-3 flex flex-1 flex-col gap-0.5">
         {DASHBOARD_SIDEBAR_LINKS.map((link, index) => (
           <div key={link.key}>
             {link.submenu ? (

@@ -287,7 +287,7 @@ const Settings = () => {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await fetch("https://albadwan.shop/api/whatsapp", {
+        const response = await fetch(`https://albadwan.shop/api/whatsapp`, {
           headers: headers,
         });
         const data = await response.json();
@@ -617,9 +617,17 @@ const Settings = () => {
         time_zone: `${selectedTimeZone}`,
       };
 
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/timezones/${restaurantId}`, jsonData)
+        .patch(
+          `https://albadwan.shop/api/timezones/${restaurantId}`,
+          jsonData,
+          { headers: headers }
+        )
         .then(() => {
           // Alert after successful request
           alert(`Selected Time Zone: ${selectedTimeZone}`);
@@ -642,10 +650,15 @@ const Settings = () => {
       const jsonData = {
         currency: `${selectedCurrency}`,
       };
-
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/currency/${restaurantId}`, jsonData)
+        .patch(`https://albadwan.shop/api/currency/${restaurantId}`, jsonData, {
+          headers: headers,
+        })
         .then(() => {
           // Alert after successful request
           alert(`Selected Currency: ${selectedCurrency}`);
@@ -668,11 +681,16 @@ const Settings = () => {
       const jsonData = {
         tax: `${enteredTax}`,
       };
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
         .patch(
           `https://albadwan.shop/api/tax/res/${restaurantId}/update`,
-          jsonData
+          jsonData,
+          { headers: headers }
         )
         .then(() => {
           setEnteredTax(null);
@@ -689,11 +707,16 @@ const Settings = () => {
         p_name: `${enteredPayment}`,
       };
       // alert(JSON.stringify(jsonData));
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
         .post(
           `https://albadwan.shop/api/payment/res/${restaurantId}/create`,
-          jsonData
+          jsonData,
+          { headers: headers }
         )
         .then(() => {
           setEnteredPayment(null);
@@ -710,9 +733,17 @@ const Settings = () => {
         name: `${enteredKitchen}`,
       };
       // alert(JSON.stringify(jsonData));
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
-        .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
+        .post(
+          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          jsonData,
+          { headers: headers }
+        )
         // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
           setEnteredKitchen("");
@@ -731,11 +762,16 @@ const Settings = () => {
         description: "-",
       };
       // alert(JSON.stringify(jsonData));
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
         .post(
           `https://albadwan.shop/api/category/res/${restaurantId}/create`,
-          jsonData
+          jsonData,
+          { headers: headers }
         )
         // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
@@ -755,11 +791,16 @@ const Settings = () => {
         description: "-",
       };
       // alert(JSON.stringify(jsonData));
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       // Make the PATCH request
       await axios
         .post(
           `https://albadwan.shop/api/subcategory/res/${restaurantId}/create`,
-          jsonData
+          jsonData,
+          { headers: headers }
         )
         // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {

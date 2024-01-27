@@ -86,7 +86,7 @@ const Header = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute right-0 z-10 mt-2.5 transform w-80">
+                <Popover.Panel className="absolute right-0 z-50 mt-2.5 transform w-80">
                   <div className="bg-white rounded-sm shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5">
                     <strong className="text-gray-700 font-medium">
                       Messages
@@ -120,7 +120,7 @@ const Header = () => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute right-0 z-10 mt-2.5 transform w-80">
+                <Popover.Panel className="absolute right-0 z-50 mt-2.5 transform w-80">
                   <div className="bg-white rounded-sm shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5">
                     <strong className="text-gray-700 font-medium">
                       Notifications
@@ -139,10 +139,15 @@ const Header = () => {
             <Menu.Button className="ml-2 bg-gray-400 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400">
               <span className="sr-only">Open user menu</span>
               <div
-                className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
+                className="h-10 w-10  rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
+                // style={{
+                //   backgroundImage:
+                //     'url("https://source.unsplash.com/80x80?face")',
+                // }}
+
                 style={{
                   backgroundImage:
-                    'url("https://source.unsplash.com/80x80?face")',
+                    'url("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")',
                 }}
               >
                 <span className="sr-only">Marc Backes</span>
@@ -158,7 +163,7 @@ const Header = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className=" origin-top-right z-40 absolute right-0 mt-2 w-48 rounded-sm shadow-md p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className=" origin-top-right z-50 absolute right-0 mt-2 w-48 rounded-sm shadow-md p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
                   <div

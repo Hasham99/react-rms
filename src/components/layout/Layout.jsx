@@ -5,7 +5,7 @@ import Header from "./Header";
 const Layout = () => {
   return (
     // <div>Shark</div>
-    <div className="bg-neutral-100 h-screen w-screen overflow-hidden flex flex-row">
+    <div className="bg-neutral-100 h-screen w-screen overflow-hidden flex flex-row invisible  md:visible lg:visible xl:visible ">
       <SideBar />
       <div className="flex flex-col flex-1">
         <Header />

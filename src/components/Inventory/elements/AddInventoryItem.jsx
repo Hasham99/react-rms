@@ -243,18 +243,21 @@ export function AddInventoryItem(props) {
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Menu Item
         </Typography>
+
         <Select color="teal" value={Value} onChange={handleSelectChange}>
           {/* {categoryOptions.map((item, index) => (
               <Option key={index} value={item}>
                 {item.itemName}
               </Option>
             ))} */}
+
           {categoryOptions.map((data) => (
             <Option key={data.itemId} value={data}>
               {data.itemName}
             </Option>
           ))}
         </Select>
+
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Unit
         </Typography>

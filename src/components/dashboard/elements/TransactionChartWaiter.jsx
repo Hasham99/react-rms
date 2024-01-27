@@ -40,7 +40,7 @@ const fillMissingMonths = (data) => {
   );
 };
 
-export default function TransactionChart(props) {
+export default function TransactionChartWaiter(props) {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -50,10 +50,13 @@ export default function TransactionChart(props) {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await axios.get(`${props.url}`, { headers });
+        const response = await axios.get(
+          // `${props.url}`
+          `https://albadwan.shop/api/expense/res/${restaurantId}/waiter/monthly/admin`,
+          { headers: headers }
+        );
 
         if (!response.data || response.data.length === 0) {
-          // Handle empty or missing data
           setChartData([]);
           return;
         }
@@ -68,6 +71,7 @@ export default function TransactionChart(props) {
     fetchData();
   }, []);
   const BearerToken = localStorage.getItem("BearerToken");
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className="h-[22rem] bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col flex-1">
       <strong className="text-gray-700 font-medium">
@@ -78,7 +82,7 @@ export default function TransactionChart(props) {
           <BarChart
             width={500}
             height={300}
-            data={chartData || []}
+            data={chartData}
             margin={{
               top: 20,
               right: 10,

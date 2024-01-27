@@ -7,7 +7,7 @@ const AdminDialog = ({ onClose, orderData }) => {
   const {
     PosOrderID,
     bill_status,
-    order_items,
+    items,
     order_status,
     restaurant_id,
     time,
@@ -28,14 +28,14 @@ const AdminDialog = ({ onClose, orderData }) => {
     "en-US",
     options
   );
-  const totalPrice = order_items.reduce(
+  const totalPrice = items.reduce(
     (acc, item) => acc + item.Quantity * item.Price,
     0
   );
   const [CommingOrderData, setCommingOrderData] = useState({
     PosOrderID,
     bill_status,
-    order_items,
+    items,
     order_status,
     restaurant_id,
     time: formattedTimeString,
@@ -69,12 +69,17 @@ const AdminDialog = ({ onClose, orderData }) => {
   useEffect(() => {
     const fetchPayment = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          "https://albadwan.shop/api/payment/res/1/get"
+          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          { headers: headers }
         );
         const data = await response.json();
         setPayment(data);
-        console.log(JSON.stringify(payment));
+        // console.log(JSON.stringify(payment));
         // console.log(JSON.stringify(data));
       } catch (error) {
         console.error("Error fetching time zones:", error);
@@ -86,9 +91,14 @@ const AdminDialog = ({ onClose, orderData }) => {
   // Calculate total price
   const markAsPaid = async () => {
     if (valuePay) {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       axios
         .patch(
-          `https://albadwan.shop/api/posorders/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`
+          `https://albadwan.shop/api/posorders/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`,
+          { headers: headers }
         )
         .then((response) => {
           console.log("PATCH request successful", response.data);
@@ -106,6 +116,8 @@ const AdminDialog = ({ onClose, orderData }) => {
   };
   const isOrderPaid = CommingOrderData.order_status === "paid";
   const currency = localStorage.getItem("currency");
+  const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <div className="py-4 px-6  overflow-y-scroll">
       {/* <div className=""> */}
@@ -137,7 +149,7 @@ const AdminDialog = ({ onClose, orderData }) => {
               Customer’s Cart
             </p>
 
-            {CommingOrderData.order_items.map((orderItem, index) => (
+            {CommingOrderData.items.map((orderItem, index) => (
               <div
                 key={index}
                 className="  flex flex-col md:flex-row justify-start items-start  md:space-x-6 xl:space-x-8 w-full "
@@ -186,8 +198,10 @@ const AdminDialog = ({ onClose, orderData }) => {
                     <p className="text-base leading-4 text-blue-800">Tax</p>
                     <p className="text-base leading-4 text-gray-600">
                       {currency}{" "}
-                      {CommingOrderData.total_amount -
-                        CommingOrderData.totalPrice}
+                      {parseFloat(
+                        CommingOrderData.total_amount -
+                          CommingOrderData.totalPrice
+                      ).toFixed(2)}
                     </p>
                   </div>
                   <div className="flex justify-between">
