@@ -25,7 +25,7 @@ const Inventory = () => {
         <Button
           onClick={() => handleOpen("xs")}
           className="flex items-center gap-3"
-          size="md"
+          size="sm"
         >
           <UserPlusIcon strokeWidth={10} className="h-5 w-5" /> Add item
         </Button>
@@ -46,7 +46,7 @@ const Inventory = () => {
         handler={handleOpen}
       >
         <DialogBody className="flex justify-center ">
-          <Card color="transparent" shadow={false}>
+          <Card color="transparent" shadow={false} className="px-4 py-2">
             <div className="flex justify-between items-center">
               <Typography variant="h4" className="text-sidebar">
                 Add Inventory Item

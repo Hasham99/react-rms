@@ -3,69 +3,76 @@ import { useEffect, useState } from "react";
 import { IoBagHandle, IoPieChart, IoPeople, IoCart } from "react-icons/io5";
 
 const GridStats = () => {
-  const [incomeExpenseDailyData, setIncomeExpenseDailyData] = useState(null);
-  const [incomeExpenseMonthlyData, setIncomeExpenseMonthlyData] =
-    useState(null);
+  const [monthlyIncome, setMonthlyIncome] = useState(null);
+  const [monthlyExpense, setMonthlyExpense] = useState(null);
+  const [dailyIncome, setDailyIncome] = useState(null);
+  const [dailyExpense, setDailyExpense] = useState(null);
 
   useEffect(() => {
     const fetchMonthlyIncomeExpenseData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await fetch(
-          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`,
-          { headers: headers }
-        );
-        const data = await response.json();
-        setIncomeExpenseMonthlyData(data);
-      } catch (error) {
-        console.error("Error fetching income and expense data:", error);
-      }
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(
+        `https://albadwan.shop/api/expense/res/${restaurantId}/combined/monthly`,
+        { headers: headers }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setMonthlyExpense(data.Expense);
+          setMonthlyIncome(data.Income);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     };
     const fetchDailyIncomeExpenseData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await fetch(
-          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/daily`,
-          { headers: headers }
-        );
-        const data = await response.json();
-        setIncomeExpenseDailyData(data);
-      } catch (error) {
-        console.error("Error fetching income and expense data:", error);
-      }
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      await fetch(
+        `https://albadwan.shop/api/expense/res/${restaurantId}/combined/daily`,
+        // `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`,
+        { headers: headers }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // Extracting expense and income from the response
+          // const { Expense, Income } = data;
+          // Setting the state with the fetched values
+          setDailyExpense(data.Expense);
+          setDailyIncome(data.Income);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     };
 
     fetchMonthlyIncomeExpenseData();
     fetchDailyIncomeExpenseData();
   }, []);
-  // const monthlyIncome = parseFloat(incomeExpenseMonthlyData.Income).toFixed(2);
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
   return (
-    <div className=" flex gap-4">
-      <BoxWrapper>
+    <div className=" flex gap-4 ">
+      <BoxWrapper className="">
         <div className="rounded-full h-12 w-12 flex items-center justify-center bg-[#0ea5e9]">
           <IoBagHandle className="text-2xl text-white" />
         </div>
-        <div className="pl-4">
+        <div className="pl-4 ">
           <span className="text-sm text-gray-500 font-light">Daily Sales</span>
           <div className="flex items-center">
             <strong className="text-lg text-gray-700 font-semibold">
-              {currency}{" "}
-              {incomeExpenseDailyData ? incomeExpenseDailyData.Income : 0}
+              {currency} {dailyIncome ? dailyIncome : 0}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">+343</span> */}
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
+      <BoxWrapper className="">
         <div className="rounded-full h-12 w-12 flex items-center justify-center bg-orange-600">
           <IoPieChart className="text-2xl text-white" />
         </div>
@@ -75,15 +82,13 @@ const GridStats = () => {
           </span>
           <div className="flex items-center">
             <strong className="text-lg text-gray-700 font-semibold">
-              {currency}{" "}
-              {incomeExpenseDailyData ? incomeExpenseDailyData.Expense : 0}
-              {/* {`${currency} ${incomeExpenseDailyData.Expense}`} */}
+              {currency} {dailyExpense ? dailyExpense : 0}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">-343</span> */}
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
+      <BoxWrapper className="">
         <div className="rounded-full h-12 w-12 flex items-center justify-center bg-[#0ea5e9]">
           <IoBagHandle className="text-2xl text-white" />
         </div>
@@ -93,15 +98,13 @@ const GridStats = () => {
           </span>
           <div className="flex items-center">
             <strong className="text-lg text-gray-700 font-semibold">
-              {currency}{" "}
-              {incomeExpenseMonthlyData ? incomeExpenseMonthlyData.Income : 0}
-              {/* {monthlyIncome} */}
+              {currency} {monthlyIncome ? monthlyIncome : 0}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">+343</span> */}
           </div>
         </div>
       </BoxWrapper>
-      <BoxWrapper>
+      <BoxWrapper className="">
         <div className="rounded-full h-12 w-12 flex items-center justify-center bg-orange-600">
           <IoPieChart className="text-2xl text-white" />
         </div>
@@ -111,10 +114,7 @@ const GridStats = () => {
           </span>
           <div className="flex items-center">
             <strong className="text-lg text-gray-700 font-semibold">
-              {currency}{" "}
-              {incomeExpenseMonthlyData !== null
-                ? incomeExpenseMonthlyData.Expense
-                : 0}
+              {currency} {monthlyExpense ? monthlyExpense : 0}
             </strong>
             {/* <span className="text-sm text-green-500 pl-2">-343</span> */}
           </div>

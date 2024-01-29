@@ -14,7 +14,7 @@ import UpdateStaff from "./UpdateStaff";
 import { FaRegWindowClose } from "react-icons/fa";
 
 const StaffTable = () => {
-  const TABLE_HEAD = ["Name", "Username", "Password", "Status", ""];
+  const TABLE_HEAD = ["Name", "Username", "Password", "Status", "update"];
 
   const [size, setSize] = useState(null);
 
@@ -72,7 +72,7 @@ const StaffTable = () => {
           <tbody className="">
             {staffData.map((item) => (
               <tr key={item.waiter_id}>
-                <td className={"px-4"}>
+                <td className={"px-4 py-0"}>
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col">
                       <Typography
@@ -85,7 +85,7 @@ const StaffTable = () => {
                     </div>
                   </div>
                 </td>
-                <td className={"pl-4"}>
+                <td className={"pl-4 py-0"}>
                   <div className="flex flex-col">
                     <Typography
                       variant="small"
@@ -96,7 +96,7 @@ const StaffTable = () => {
                     </Typography>
                   </div>
                 </td>
-                <td className={"pl-4"}>
+                <td className={"pl-4 py-0"}>
                   <div className="w-max">
                     <Typography
                       variant="small"
@@ -107,7 +107,7 @@ const StaffTable = () => {
                     </Typography>
                   </div>
                 </td>
-                <td className={" pl-4"}>
+                <td className={" pl-4 py-0"}>
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -116,7 +116,7 @@ const StaffTable = () => {
                     {item.status}
                   </Typography>
                 </td>
-                <td className={"pl-4"}>
+                <td className={"pl-4 py-0"}>
                   <Tooltip content="Edit User">
                     <IconButton
                       variant="text"
@@ -125,7 +125,7 @@ const StaffTable = () => {
                         handleOpen("sm");
                       }}
                     >
-                      <PencilIcon className="h-4 w-4" />
+                      <PencilIcon className="h-3 w-3" />
                     </IconButton>
                   </Tooltip>
                 </td>

@@ -85,8 +85,8 @@ const InventoryTable = () => {
           </thead>
           <tbody>
             {inventoryData.map((data) => (
-              <tr key={data.inventory_id} className="even:bg-blue-gray-50/50">
-                <td className="p-4">
+              <tr key={data.inventory_id} className="even:bg-blue-gray-50/50 ">
+                <td className="px-4 py-0">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -95,7 +95,7 @@ const InventoryTable = () => {
                     {data.item_name}
                   </Typography>
                 </td>
-                <td className="p-4">
+                <td className="px-4 py-0">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -104,7 +104,7 @@ const InventoryTable = () => {
                     {data.category_name}
                   </Typography>
                 </td>
-                <td className="p-4">
+                <td className="px-4 py-0">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -132,7 +132,7 @@ const InventoryTable = () => {
                     {data.on_hand}
                   </Typography>
                 </td> */}
-                <td className="p-2">
+                <td className="px-0 py-0">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -144,7 +144,7 @@ const InventoryTable = () => {
                         // onClick={() => handleOpen("sm")}
                         onClick={() => {
                           handleEditClick(data);
-                          handleOpen("sm");
+                          handleOpen("xs");
                         }}
                       >
                         <PencilSquareIcon className="h-4 w-4" />
@@ -176,7 +176,7 @@ const InventoryTable = () => {
         handler={handleOpen}
       >
         <DialogBody className="flex justify-center py-5">
-          <Card color="transparent" shadow={false}>
+          <Card color="transparent" shadow={false} className="px-4 py-2">
             <div className="flex justify-between items-center">
               <Typography variant="h4" className="text-sidebar">
                 Update Inventory Item
@@ -185,14 +185,7 @@ const InventoryTable = () => {
                 <FaRegWindowClose className="cursor-pointer h-6 w-6 text-red-500" />
               </div>
             </div>
-            <UpdateInventoryItem
-              everything={getInventoryData}
-              // product={getInventoryData.item_name}
-              // category={getInventoryData.category_name}
-              // available={getInventoryData.available}
-              // reserved={getInventoryData.reserved}
-              // onhand={getInventoryData.item_name}
-            />
+            <UpdateInventoryItem everything={getInventoryData} />
           </Card>
         </DialogBody>
       </Dialog>
