@@ -126,6 +126,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     path: "/cost-management",
     icon: <HiOutlineDocumentText />,
   },
+  {
+    key: "cash-management",
+    label: "Cash Management",
+    path: "/cash-management",
+    icon: <HiOutlineDocumentText />,
+  },
 ];
 
 export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [

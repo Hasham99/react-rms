@@ -13,6 +13,7 @@ import StaffManagement from "./components/staff-management/StaffManagement";
 import Pos from "./components/POS/Pos";
 import Cart from "./components/Cart/Cart";
 import Ingredients from "./components/Ingredients/Ingredients";
+import CashManagement from "./components/cashManagement/CashManagement";
 import CostManagement from "./components/costManagement/CostManagement";
 import Login from "./components/login/UserLogin";
 import StaffOrders from "./components/Orders/StaffOrders";
@@ -62,6 +63,10 @@ function App() {
           <Route
             path="/cost-management"
             element={<PrivateRoute Component={CostManagement} />}
+          />
+          <Route
+            path="/cash-management"
+            element={<PrivateRoute Component={CashManagement} />}
           />
           <Route
             path="/transactions"

@@ -30,7 +30,7 @@ const Layout = () => {
   // useEffect to determine visibility based on screen size
   useEffect(() => {
     const mediaQuery = window.matchMedia(
-      "(min-width: 768px) and (max-width: 1500px)"
+      "(min-width: 768px) and (max-width: 2000px)"
     );
     setIsVisible(mediaQuery.matches);
     const handler = () => setIsVisible(mediaQuery.matches);
