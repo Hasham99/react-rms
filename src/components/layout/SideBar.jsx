@@ -39,13 +39,13 @@ export default function SideBar() {
     <div className="bg-[#092635] w-60 p-3 flex flex-col">
       <div className="flex-col items-center ml-3 gap-2 px-1 py-2">
         <div className="flex items-center gap-2">
-          <IoRestaurantOutline className="text-green-600 my-1 " fontSize={20} />
+          <IoRestaurantOutline className="text-green-600 my-1 " fontSize={16} />
 
           <div className="flex-col">
             <div className="text-white font-medium text-[20px] uppercase ">
               Restaurant
             </div>
-            <div className="text-white font-medium text-[14px] ">
+            <div className="text-white font-medium text-[12px] ">
               {restaurantName}
               {/* Live Cafe */}
             </div>
