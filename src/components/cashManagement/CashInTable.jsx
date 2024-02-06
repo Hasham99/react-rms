@@ -1,82 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
-const TABLE_HEAD = ["Narration", "Amount", "Time"];
+import axios from "axios";
 
-const TABLE_ROWS = [
-  {
-    name: "John Michael",
-    job: "Manager",
-    date: "23/04/18",
-  },
-  {
-    name: "Alexa Liras",
-    job: "Developer",
-    date: "23/04/18",
-  },
-  {
-    name: "Laurent Perrier",
-    job: "Executive",
-    date: "19/09/17",
-  },
-  {
-    name: "Michael Levi",
-    job: "Developer",
-    date: "24/12/08",
-  },
-  {
-    name: "Richard Gran",
-    job: "Manager",
-    date: "04/10/21",
-  },
-  {
-    name: "Richard Gran",
-    job: "Manager",
-    date: "04/10/21",
-  },
-  {
-    name: "Richard Gran",
-    job: "Manager",
-    date: "04/10/21",
-  },
-  {
-    name: "Richard Gran",
-    job: "Manager",
-    date: "04/10/21",
-  },
-  {
-    name: "Richard Gran",
-    job: "Manager",
-    date: "04/10/21",
-  },
-];
 const CashInTable = () => {
+  const [cashInData, setCashInData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`
+        ); // Replace 1 with your restaurant_id
+        setCashInData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const formatTime = (timeString) => {
+    const date = new Date(timeString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  };
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
-    <Card className="h-fit w-full overflow-y-scroll ">
-      <table className="w-full min-w-max table-auto text-left">
+    <Card className="h-fit w-full overflow-y-scroll">
+      <table className="rounded-xl w-full min-w-max table-auto text-left">
         <thead>
           <tr>
-            {TABLE_HEAD.map((head) => (
-              <th
-                key={head}
-                className="border-b border-blue-gray-100 bg-green-100 p-4"
-              >
-                <Typography variant="small" className="font-bold leading-none ">
-                  {head}
-                </Typography>
-              </th>
-            ))}
+            <th className="bg-green-100 p-4 text-gray-800">
+              <Typography variant="small" className="font-bold leading-none">
+                Narration
+              </Typography>
+            </th>
+            <th className="bg-green-100 p-4 text-gray-800">
+              <Typography variant="small" className="font-bold leading-none">
+                Amount
+              </Typography>
+            </th>
+            <th className="bg-green-100 p-4 text-gray-800">
+              <Typography variant="small" className="font-bold leading-none">
+                Time
+              </Typography>
+            </th>
           </tr>
         </thead>
         <tbody>
-          {TABLE_ROWS.map(({ name, job, date }, index) => (
-            <tr key={name} className="even:bg-green-100/20">
+          {cashInData.map((cashInItem, index) => (
+            <tr
+              key={index}
+              className={index % 2 === 0 ? "bg-green-100/20" : ""}
+            >
               <td className="px-4 py-2">
                 <Typography
                   variant="small"
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {name}
+                  {cashInItem.narration}
                 </Typography>
               </td>
               <td className="px-4 py-2">
@@ -85,7 +71,7 @@ const CashInTable = () => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {job}
+                  {cashInItem.amount}
                 </Typography>
               </td>
               <td className="px-4 py-2">
@@ -94,20 +80,9 @@ const CashInTable = () => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {date}
+                  {formatTime(cashInItem.time)}
                 </Typography>
               </td>
-              {/* <td className="px-4 py-2">
-                      <Typography
-                        as="a"
-                        href="#"
-                        variant="small"
-                        color="blue-gray"
-                        className="font-medium"
-                      >
-                        Edit
-                      </Typography>
-                    </td> */}
             </tr>
           ))}
         </tbody>
