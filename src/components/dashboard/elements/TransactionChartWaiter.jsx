@@ -62,7 +62,10 @@ export default function TransactionChartWaiter(props) {
         }
 
         const filledData = fillMissingMonths([response.data]);
-        setChartData(filledData);
+        const sortedData = filledData.sort(
+          (a, b) => MONTHS.indexOf(a.name) - MONTHS.indexOf(b.name)
+        );
+        setChartData(sortedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

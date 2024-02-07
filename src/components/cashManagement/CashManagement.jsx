@@ -27,6 +27,53 @@ const CashManagement = () => {
   const [narrationCashOut, setNarrationCashOut] = useState("");
   const [amountCashIn, setAmountCashIn] = useState("");
   const [amountCashOut, setAmountCashOut] = useState("");
+  const [cashOutData, setCashOutData] = useState([]);
+  const [totalCashOutAmount, setTotalCashOutAmount] = useState(0);
+  const [cashInData, setCashInData] = useState([]);
+  const [totalCashInAmount, setTotalCashInAmount] = useState(0);
+  useEffect(() => {
+    const fetchCashOutData = async () => {
+      try {
+        const response = await axios.get(
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`
+        ); // Replace 1 with your restaurant_id
+        setCashOutData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    const fetchCashInData = async () => {
+      try {
+        const response = await axios.get(
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`
+        ); // Replace 1 with your restaurant_id
+        setCashInData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchCashInData();
+    fetchCashOutData();
+  }, []);
+
+  useEffect(() => {
+    // Calculate total cash amount
+    const sum = cashOutData.reduce(
+      (total, cashOutItem) => total + cashOutItem.amount,
+      0
+    );
+    setTotalCashOutAmount(sum);
+  }, [cashOutData]);
+
+  useEffect(() => {
+    // Calculate total cash amount
+    const sum = cashInData.reduce(
+      (total, cashInItem) => total + cashInItem.amount,
+      0
+    );
+    setTotalCashInAmount(sum);
+  }, [cashInData]);
 
   const handleCashInNarrationChange = (event) => {
     setNarrationCashIn(event.target.value);
@@ -435,15 +482,25 @@ const CashManagement = () => {
           <Card className="">
             <CardBody className="grid grid-cols-2 gap-2">
               <div>
-                <Typography className="text-center font-bold text-lg uppercase text-green-800">
-                  Cash In
-                </Typography>
+                <div className="flex gap-1 justify-center px-4">
+                  <Typography className=" font-bold text-lg uppercase text-green-800">
+                    Cash In
+                  </Typography>
+                  <Typography className=" font-bold text-lg  text-green-800">
+                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `}
+                  </Typography>
+                </div>
                 <CashInTable />
               </div>
               <div>
-                <Typography className="text-center font-bold text-lg uppercase text-red-800">
-                  Cash Out
-                </Typography>
+                <div className="flex gap-1 justify-center px-4">
+                  <Typography className=" font-bold text-lg uppercase text-red-800">
+                    Cash Out
+                  </Typography>
+                  <Typography className=" font-bold text-lg  text-red-800">
+                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `}
+                  </Typography>
+                </div>
                 <CashOutTable />
               </div>
             </CardBody>
