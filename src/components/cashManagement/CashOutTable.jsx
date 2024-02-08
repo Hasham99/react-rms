@@ -15,9 +15,14 @@ const CashOutTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`
-        ); // Replace 1 with your restaurant_id
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
+          { headers: headers }
+        );
         setCashOutData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,6 +55,8 @@ const CashOutTable = () => {
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashOutData.length);
   const paginatedData = cashOutData.slice(startIndex, endIndex);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
+
   return (
     <Card className="h-fit w-full ">
       <table className="rounded-xl w-full min-w-max table-auto text-center">

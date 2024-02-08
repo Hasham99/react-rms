@@ -219,7 +219,7 @@ function MenuManagement() {
         </div>
       </div> */}
       <CardBody>
-        <div className="grid grid-cols-4 ">
+        <div className="grid grid-cols-3 ">
           <div className="p-2">
             <Typography variant="h6">Category</Typography>
             <Select onChange={handleChange} value={value}>
@@ -262,7 +262,7 @@ function MenuManagement() {
             </Select>
           </div>
         </div>
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-3">
           <div className="p-2">
             <Input
               label="Item Name"
@@ -294,8 +294,12 @@ function MenuManagement() {
             />
           </div>
         </div>
+        <div className="p-2 col-span-3  flex justify-end">
+          <Button className=" w-24" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </div>
       </CardBody>
-      <Button onClick={handleSubmit}>Submit</Button>
 
       {/* </CardBody> */}
     </Card>

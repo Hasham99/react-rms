@@ -34,8 +34,13 @@ const CashManagement = () => {
   useEffect(() => {
     const fetchCashOutData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
+          { headers: headers }
         ); // Replace 1 with your restaurant_id
         setCashOutData(response.data);
       } catch (error) {
@@ -44,9 +49,14 @@ const CashManagement = () => {
     };
     const fetchCashInData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`
-        ); // Replace 1 with your restaurant_id
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
+          { headers: headers }
+        );
         setCashInData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -91,6 +101,10 @@ const CashManagement = () => {
   };
   const handleSubmitCheckIn = async () => {
     try {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       const postData = {
         narration: narrationCashIn,
         amount: amountCashIn,
@@ -99,7 +113,8 @@ const CashManagement = () => {
       // Make a POST request using Axios
       await axios.post(
         `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/create`,
-        postData
+        postData,
+        { headers: headers }
       );
 
       // Reset input values
@@ -113,15 +128,18 @@ const CashManagement = () => {
   };
   const handleSubmitCheckOut = async () => {
     try {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       const postData = {
         narration: narrationCashOut,
         amount: amountCashOut,
       };
-
-      // Make a POST request using Axios
       await axios.post(
         `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/create`,
-        postData
+        postData,
+        { headers: headers }
       );
 
       // Reset input values
@@ -130,7 +148,6 @@ const CashManagement = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error submitting data:", error);
-      // Handle error
     }
   };
   const handleInputChange = (event) => {
@@ -144,6 +161,10 @@ const CashManagement = () => {
 
   const handleSubmit = async () => {
     try {
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
       let total = 0;
       for (const [denomination, value] of Object.entries(inputValues)) {
         const denominationDetail = denominationDetails.find(
@@ -176,7 +197,8 @@ const CashManagement = () => {
 
       await axios.post(
         `https://albadwan.shop/api/coc/res/${restaurantId}/posclosing/create`,
-        jsonData
+        jsonData,
+        { headers: headers }
       );
       setShowAlertTrue(true);
       setTimeout(() => {
@@ -224,12 +246,18 @@ const CashManagement = () => {
   ];
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   useEffect(() => {
     // Fetch denomination details and set input fields dynamically
     const fetchDenominations = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await fetch(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/denom/get`
+          `https://albadwan.shop/api/coc/res/${restaurantId}/denom/get`,
+          { headers: headers }
         );
         const data = await response.json();
         setDenominationDetails(data.denomination_details);
@@ -244,8 +272,13 @@ const CashManagement = () => {
     };
     const fetchPreviousTotal = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/posclosing/get`
+          `https://albadwan.shop/api/coc/res/${restaurantId}/posclosing/get`,
+          { headers: headers }
         );
         const data = response.data;
         setPreviousTotal(data.total);
@@ -376,51 +409,7 @@ const CashManagement = () => {
             </Button>
           </Card>
         </TabPanel>
-        {/* <TabPanel value="close_sale">
-          <Card className="flex-col">
-            <div className="flex items-center justify-between p-5 ">
-              <Typography variant="h3" className="">
-                Denomination
-              </Typography>
-              <div className="flex flex-col items-end">
-                <Typography className="text-green-500" variant="h6">
-                  Total In Drawer:{" "}
-                  {`${parseFloat(totalDrawerSum).toFixed(2)} (${currency})`}
-                </Typography>
-                <Typography className="text-blue-500 " variant="h6">
-                  Previous Total: {`${totalDrawerSum} (${currency})`}
-                </Typography>
-              </div>
-            </div>
 
-            <CardBody className="pt-0 grid grid-cols-3 gap-5 ">
-              {denominationDetails.map((detail) => (
-                <div
-                  key={detail.denom_details_id}
-                  className="flex items-center"
-                >
-                  <Typography className="text-sm w-40">
-                    {detail.denom_name}
-                  </Typography>
-                  <Input
-                    label="Quantity"
-                    type="number"
-                    name={detail.denom_name}
-                    value={inputValues[detail.denom_name] || 0}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              ))}
-            </CardBody>
-            <Button
-              fullWidth={false}
-              className="w-28 self-end mx-5 my-4 bg-[#092635]"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Card>
-        </TabPanel> */}
         <TabPanel value="cash_in">
           <div className="flex flex-row gap-2">
             <Card className="w-1/4 h-fit">

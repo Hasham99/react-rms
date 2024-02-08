@@ -15,9 +15,14 @@ const CashInTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const headers = {
+          Authorization: `${BearerToken}`,
+          "Content-Type": "application/json",
+        };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`
-        ); // Replace 1 with your restaurant_id
+          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
+          { headers: headers }
+        );
         setCashInData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -40,6 +45,7 @@ const CashInTable = () => {
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashInData.length);
   const paginatedData = cashInData.slice(startIndex, endIndex);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const BearerToken = localStorage.getItem("BearerToken");
   return (
     <Card className="h-fit w-full ">
       <table className="rounded-xl  w-full min-w-max table-auto text-left ">
