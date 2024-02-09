@@ -10,12 +10,14 @@ import {
   Dialog,
   DialogBody,
   Input,
+  IconButton,
   // Select,
   // Option,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { addToCart } from "../../../redux/CartSlice";
 import { useDispatch } from "react-redux";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 // import POSDialog from "./ProductDialog/POSDialog";
 
@@ -142,7 +144,7 @@ const ProductsPOS = () => {
                   {category.subcategory_name}
                 </Typography>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
                 {category.items.map((item) => (
                   <div
                     key={item.item_id}
@@ -154,9 +156,37 @@ const ProductsPOS = () => {
                     <Typography className="text-[14px] font-semibold">
                       {item.item_name}
                     </Typography>
+
                     <p className="text-gray-600 text-[14px]">
                       {currency} {item.item_price}
                     </p>
+                  </div>
+                ))}
+              </div> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+                {category.items.map((item) => (
+                  <div
+                    key={item.item_id}
+                    className="relative border-r-2 border-green-600 p-4 rounded-md bg-white shadow-md cursor-pointer"
+                    onClick={() => {
+                      handleClick(item, category);
+                    }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <Typography className="text-[14px] font-semibold">
+                          {item.item_name}
+                        </Typography>
+                        <p className="text-gray-600 text-[14px]">
+                          {currency} {item.item_price}
+                        </p>
+                      </div>
+                      <div className="">
+                        <IconButton variant="text">
+                          <TrashIcon className="text-red-300 h-6 w-6" />
+                        </IconButton>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

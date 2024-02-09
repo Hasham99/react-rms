@@ -32,6 +32,24 @@ export function AddInventoryItem(props) {
       [name]: value,
     });
   };
+  const handleInputChangeQuantity = (e) => {
+    const { name, value } = e.target;
+    const parsedValue = parseInt(value);
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setFormData({
+        ...formData,
+        [name]: parsedValue,
+      });
+    } else {
+      // If parsedValue is not valid or negative, set it to zero
+      setFormData({
+        ...formData,
+        [name]: 0,
+      });
+    }
+  };
 
   const on_Hand = parseInt(formData.available) + parseInt(formData.reserved);
   const jsonData = {
@@ -239,7 +257,7 @@ export function AddInventoryItem(props) {
         }
       }}
     >
-      <div className="mb-1 flex flex-col gap-3">
+      <div className="mb-1 flex flex-col gap-3 px-8">
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Menu Item
         </Typography>
@@ -288,7 +306,7 @@ export function AddInventoryItem(props) {
           }}
           name="available"
           value={formData.available}
-          onChange={handleInputChange}
+          onChange={handleInputChangeQuantity}
         />
         {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
             Reserved
@@ -307,9 +325,11 @@ export function AddInventoryItem(props) {
             onChange={handleInputChange}
           /> */}
       </div>
-      <Button className="mt-6" fullWidth onClick={handleSubmit}>
-        Add Item
-      </Button>
+      <div className=" flex justify-end">
+        <Button className="my-3 mx-8" onClick={handleSubmit}>
+          Add Item
+        </Button>
+      </div>
     </form>
   );
 }

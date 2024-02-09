@@ -55,10 +55,11 @@ const CashOutTable = () => {
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashOutData.length);
   const paginatedData = cashOutData.slice(startIndex, endIndex);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const currency = localStorage.getItem("currency");
   const BearerToken = localStorage.getItem("BearerToken");
 
   return (
-    <Card className="h-fit w-full ">
+    <Card className="h-fit w-full overflow-y-auto">
       <table className="rounded-xl w-full min-w-max table-auto text-center">
         <thead>
           <tr>
@@ -69,7 +70,7 @@ const CashOutTable = () => {
             </th>
             <th className="bg-red-100 p-4 text-gray-800 text-center">
               <Typography variant="small" className="font-bold leading-none">
-                Amount
+                Amount ({currency})
               </Typography>
             </th>
             <th className="bg-red-100 p-4 text-gray-800 text-end">

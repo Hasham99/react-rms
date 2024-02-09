@@ -63,7 +63,10 @@ const InventoryTable = () => {
   const BearerToken = localStorage.getItem("BearerToken");
   return (
     <>
-      <Card className=" w-full overflow-scroll">
+      <Card
+        className=" w-full overflow-y-auto"
+        // style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -175,9 +178,9 @@ const InventoryTable = () => {
         size={size || "md"}
         handler={handleOpen}
       >
-        <DialogBody className="flex justify-center py-5">
-          <Card color="transparent" shadow={false} className="px-4 py-2">
-            <div className="flex justify-between items-center">
+        <DialogBody className="flex justify-center py-5  ">
+          <Card color="transparent" shadow={false} className=" py-2">
+            <div className="flex justify-between items-center px-8">
               <Typography variant="h4" className="text-sidebar">
                 Update Inventory Item
               </Typography>

@@ -90,14 +90,26 @@ const CashManagement = () => {
   };
 
   const handleCashInAmountChange = (event) => {
-    setAmountCashIn(event.target.value);
+    const value = event.target.value;
+    const parsedValue = parseInt(value);
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setAmountCashIn(parsedValue);
+    }
   };
   const handleCashOutNarrationChange = (event) => {
     setNarrationCashOut(event.target.value);
   };
 
   const handleCashOutAmountChange = (event) => {
-    setAmountCashOut(event.target.value);
+    const value = event.target.value;
+    const parsedValue = parseInt(value);
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setAmountCashOut(parsedValue);
+    }
   };
   const handleSubmitCheckIn = async () => {
     try {
@@ -150,13 +162,25 @@ const CashManagement = () => {
       console.error("Error submitting data:", error);
     }
   };
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   const parsedValue = parseInt(value);
+  //   setInputValues((prevState) => ({
+  //     ...prevState,
+  //     [name]: parsedValue,
+  //   }));
+  // };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     const parsedValue = parseInt(value);
-    setInputValues((prevState) => ({
-      ...prevState,
-      [name]: parsedValue,
-    }));
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setInputValues((prevState) => ({
+        ...prevState,
+        [name]: parsedValue,
+      }));
+    }
   };
 
   const handleSubmit = async () => {
@@ -240,7 +264,7 @@ const CashManagement = () => {
       value: "cash_out",
     },
     {
-      label: "Over All",
+      label: "All Transactions",
       value: "overall",
     },
   ];
@@ -372,10 +396,10 @@ const CashManagement = () => {
               <div className="flex flex-col items-end">
                 <Typography className="text-green-500" variant="h6">
                   Total In Drawer:{" "}
-                  {`${parseFloat(totalDrawerSum).toFixed(2)} (${currency})`}
-                </Typography>
-                <Typography className="text-blue-500 " variant="h6">
-                  Previous Total:{" "}
+                  {/* {`${parseFloat(totalDrawerSum).toFixed(2)} (${currency})`} */}
+                  {/* </Typography> */}
+                  {/* <Typography className="text-blue-500 " variant="h6"> */}
+                  {/* Previous Total:{" "} */}
                   {`${parseFloat(previousTotal).toFixed(2)} (${currency})`}
                 </Typography>
               </div>
@@ -476,7 +500,8 @@ const CashManagement = () => {
                     Cash In
                   </Typography>
                   <Typography className=" font-bold text-lg  text-green-800">
-                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `}
+                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `} (
+                    {currency})
                   </Typography>
                 </div>
                 <CashInTable />
@@ -487,7 +512,8 @@ const CashManagement = () => {
                     Cash Out
                   </Typography>
                   <Typography className=" font-bold text-lg  text-red-800">
-                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `}
+                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `} (
+                    {currency})
                   </Typography>
                 </div>
                 <CashOutTable />

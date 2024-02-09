@@ -64,11 +64,27 @@ const ItemIngredients = () => {
   });
   const [formData, setFormData] = useState({});
   const handleInputChange = (e) => {
+    // const { name, value } = e.target;
+    // setFormData({
+    //   ...formData,
+    //   [name]: value,
+    // });
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const parsedValue = parseInt(value);
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setFormData({
+        ...formData,
+        [name]: parsedValue,
+      });
+    } else {
+      // If parsedValue is not valid or negative, set it to zero
+      setFormData({
+        ...formData,
+        [name]: 0,
+      });
+    }
   };
 
   useEffect(() => {

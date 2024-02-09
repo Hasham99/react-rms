@@ -30,6 +30,29 @@ function MenuManagement() {
       [name]: value,
     });
   };
+  const handleInputChangeForPrice = (e) => {
+    // const { name, value } = e.target;
+    // setFormData({
+    //   ...formData,
+    //   [name]: value,
+    // });
+    const { name, value } = e.target;
+    const parsedValue = parseInt(value);
+
+    // Check if parsedValue is a valid number and not negative
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setFormData({
+        ...formData,
+        [name]: parsedValue,
+      });
+    } else {
+      // If parsedValue is not valid or negative, set it to zero
+      setFormData({
+        ...formData,
+        [name]: 0,
+      });
+    }
+  };
 
   const jsonData = {
     categoryId: CategoryData,
@@ -290,7 +313,7 @@ function MenuManagement() {
               type="number"
               name="price"
               value={formData.price}
-              onChange={handleInputChange}
+              onChange={handleInputChangeForPrice}
             />
           </div>
         </div>

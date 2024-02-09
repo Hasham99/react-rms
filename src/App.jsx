@@ -21,6 +21,11 @@ import AdminOrders from "./components/Orders/AdminOrders";
 import ContactUs from "./components/contact-us/ContactUs";
 import CartTest from "./components/CartTest";
 import PrivateRoute from "./PrivateRoute";
+import FirstPayment from "./components/paymentMethod/FirstPayment";
+import SecondPayment from "./components/paymentMethod/SecondPayment";
+import ThirdPayment from "./components/paymentMethod/ThirdPayment";
+import FourthPayment from "./components/paymentMethod/FourthPayment";
+import FifthPayment from "./components/paymentMethod/FifthPayment";
 
 function App() {
   return (
@@ -68,6 +73,28 @@ function App() {
             path="/cash-management"
             element={<PrivateRoute Component={CashManagement} />}
           />
+
+          <Route
+            path="/payment/method/1"
+            element={<PrivateRoute Component={FirstPayment} />}
+          />
+          <Route
+            path="/payment/method/2"
+            element={<PrivateRoute Component={SecondPayment} />}
+          />
+          <Route
+            path="/payment/method/3"
+            element={<PrivateRoute Component={ThirdPayment} />}
+          />
+          <Route
+            path="/payment/method/4"
+            element={<PrivateRoute Component={FourthPayment} />}
+          />
+          <Route
+            path="/payment/method/5"
+            element={<PrivateRoute Component={FifthPayment} />}
+          />
+
           <Route
             path="/transactions"
             element={<PrivateRoute Component={Transactions} />}

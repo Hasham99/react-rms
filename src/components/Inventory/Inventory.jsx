@@ -47,7 +47,7 @@ const Inventory = () => {
       >
         <DialogBody className="flex justify-center ">
           <Card color="transparent" shadow={false} className="px-4 py-2">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mx-8">
               <Typography variant="h4" className="text-sidebar">
                 Add Inventory Item
               </Typography>

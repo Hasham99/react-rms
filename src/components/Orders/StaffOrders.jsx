@@ -155,8 +155,10 @@ const StaffOrders = () => {
                     handleOpen("xl");
                   }}
                 >
-                  <td>{order.OrderID}</td>
-                  <td className="flex">
+                  {/* <td>{order.OrderID}</td> */}
+
+                  <td className="p-2 ">{order.series}</td>
+                  <td className="p-2 flex">
                     {order.items.map((item) => (
                       <div className="" key={item.MenuItemID}>
                         {item.ItemName.length > 7
@@ -165,15 +167,17 @@ const StaffOrders = () => {
                       </div>
                     ))}
                   </td>
-                  <td>{convertToLocaleDate(order.time)}</td>
-                  <td>{convertToLocaleTime(order.time)}</td>
-                  <td>{order.total_amount}</td>
+                  <td className="p-2">{convertToLocaleDate(order.time)}</td>
+                  <td className="p-2">{convertToLocaleTime(order.time)}</td>
+                  <td className="p-2">{order.total_amount}</td>
                   {/* <td>{getOrderStatus(order.waiter_id)}</td> */}
-                  <td>{order.waiter_id}</td>
-                  <td>{order.tid}</td>
-                  <td>{order.paid_via}</td>
-                  <td>{getOrderStatus(order.order_status)}</td>
-                  <td>{getOrderStatus(order.bill_status)}</td>
+                  <td className="p-2">{order.waiter_id}</td>
+                  <td className="p-2">{order.tid}</td>
+                  <td className="p-2">{order.paid_via}</td>
+                  <td className="p-2">{getOrderStatus(order.order_status)}</td>
+                  <td className="px-2 py-1">
+                    {getOrderStatus(order.bill_status)}
+                  </td>
                 </tr>
               ))}
             </tbody>

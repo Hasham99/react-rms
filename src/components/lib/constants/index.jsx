@@ -20,25 +20,27 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     path: "/dashboard",
     icon: <HiOutlineViewGrid />,
   },
+  // {
+  // key: "orders",
+  // label: "Orders",
+  // // path: "/orders",
+  // icon: <HiOutlineCube />,
+  // submenu: [
   {
-    key: "orders",
-    label: "Orders",
-    // path: "/orders",
+    key: "pos-orders",
+    label: "POS Orders",
     icon: <HiOutlineCube />,
-    submenu: [
-      {
-        key: "pos-orders",
-        label: "POS Orders",
-        path: "/admin-orders",
-      },
-      {
-        key: "staff-orders",
-        label: "Waiter Orders",
-        path: "/staff-orders",
-      },
-      // Add more submenu items as needed
-    ],
+    path: "/admin-orders",
   },
+  {
+    key: "staff-orders",
+    label: "Waiter Orders",
+    icon: <HiOutlineCube />,
+    path: "/staff-orders",
+  },
+  // Add more submenu items as needed
+  // ],
+  // },
   {
     key: "pos",
     label: "POS",

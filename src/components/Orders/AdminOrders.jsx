@@ -151,7 +151,8 @@ const AdminOrders = () => {
                     handleOpen("xl");
                   }}
                 >
-                  <td>{order.PosOrderID}</td>
+                  {/* <td>{order.PosOrderID}</td> */}
+                  <td>{order.series}</td>
                   <td className="flex">
                     {order.items.map((item) => (
                       <div className="" key={item.PosOrderItemID}>

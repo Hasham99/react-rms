@@ -58,15 +58,10 @@ export function UpdateInventoryItem(props) {
       // .patch(`${import.meta.env.VITE_API_KEY}/api/inventory/update`, jsonData)
       .then(() => {
         window.location.reload();
-        // console.log("PATCH request successful", response.data);
-        // Handle the response data here if needed
-        // alert("POST request successful");
       })
       .catch((error) => {
         alert("Error making PATCH request", error);
-        // Handle errors here if needed
       });
-    // alert(JSON.stringify(InputValue.on_hand));
   };
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
@@ -81,8 +76,7 @@ export function UpdateInventoryItem(props) {
         }
       }}
     >
-      {/* // <> */}
-      <div className="mb-1 flex flex-col gap-3">
+      <div className="mb-1 flex flex-col gap-3 px-8">
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           Item Name
         </Typography>
@@ -137,48 +131,12 @@ export function UpdateInventoryItem(props) {
           value={formData.available}
           onChange={handleInputChangeTwo}
         />
-        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
-          <div className="flex justify-between ">
-            <div>Reserved</div>
-            <div className="text-green-400 text-sm ">{InputValue.reserved}</div>
-          </div>
-        </Typography>
-        <Input
-          required
-          type="number"
-          size="lg"
-          placeholder="Reserved Quantity"
-          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          name="reserved"
-          // value={InputValue.reserved}
-          value={formData.reserved}
-          onChange={handleInputChangeTwo}
-        /> */}
-        {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
-            On Hand
-          </Typography>
-          <Input
-            required
-            type="number"
-            size="lg"
-            placeholder="on Hand Quantity"
-            className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-            name="onHand"
-            value={formData.onHand}
-            onChange={handleInputChange}
-          /> */}
       </div>
-      <Button className="mt-6" fullWidth onClick={handleSubmit}>
-        {/* <Button className="mt-6" fullWidth type="submit"> */}
-        Update Item
-      </Button>
-      {/* </> */}{" "}
+      <div className="flex justify-end">
+        <Button className="my-3 mx-8" onClick={handleSubmit}>
+          Update Item
+        </Button>
+      </div>
     </form>
   );
 }

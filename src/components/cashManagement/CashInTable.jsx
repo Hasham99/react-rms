@@ -45,23 +45,24 @@ const CashInTable = () => {
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashInData.length);
   const paginatedData = cashInData.slice(startIndex, endIndex);
   const restaurantId = localStorage.getItem("restaurant_id");
+  const currency = localStorage.getItem("currency");
   const BearerToken = localStorage.getItem("BearerToken");
   return (
-    <Card className="h-fit w-full ">
+    <Card className="h-fit w-full overflow-y-auto">
       <table className="rounded-xl  w-full min-w-max table-auto text-left ">
         <thead className=" ">
           <tr className="">
-            <th className="rounded-tl-xl bg-green-100 p-4 text-gray-800">
+            <th className=" bg-green-100 p-4 text-gray-800 ">
               <Typography variant="small" className="font-bold leading-none">
                 Narration
               </Typography>
             </th>
             <th className="bg-green-100 p-4 text-gray-800 text-center">
               <Typography variant="small" className="font-bold leading-none">
-                Amount
+                Amount ({currency})
               </Typography>
             </th>
-            <th className="rounded-tr-xl bg-green-100 p-4 text-gray-800 text-end">
+            <th className=" bg-green-100 p-4 text-gray-800 text-end">
               <Typography variant="small" className="font-bold leading-none">
                 Time
               </Typography>
