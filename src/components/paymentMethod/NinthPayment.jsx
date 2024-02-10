@@ -16,7 +16,7 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 
-const FourthPayment = () => {
+const NinthPayment = () => {
   const [narrationCashIn, setNarrationCashIn] = useState("");
   const [narrationCashOut, setNarrationCashOut] = useState("");
   const [amountCashIn, setAmountCashIn] = useState("");
@@ -39,7 +39,7 @@ const FourthPayment = () => {
           `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
-        setPaymentData(response.data[3]);
+        setPaymentData(response.data[8]);
       } catch (error) {
         console.error("Error fetching payment data:", error);
       }
@@ -405,4 +405,4 @@ function Icon() {
     </svg>
   );
 }
-export default FourthPayment;
+export default NinthPayment;

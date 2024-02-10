@@ -7,10 +7,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
+
 const PAGE_SIZE = 10;
-const CashOutTable = () => {
+
+const CashOutTable = ({ type }) => {
   const [cashOutData, setCashOutData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalCashAmount, setTotalCashAmount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,16 +34,15 @@ const CashOutTable = () => {
 
     fetchData();
   }, []);
+
   useEffect(() => {
     // Calculate total cash amount
-    const sum = cashOutData.reduce(
-      (total, cashOutItem) => total + cashOutItem.amount,
-      0
-    );
+    const sum = cashOutData
+      .filter((item) => item.type === type) // Filter data by type
+      .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
     setTotalCashAmount(sum);
-  }, [cashOutData]);
+  }, [cashOutData, type]);
 
-  const [totalCashAmount, setTotalCashAmount] = useState(0);
   const formatTime = (timeString) => {
     const date = new Date(timeString);
     const hours = date.getHours();
@@ -50,10 +52,14 @@ const CashOutTable = () => {
     const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
     return `${formattedHours}:${formattedMinutes} ${ampm}`;
   };
+
   const totalPages = Math.ceil(cashOutData.length / PAGE_SIZE);
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashOutData.length);
-  const paginatedData = cashOutData.slice(startIndex, endIndex);
+  const paginatedData = cashOutData
+    .filter((item) => item.type === type) // Filter data by type
+    .slice(startIndex, endIndex);
+
   const restaurantId = localStorage.getItem("restaurant_id");
   const currency = localStorage.getItem("currency");
   const BearerToken = localStorage.getItem("BearerToken");
@@ -117,8 +123,6 @@ const CashOutTable = () => {
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 px-4 py-2">
         <Button
           variant="outlined"
-          // size="sm"
-
           className="p-2"
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
@@ -130,7 +134,6 @@ const CashOutTable = () => {
             <IconButton
               key={page + 1}
               variant={currentPage === page + 1 ? "outlined" : "text"}
-              // size="sm"
               className="w-5 h-5"
               onClick={() => setCurrentPage(page + 1)}
             >
@@ -140,7 +143,6 @@ const CashOutTable = () => {
         </div>
         <Button
           variant="outlined"
-          // size="sm"
           className="p-2"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => prev + 1)}

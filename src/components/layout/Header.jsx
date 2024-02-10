@@ -7,32 +7,68 @@ import {
   HiOutlineChatAlt,
   HiOutlineShoppingCart,
 } from "react-icons/hi";
+import { FaCashRegister } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
+import { Button } from "@material-tailwind/react";
+import axios from "axios";
 
 const Header = () => {
+  const handleOpenCashDrawer = async () => {
+    const headers = {
+      Authorization: `${BearerToken}`,
+      "Content-Type": "application/json",
+    };
+    await axios
+      .get(`https://albadwan.shop/api/coc/res/${restaurantId}/cashdrawer`, {
+        headers: headers,
+      })
+      .then((response) => {
+        if (response.data.status == 200) {
+          alert(JSON.stringify(response.data.message));
+        } else {
+          console.error("Failed to open cash drawer");
+        }
+      })
+      .catch((error) => {
+        console.error("Network error:", error);
+      });
+  };
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.length);
   const handleLogout = () => {
     // Clear local storage data
     localStorage.clear();
-    // Navigate to '/'
-    // navigate("/");
+
     window.location.href = "/";
   };
+  const BearerToken = localStorage.getItem("BearerToken");
+  const restaurantId = localStorage.getItem("restaurant_id");
   return (
     <div className="  bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
       <div className="relative">
-        <HiOutlineSearch
+        {/* <FaCashRegister
           fontSize={20}
           className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
-        />
-        <input
+        /> */}
+        {/* <input
           type="text"
           placeholder="Search..."
           className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[24rem] h-10 pl-11 pr-4 rounded-sm"
-        />
+        /> */}
+        {/* <Button>Open Cash Drawer</Button> */}
+        {/* <IconButton variant="outlined">
+          <FaCashRegister fontSize={20} className="text-gray-500 " />
+        </IconButton> */}
+        <Button
+          onClick={handleOpenCashDrawer}
+          variant="filled"
+          className="flex gap-2 items-center py-2 px-3 text-green-600 bg-green-100/60"
+        >
+          <FaCashRegister fontSize={20} className=" " />
+          Open Cash Drawer
+        </Button>
       </div>
       <div className="flex items-center gap-2 mr-2">
         {/* {cartItems > 0 && (
@@ -51,6 +87,20 @@ const Header = () => {
           </Popover>
         )} */}
 
+        {/* <Popover className="flex justify-between ">
+          <Link to={"/cart"}>
+            <span className="flex items-start cursor-pointer">
+              <FaCashRegister
+                className="text-gray-700"
+                fontSize={24}
+                onClick={() => setCartDialogOpen(true)}
+              />
+              <span className="text-white bg-green-500 rounded-full text-[12px]  px-1">
+                {cartItems == 0 ? "" : cartItems}
+              </span>
+            </span>
+          </Link>
+        </Popover> */}
         <Popover className="flex justify-between ">
           <Link to={"/cart"}>
             <span className="flex items-start cursor-pointer">

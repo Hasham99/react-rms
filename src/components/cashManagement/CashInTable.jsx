@@ -9,9 +9,11 @@ import {
 import axios from "axios";
 
 const PAGE_SIZE = 10;
-const CashInTable = () => {
+
+const CashInTable = ({ type }) => {
   const [cashInData, setCashInData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,14 +25,17 @@ const CashInTable = () => {
           `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
           { headers: headers }
         );
-        setCashInData(response.data);
+        // Filter data to show only entries with the specified type
+        const filteredData = response.data.filter((item) => item.type === type);
+        setCashInData(filteredData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [type]); // Add 'type' to the dependency array to refetch data when 'type' changes
+
   const formatTime = (timeString) => {
     const date = new Date(timeString);
     const hours = date.getHours();
@@ -40,6 +45,7 @@ const CashInTable = () => {
     const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
     return `${formattedHours}:${formattedMinutes} ${ampm}`;
   };
+
   const totalPages = Math.ceil(cashInData.length / PAGE_SIZE);
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = Math.min(startIndex + PAGE_SIZE, cashInData.length);
@@ -47,6 +53,7 @@ const CashInTable = () => {
   const restaurantId = localStorage.getItem("restaurant_id");
   const currency = localStorage.getItem("currency");
   const BearerToken = localStorage.getItem("BearerToken");
+
   return (
     <Card className="h-fit w-full overflow-y-auto">
       <table className="rounded-xl  w-full min-w-max table-auto text-left ">
@@ -109,7 +116,6 @@ const CashInTable = () => {
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 px-4 py-2">
         <Button
           variant="outlined"
-          // size="sm"
           className="p-2"
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
@@ -121,7 +127,6 @@ const CashInTable = () => {
             <IconButton
               key={page + 1}
               variant={currentPage === page + 1 ? "outlined" : "text"}
-              // size="sm"
               className="w-5 h-5"
               onClick={() => setCurrentPage(page + 1)}
             >
@@ -131,7 +136,6 @@ const CashInTable = () => {
         </div>
         <Button
           variant="outlined"
-          // size="sm"
           className="p-2"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((prev) => prev + 1)}

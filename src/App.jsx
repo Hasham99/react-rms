@@ -26,6 +26,11 @@ import SecondPayment from "./components/paymentMethod/SecondPayment";
 import ThirdPayment from "./components/paymentMethod/ThirdPayment";
 import FourthPayment from "./components/paymentMethod/FourthPayment";
 import FifthPayment from "./components/paymentMethod/FifthPayment";
+import SixthPayment from "./components/paymentMethod/SixthPayment";
+import SeventhPayment from "./components/paymentMethod/SeventhPayment";
+import EighthPayment from "./components/paymentMethod/EighthPayment";
+import NinthPayment from "./components/paymentMethod/NinthPayment";
+import TenthPayment from "./components/paymentMethod/TenthPayment";
 
 function App() {
   return (
@@ -93,6 +98,26 @@ function App() {
           <Route
             path="/payment/method/5"
             element={<PrivateRoute Component={FifthPayment} />}
+          />
+          <Route
+            path="/payment/method/6"
+            element={<PrivateRoute Component={SixthPayment} />}
+          />
+          <Route
+            path="/payment/method/7"
+            element={<PrivateRoute Component={SeventhPayment} />}
+          />
+          <Route
+            path="/payment/method/8"
+            element={<PrivateRoute Component={EighthPayment} />}
+          />
+          <Route
+            path="/payment/method/9"
+            element={<PrivateRoute Component={NinthPayment} />}
+          />
+          <Route
+            path="/payment/method/10"
+            element={<PrivateRoute Component={TenthPayment} />}
           />
 
           <Route

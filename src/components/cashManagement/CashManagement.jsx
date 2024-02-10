@@ -67,18 +67,39 @@ const CashManagement = () => {
     fetchCashOutData();
   }, []);
 
+  // useEffect(() => {
+  //   // Calculate total cash amount
+  //   const sum = cashOutData.reduce(
+  //     (total, cashOutItem) => total + cashOutItem.amount,
+  //     0
+  //   );
+  //   setTotalCashOutAmount(sum);
+  // }, [cashOutData]);
+
   useEffect(() => {
-    // Calculate total cash amount
-    const sum = cashOutData.reduce(
-      (total, cashOutItem) => total + cashOutItem.amount,
-      0
-    );
+    // Filter cashOutData by type and calculate total cash amount
+    const sum = cashOutData
+      .filter((item) => item.type === "CASHOUT")
+      .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
     setTotalCashOutAmount(sum);
   }, [cashOutData]);
 
+  // useEffect(() => {
+  //   // Filter cashInData based on type
+  //   const filteredData = cashOutItem.filter((item) => item.type === "CASHOUT");
+  //   // Calculate total cash amount
+  //   const sum = filteredData.reduce(
+  //     (total, cashOutItem) => total + cashOutItem.amount,
+  //     0
+  //   );
+  //   setTotalCashOutAmount(sum);
+  // }, [cashOutItem]);
+
   useEffect(() => {
+    // Filter cashInData based on type
+    const filteredData = cashInData.filter((item) => item.type === "CASHIN");
     // Calculate total cash amount
-    const sum = cashInData.reduce(
+    const sum = filteredData.reduce(
       (total, cashInItem) => total + cashInItem.amount,
       0
     );
@@ -118,6 +139,7 @@ const CashManagement = () => {
         "Content-Type": "application/json",
       };
       const postData = {
+        type: "cashin",
         narration: narrationCashIn,
         amount: amountCashIn,
       };
@@ -145,6 +167,7 @@ const CashManagement = () => {
         "Content-Type": "application/json",
       };
       const postData = {
+        type: "cashout",
         narration: narrationCashOut,
         amount: amountCashOut,
       };
@@ -162,14 +185,6 @@ const CashManagement = () => {
       console.error("Error submitting data:", error);
     }
   };
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   const parsedValue = parseInt(value);
-  //   setInputValues((prevState) => ({
-  //     ...prevState,
-  //     [name]: parsedValue,
-  //   }));
-  // };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     const parsedValue = parseInt(value);
@@ -459,7 +474,7 @@ const CashManagement = () => {
                 </Button>
               </CardBody>
             </Card>
-            <CashInTable />
+            <CashInTable type="CASHIN" />
           </div>
         </TabPanel>
         <TabPanel value="cash_out">
@@ -488,7 +503,7 @@ const CashManagement = () => {
               </CardBody>
             </Card>
 
-            <CashOutTable />
+            <CashOutTable type="CASHOUT" />
           </div>
         </TabPanel>
         <TabPanel value="overall">
@@ -504,7 +519,7 @@ const CashManagement = () => {
                     {currency})
                   </Typography>
                 </div>
-                <CashInTable />
+                <CashInTable type="CASHIN" />
               </div>
               <div>
                 <div className="flex gap-1 justify-center px-4">
@@ -516,7 +531,7 @@ const CashManagement = () => {
                     {currency})
                   </Typography>
                 </div>
-                <CashOutTable />
+                <CashOutTable type="CASHOUT" />
               </div>
             </CardBody>
           </Card>

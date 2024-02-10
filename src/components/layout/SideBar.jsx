@@ -41,10 +41,36 @@ export default function SideBar() {
             path: `/payment/method/${item.series}`,
             icon: <MdPayment />,
           }));
-          setSidebarData([...DASHBOARD_SIDEBAR_LINKS, ...apiSidebarItems]);
+          // setSidebarData([...DASHBOARD_SIDEBAR_LINKS, ...apiSidebarItems]);
+          // localStorage.setItem(
+          //   "dashboard_sidebar",
+          //   JSON.stringify(sidebarData)
+          // );
+          // localStorage.setItem(
+          //   "dashboard_sidebar",
+          //   JSON.stringify([...DASHBOARD_SIDEBAR_LINKS, ...apiSidebarItems])
+          // );
+          // const LocalStorageJsonData =
+          //   localStorage.getItem("dashboard_sidebar");
+          // setSidebarData(JSON.parse(LocalStorageJsonData));
+          // Combine the sidebar data
+          const combinedSidebarData = [
+            ...DASHBOARD_SIDEBAR_LINKS,
+            ...apiSidebarItems,
+          ];
+
+          // Convert the combined sidebar data to a JSON string
+          const combinedSidebarDataString = JSON.stringify(combinedSidebarData);
+
+          // Store the combined sidebar data in localStorage
+          localStorage.setItem("sidebarData", combinedSidebarDataString);
+
+          // Set the combined sidebar data in a state variable
+          setSidebarData(combinedSidebarData);
         } else {
           console.error("Failed to fetch sidebar data");
           // If fetching API data fails, set sidebar data to only the existing sidebar items
+
           setSidebarData(DASHBOARD_SIDEBAR_LINKS);
         }
       } catch (error) {
@@ -87,22 +113,24 @@ export default function SideBar() {
         </div>
       </div>
       <div className="pt-3 flex flex-1 flex-col gap-0.5 h-3/4 overflow-y-auto ">
-        {sidebarData.map((link, index) => (
-          <div key={link.key}>
-            <Link
-              to={link.path}
-              className={classNames(
-                pathname === link.path
-                  ? "bg-[#1B4242] text-white"
-                  : "text-[#9EC8B9]",
-                linkClass
-              )}
-            >
-              <span className="text-xl">{link.icon}</span>
-              {link.label}
-            </Link>
-          </div>
-        ))}
+        {sidebarData
+          ? sidebarData.map((link, index) => (
+              <div key={link.key}>
+                <Link
+                  to={link.path}
+                  className={classNames(
+                    pathname === link.path
+                      ? "bg-[#1B4242] text-white"
+                      : "text-[#9EC8B9]",
+                    linkClass
+                  )}
+                >
+                  <span className="text-xl">{link.icon}</span>
+                  {link.label}
+                </Link>
+              </div>
+            ))
+          : []}
       </div>
       <div className="flex flex-col gap-0.5 pt-2 border-t border-white">
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (
