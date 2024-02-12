@@ -13,6 +13,7 @@ import {
   Input,
   Button,
   Alert,
+  Spinner,
 } from "@material-tailwind/react";
 import axios from "axios";
 
@@ -27,83 +28,149 @@ const FirstPayment = () => {
   const [totalCashInAmount, setTotalCashInAmount] = useState(0);
   const [paymentData, setPaymentData] = useState([]);
   const [balanceAmount, setBalanceAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPaymentData = async () => {
+    const fetchData = async () => {
       try {
         const headers = {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await axios.get(
+        const paymentResponse = await axios.get(
           `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
-        setPaymentData(response.data[0]);
-      } catch (error) {
-        console.error("Error fetching payment data:", error);
-      }
-    };
+        setPaymentData(paymentResponse.data[0]);
 
-    fetchPaymentData();
-  }, []);
-
-  useEffect(() => {
-    const fetchCashOutData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
+        const cashOutResponse = await axios.get(
+          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentData.p_name}`,
+          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
           { headers: headers }
         );
-        setCashOutData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchCashInData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
+        setCashOutData(cashOutResponse.data);
+
+        const cashInResponse = await axios.get(
+          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentData.p_name}`,
+          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
           { headers: headers }
         );
-        setCashInData(response.data);
+        setCashInData(cashInResponse.data);
+
+        setLoading(false); // Set loading to false once all data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false); // Ensure loading is set to false even in case of error
       }
     };
 
-    fetchCashInData();
-    fetchCashOutData();
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    // Filter cashOutData by type and calculate total cash amount
-    const sum = cashOutData
-      .filter((item) => item.type === paymentData.p_name.toUpperCase())
-      .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
-    setTotalCashOutAmount(sum);
-  }, [cashOutData]);
+  // useEffect(() => {
+  //   // Calculate total cash-in amount after the data has been loaded
+  //   const sumCashInAmounts = cashInData.reduce(
+  //     (total, transaction) => total + transaction.amount,
+  //     0
+  //   );
+  //   setTotalCashInAmount(sumCashInAmounts);
 
-  useEffect(() => {
-    // Filter cashInData based on type
-    const filteredData = cashInData.filter(
-      (item) => item.type === paymentData.p_name.toUpperCase()
-    );
-    // Calculate total cash amount
-    const sum = filteredData.reduce(
-      (total, cashInItem) => total + cashInItem.amount,
-      0
-    );
-    setTotalCashInAmount(sum);
-  }, [cashInData]);
+  //   // Set up interval to periodically update total cash-in amount
+  //   const intervalId = setInterval(() => {
+  //     // Fetch cash-in data and update total cash-in amount
+  //     axios
+  //       .get(
+  //         `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentData.p_name}`,
+  //         { headers: { Authorization: `${BearerToken}` } }
+  //       )
+  //       .then((response) => {
+  //         const updatedCashInData = response.data;
+  //         const updatedSum = updatedCashInData.reduce(
+  //           (total, transaction) => total + transaction.amount,
+  //           0
+  //         );
+  //         setTotalCashInAmount(updatedSum);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching updated cash-in data:", error);
+  //       });
+  //   }, 1000); // Fetch and update every 60 seconds
+
+  //   return () => {
+  //     // Cleanup interval on component unmount
+  //     clearInterval(intervalId);
+  //   };
+  // }, [cashInData, paymentData.p_name]);
+  // useEffect(() => {
+  //   first
+
+  //   return () => {
+  //     second
+  //   }
+  // }, [third])
+
+  // useEffect(() => {
+  //   const sumCashInAmounts = () => {
+  //     let sum = 0;
+  //     cashInData.forEach((transaction) => {
+  //       sum += transaction.amount;
+  //     });
+  //     setTotalCashInAmount(sum);
+  //     // alert(totalCashInAmount);
+  //   };
+
+  //   sumCashInAmounts();
+  // }, [cashInData]);
+  // useEffect(() => {
+  //   // Calculate total cash amount from cashOutData
+  //   const sum = cashOutData.reduce(
+  //     (total, cashOutItem) => total + cashOutItem.amount,
+  //     0
+  //   );
+  //   setTotalCashOutAmount(sum);
+  // }, [cashOutData.paymentData]);
+
+  // useEffect(() => {
+  //   // Filter cashOutData by type and calculate total cash amount
+  //   const sum = cashOutData
+  //     .filter((item) => item.type === paymentData.p_name.toUpperCase())
+  //     .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
+  //   setTotalCashOutAmount(sum);
+  // }, [cashOutData, paymentData]);
+
+  // useEffect(() => {
+  //   // Filter cashInData based on type
+  //   const filteredData = cashInData.filter(
+  //     (item) => item.type === paymentData.p_name.toUpperCase()
+  //   );
+  //   // Calculate total cash amount
+  //   const sum = filteredData.reduce(
+  //     (total, cashInItem) => total + cashInItem.amount,
+  //     0
+  //   );
+  //   setTotalCashInAmount(sum);
+  // }, [cashInData, paymentData]);
+
+  // useEffect(() => {
+  //   // Filter cashInData based on type
+  //   const filteredData = cashInData.filter(
+  //     (item) => item.type === paymentData.p_name.toUpperCase()
+  //   );
+  //   // Calculate total cash amount
+  //   const sum = filteredData.reduce(
+  //     (total, cashInItem) => total + cashInItem.amount,
+  //     0
+  //   );
+  //   setTotalCashInAmount(sum);
+  // }, [cashInData, paymentData]); // Include cashInData in dependency array
+
+  // useEffect(() => {
+  //   // Filter cashOutData by type and calculate total cash amount
+  //   const sum = cashOutData
+  //     .filter((item) => item.type === paymentData.p_name.toUpperCase())
+  //     .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
+  //   setTotalCashOutAmount(sum);
+  // }, [cashOutData, paymentData]); // Include cashOutData in dependency array
 
   const handleCashInNarrationChange = (event) => {
     setNarrationCashIn(event.target.value);
@@ -220,9 +287,9 @@ const FirstPayment = () => {
           { headers: headers }
         )
         .then(
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000)
+          // setTimeout(() => {
+          window.location.reload()
+          // }, 2000)
         );
       // alert(`Balance Amount: ${balanceAmount}`);
     } catch (error) {
@@ -232,6 +299,15 @@ const FirstPayment = () => {
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    ); // Display loading message while data is being fetched
+  }
+
   return (
     <Tabs value="balance">
       <TabsHeader>
@@ -313,6 +389,7 @@ const FirstPayment = () => {
             </Card>
             <CashInTable
               type={paymentData.p_name ? paymentData.p_name.toUpperCase() : ""}
+              // urlProp={paymentData.p_name}
             />
           </div>
         </TabPanel>

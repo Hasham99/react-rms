@@ -10,7 +10,7 @@ import axios from "axios";
 
 const PAGE_SIZE = 10;
 
-const CashInTable = ({ type }) => {
+const CashInTable = ({ type, urlProp }) => {
   const [cashInData, setCashInData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -22,7 +22,8 @@ const CashInTable = ({ type }) => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
+          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${type}`,
+          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
           { headers: headers }
         );
         // Filter data to show only entries with the specified type

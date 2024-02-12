@@ -23,7 +23,8 @@ const CashOutTable = ({ type }) => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
+          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${type}`,
+          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
           { headers: headers }
         );
         setCashOutData(response.data);
