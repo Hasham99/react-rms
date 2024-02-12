@@ -270,18 +270,6 @@ const CashManagement = () => {
       label: "Close Sale",
       value: "close_sale",
     },
-    {
-      label: "Cash In",
-      value: "cash_in",
-    },
-    {
-      label: "Cash Out",
-      value: "cash_out",
-    },
-    {
-      label: "All Transactions",
-      value: "overall",
-    },
   ];
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
@@ -446,94 +434,6 @@ const CashManagement = () => {
             >
               Submit
             </Button>
-          </Card>
-        </TabPanel>
-
-        <TabPanel value="cash_in">
-          <div className="flex flex-row gap-2">
-            <Card className="w-1/4 h-fit">
-              <CardBody className="flex flex-col gap-3">
-                <Typography className="font-bold ">Cash In Details</Typography>
-                <Input
-                  type="text"
-                  label="Narration"
-                  value={narrationCashIn}
-                  onChange={handleCashInNarrationChange}
-                />
-                <Input
-                  type="number"
-                  label="Amount"
-                  value={amountCashIn}
-                  onChange={handleCashInAmountChange}
-                />
-                <Button
-                  className="w-20 flex px-4 py-3 self-end justify-center bg-green-600"
-                  onClick={handleSubmitCheckIn}
-                >
-                  Submit
-                </Button>
-              </CardBody>
-            </Card>
-            <CashInTable type="CASHIN" />
-          </div>
-        </TabPanel>
-        <TabPanel value="cash_out">
-          <div className="flex flex-row gap-2">
-            <Card className="w-1/4 h-fit">
-              <CardBody className="flex flex-col gap-3">
-                <Typography className="font-bold ">Cash In Details</Typography>
-                <Input
-                  type="text"
-                  label="Narration"
-                  value={narrationCashOut}
-                  onChange={handleCashOutNarrationChange}
-                />
-                <Input
-                  type="number"
-                  label="Amount"
-                  value={amountCashOut}
-                  onChange={handleCashOutAmountChange}
-                />
-                <Button
-                  className="w-20 flex px-4 py-3 self-end justify-center bg-red-600"
-                  onClick={handleSubmitCheckOut}
-                >
-                  Submit
-                </Button>
-              </CardBody>
-            </Card>
-
-            <CashOutTable type="CASHOUT" />
-          </div>
-        </TabPanel>
-        <TabPanel value="overall">
-          <Card className="">
-            <CardBody className="grid grid-cols-2 gap-2">
-              <div>
-                <div className="flex gap-1 justify-center px-4">
-                  <Typography className=" font-bold text-lg uppercase text-green-800">
-                    Cash In
-                  </Typography>
-                  <Typography className=" font-bold text-lg  text-green-800">
-                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `} (
-                    {currency})
-                  </Typography>
-                </div>
-                <CashInTable type="CASHIN" />
-              </div>
-              <div>
-                <div className="flex gap-1 justify-center px-4">
-                  <Typography className=" font-bold text-lg uppercase text-red-800">
-                    Cash Out
-                  </Typography>
-                  <Typography className=" font-bold text-lg  text-red-800">
-                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `} (
-                    {currency})
-                  </Typography>
-                </div>
-                <CashOutTable type="CASHOUT" />
-              </div>
-            </CardBody>
           </Card>
         </TabPanel>
       </TabsBody>

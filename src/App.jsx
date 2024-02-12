@@ -31,6 +31,16 @@ import SeventhPayment from "./components/paymentMethod/SeventhPayment";
 import EighthPayment from "./components/paymentMethod/EighthPayment";
 import NinthPayment from "./components/paymentMethod/NinthPayment";
 import TenthPayment from "./components/paymentMethod/TenthPayment";
+import EleventhPayment from "./components/paymentMethod/EleventhPayment";
+import TwelvthPayment from "./components/paymentMethod/TwelvthPayment";
+import ThirteenthPayment from "./components/paymentMethod/ThirteenthPayment";
+import FourteenthPayment from "./components/paymentMethod/FourteenthPayment";
+import FifteenthPayment from "./components/paymentMethod/FifteenthPayment";
+import SixteenthPayment from "./components/paymentMethod/SixteenthPayment";
+import SeventeenthPayment from "./components/paymentMethod/SeventeenthPayment";
+import EighteenthPayment from "./components/paymentMethod/EighteenthPayment";
+import NinteenthPayment from "./components/paymentMethod/NinteenthPayment";
+import TwentythPayment from "./components/paymentMethod/TwentythPayment";
 
 function App() {
   return (
@@ -118,6 +128,46 @@ function App() {
           <Route
             path="/payment/method/10"
             element={<PrivateRoute Component={TenthPayment} />}
+          />
+          <Route
+            path="/payment/method/11"
+            element={<PrivateRoute Component={EleventhPayment} />}
+          />
+          <Route
+            path="/payment/method/12"
+            element={<PrivateRoute Component={TwelvthPayment} />}
+          />
+          <Route
+            path="/payment/method/13"
+            element={<PrivateRoute Component={ThirteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/14"
+            element={<PrivateRoute Component={FourteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/15"
+            element={<PrivateRoute Component={FifteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/16"
+            element={<PrivateRoute Component={SixteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/17"
+            element={<PrivateRoute Component={SeventeenthPayment} />}
+          />
+          <Route
+            path="/payment/method/18"
+            element={<PrivateRoute Component={EighteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/19"
+            element={<PrivateRoute Component={NinteenthPayment} />}
+          />
+          <Route
+            path="/payment/method/20"
+            element={<PrivateRoute Component={TwentythPayment} />}
           />
 
           <Route

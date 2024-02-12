@@ -22,9 +22,9 @@ const FirstPayment = () => {
   const [narrationCashOut, setNarrationCashOut] = useState("");
   const [amountCashIn, setAmountCashIn] = useState("");
   const [amountCashOut, setAmountCashOut] = useState("");
-  const [cashOutData, setCashOutData] = useState([]);
+  // const [cashOutData, setCashOutData] = useState([]);
   const [totalCashOutAmount, setTotalCashOutAmount] = useState(0);
-  const [cashInData, setCashInData] = useState([]);
+  // const [cashInData, setCashInData] = useState([]);
   const [totalCashInAmount, setTotalCashInAmount] = useState(0);
   const [paymentData, setPaymentData] = useState([]);
   const [balanceAmount, setBalanceAmount] = useState(0);
@@ -33,144 +33,61 @@ const FirstPayment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true); // Set loading to true before fetching data
+
         const headers = {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
+
+        // Fetch paymentResponse first
         const paymentResponse = await axios.get(
           `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
         setPaymentData(paymentResponse.data[0]);
 
-        const cashOutResponse = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentData.p_name}`,
-          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
-          { headers: headers }
-        );
-        setCashOutData(cashOutResponse.data);
-
-        const cashInResponse = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentData.p_name}`,
-          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
-          { headers: headers }
-        );
-        setCashInData(cashInResponse.data);
-
-        setLoading(false); // Set loading to false once all data is fetched
+        // Fetch cashOutResponse using paymentData
+        axios
+          .get(
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentResponse.data[0].p_name}`,
+            { headers: headers }
+          )
+          .then((cashOutResponse) => {
+            // setCashOutData(cashOutResponse.data);
+            setTotalCashOutAmount(
+              cashOutResponse.data.reduce((sum, item) => sum + item.amount, 0)
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching cashOutResponse:", error);
+            setLoading(false);
+          });
+        // Fetch cashInResponse using paymentData
+        axios
+          .get(
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentResponse.data[0].p_name}`,
+            { headers: headers }
+          )
+          .then((cashInResponse) => {
+            // setCashInData(cashInResponse.data);
+            setTotalCashInAmount(
+              cashInResponse.data.reduce((sum, item) => sum + item.amount, 0)
+            );
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching cashInResponse:", error);
+            setLoading(false);
+          });
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false); // Ensure loading is set to false even in case of error
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   // Calculate total cash-in amount after the data has been loaded
-  //   const sumCashInAmounts = cashInData.reduce(
-  //     (total, transaction) => total + transaction.amount,
-  //     0
-  //   );
-  //   setTotalCashInAmount(sumCashInAmounts);
-
-  //   // Set up interval to periodically update total cash-in amount
-  //   const intervalId = setInterval(() => {
-  //     // Fetch cash-in data and update total cash-in amount
-  //     axios
-  //       .get(
-  //         `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentData.p_name}`,
-  //         { headers: { Authorization: `${BearerToken}` } }
-  //       )
-  //       .then((response) => {
-  //         const updatedCashInData = response.data;
-  //         const updatedSum = updatedCashInData.reduce(
-  //           (total, transaction) => total + transaction.amount,
-  //           0
-  //         );
-  //         setTotalCashInAmount(updatedSum);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching updated cash-in data:", error);
-  //       });
-  //   }, 1000); // Fetch and update every 60 seconds
-
-  //   return () => {
-  //     // Cleanup interval on component unmount
-  //     clearInterval(intervalId);
-  //   };
-  // }, [cashInData, paymentData.p_name]);
-  // useEffect(() => {
-  //   first
-
-  //   return () => {
-  //     second
-  //   }
-  // }, [third])
-
-  // useEffect(() => {
-  //   const sumCashInAmounts = () => {
-  //     let sum = 0;
-  //     cashInData.forEach((transaction) => {
-  //       sum += transaction.amount;
-  //     });
-  //     setTotalCashInAmount(sum);
-  //     // alert(totalCashInAmount);
-  //   };
-
-  //   sumCashInAmounts();
-  // }, [cashInData]);
-  // useEffect(() => {
-  //   // Calculate total cash amount from cashOutData
-  //   const sum = cashOutData.reduce(
-  //     (total, cashOutItem) => total + cashOutItem.amount,
-  //     0
-  //   );
-  //   setTotalCashOutAmount(sum);
-  // }, [cashOutData.paymentData]);
-
-  // useEffect(() => {
-  //   // Filter cashOutData by type and calculate total cash amount
-  //   const sum = cashOutData
-  //     .filter((item) => item.type === paymentData.p_name.toUpperCase())
-  //     .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
-  //   setTotalCashOutAmount(sum);
-  // }, [cashOutData, paymentData]);
-
-  // useEffect(() => {
-  //   // Filter cashInData based on type
-  //   const filteredData = cashInData.filter(
-  //     (item) => item.type === paymentData.p_name.toUpperCase()
-  //   );
-  //   // Calculate total cash amount
-  //   const sum = filteredData.reduce(
-  //     (total, cashInItem) => total + cashInItem.amount,
-  //     0
-  //   );
-  //   setTotalCashInAmount(sum);
-  // }, [cashInData, paymentData]);
-
-  // useEffect(() => {
-  //   // Filter cashInData based on type
-  //   const filteredData = cashInData.filter(
-  //     (item) => item.type === paymentData.p_name.toUpperCase()
-  //   );
-  //   // Calculate total cash amount
-  //   const sum = filteredData.reduce(
-  //     (total, cashInItem) => total + cashInItem.amount,
-  //     0
-  //   );
-  //   setTotalCashInAmount(sum);
-  // }, [cashInData, paymentData]); // Include cashInData in dependency array
-
-  // useEffect(() => {
-  //   // Filter cashOutData by type and calculate total cash amount
-  //   const sum = cashOutData
-  //     .filter((item) => item.type === paymentData.p_name.toUpperCase())
-  //     .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
-  //   setTotalCashOutAmount(sum);
-  // }, [cashOutData, paymentData]); // Include cashOutData in dependency array
 
   const handleCashInNarrationChange = (event) => {
     setNarrationCashIn(event.target.value);
@@ -220,9 +137,9 @@ const FirstPayment = () => {
       // Reset input values
       setNarrationCashIn("");
       setAmountCashIn("");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      // setTimeout(() => {
+      window.location.reload();
+      // }, 2000);
     } catch (error) {
       console.error("Error submitting data:", error);
       // Handle error
@@ -286,11 +203,12 @@ const FirstPayment = () => {
           {},
           { headers: headers }
         )
-        .then(
+        .then(() => {
           // setTimeout(() => {
-          window.location.reload()
+          window.location.reload();
+
           // }, 2000)
-        );
+        });
       // alert(`Balance Amount: ${balanceAmount}`);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -433,8 +351,10 @@ const FirstPayment = () => {
                     Cash In
                   </Typography>
                   <Typography className=" font-bold text-lg  text-green-800">
-                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `} (
-                    {currency})
+                    {totalCashInAmount
+                      ? `:  ${parseFloat(totalCashInAmount).toFixed(2)} `
+                      : 0}{" "}
+                    ({currency})
                   </Typography>
                 </div>
                 <CashInTable
@@ -449,8 +369,10 @@ const FirstPayment = () => {
                     Cash Out
                   </Typography>
                   <Typography className=" font-bold text-lg  text-red-800">
-                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `} (
-                    {currency})
+                    {totalCashOutAmount
+                      ? `: ${parseFloat(totalCashOutAmount).toFixed(2)} `
+                      : 0}{" "}
+                    ({currency})
                   </Typography>
                 </div>
                 <CashOutTable

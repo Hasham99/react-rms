@@ -13,6 +13,7 @@ import {
   Input,
   Button,
   Alert,
+  Spinner,
 } from "@material-tailwind/react";
 import axios from "axios";
 
@@ -21,89 +22,72 @@ const SeventhPayment = () => {
   const [narrationCashOut, setNarrationCashOut] = useState("");
   const [amountCashIn, setAmountCashIn] = useState("");
   const [amountCashOut, setAmountCashOut] = useState("");
-  const [cashOutData, setCashOutData] = useState([]);
+  // const [cashOutData, setCashOutData] = useState([]);
   const [totalCashOutAmount, setTotalCashOutAmount] = useState(0);
-  const [cashInData, setCashInData] = useState([]);
+  // const [cashInData, setCashInData] = useState([]);
   const [totalCashInAmount, setTotalCashInAmount] = useState(0);
   const [paymentData, setPaymentData] = useState([]);
   const [balanceAmount, setBalanceAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPaymentData = async () => {
+    const fetchData = async () => {
       try {
+        setLoading(true); // Set loading to true before fetching data
+
         const headers = {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await axios.get(
+
+        // Fetch paymentResponse first
+        const paymentResponse = await axios.get(
           `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
-        setPaymentData(response.data[6]);
-      } catch (error) {
-        console.error("Error fetching payment data:", error);
-      }
-    };
+        setPaymentData(paymentResponse.data[6]);
 
-    fetchPaymentData();
-  }, []);
-
-  useEffect(() => {
-    const fetchCashOutData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
-          { headers: headers }
-        );
-        setCashOutData(response.data);
+        // Fetch cashOutResponse using paymentData
+        axios
+          .get(
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentResponse.data[6].p_name}`,
+            { headers: headers }
+          )
+          .then((cashOutResponse) => {
+            // setCashOutData(cashOutResponse.data);
+            setTotalCashOutAmount(
+              cashOutResponse.data.reduce((sum, item) => sum + item.amount, 0)
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching cashOutResponse:", error);
+            setLoading(false);
+          });
+        // Fetch cashInResponse using paymentData
+        axios
+          .get(
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentResponse.data[6].p_name}`,
+            { headers: headers }
+          )
+          .then((cashInResponse) => {
+            // setCashInData(cashInResponse.data);
+            setTotalCashInAmount(
+              cashInResponse.data.reduce((sum, item) => sum + item.amount, 0)
+            );
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching cashInResponse:", error);
+            setLoading(false);
+          });
       } catch (error) {
         console.error("Error fetching data:", error);
-      }
-    };
-    const fetchCashInData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
-          { headers: headers }
-        );
-        setCashInData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
 
-    fetchCashInData();
-    fetchCashOutData();
+    fetchData();
   }, []);
-
-  useEffect(() => {
-    // Filter cashOutData by type and calculate total cash amount
-    const sum = cashOutData
-      .filter((item) => item.type === paymentData.p_name.toUpperCase())
-      .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
-    setTotalCashOutAmount(sum);
-  }, [cashOutData]);
-
-  useEffect(() => {
-    // Filter cashInData based on type
-    const filteredData = cashInData.filter(
-      (item) => item.type === paymentData.p_name.toUpperCase()
-    );
-    // Calculate total cash amount
-    const sum = filteredData.reduce(
-      (total, cashInItem) => total + cashInItem.amount,
-      0
-    );
-    setTotalCashInAmount(sum);
-  }, [cashInData]);
 
   const handleCashInNarrationChange = (event) => {
     setNarrationCashIn(event.target.value);
@@ -153,9 +137,9 @@ const SeventhPayment = () => {
       // Reset input values
       setNarrationCashIn("");
       setAmountCashIn("");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      // setTimeout(() => {
+      window.location.reload();
+      // }, 2000);
     } catch (error) {
       console.error("Error submitting data:", error);
       // Handle error
@@ -219,11 +203,12 @@ const SeventhPayment = () => {
           {},
           { headers: headers }
         )
-        .then(
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000)
-        );
+        .then(() => {
+          // setTimeout(() => {
+          window.location.reload();
+
+          // }, 2000)
+        });
       // alert(`Balance Amount: ${balanceAmount}`);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -232,6 +217,15 @@ const SeventhPayment = () => {
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    ); // Display loading message while data is being fetched
+  }
+
   return (
     <Tabs value="balance">
       <TabsHeader>
@@ -254,7 +248,7 @@ const SeventhPayment = () => {
                   <Typography className="font-bold text-blue-500">
                     {paymentData.closing_balance
                       ? parseFloat(paymentData.closing_balance).toFixed(2)
-                      : ""}{" "}
+                      : 0}{" "}
                     {currency}
                   </Typography>
                 </div>
@@ -313,6 +307,7 @@ const SeventhPayment = () => {
             </Card>
             <CashInTable
               type={paymentData.p_name ? paymentData.p_name.toUpperCase() : ""}
+              // urlProp={paymentData.p_name}
             />
           </div>
         </TabPanel>
@@ -356,8 +351,10 @@ const SeventhPayment = () => {
                     Cash In
                   </Typography>
                   <Typography className=" font-bold text-lg  text-green-800">
-                    {`: ${parseFloat(totalCashInAmount).toFixed(2) || 0} `} (
-                    {currency})
+                    {totalCashInAmount
+                      ? `:  ${parseFloat(totalCashInAmount).toFixed(2)} `
+                      : 0}{" "}
+                    ({currency})
                   </Typography>
                 </div>
                 <CashInTable
@@ -372,8 +369,10 @@ const SeventhPayment = () => {
                     Cash Out
                   </Typography>
                   <Typography className=" font-bold text-lg  text-red-800">
-                    {`: ${parseFloat(totalCashOutAmount).toFixed(2) || 0} `} (
-                    {currency})
+                    {totalCashOutAmount
+                      ? `: ${parseFloat(totalCashOutAmount).toFixed(2)} `
+                      : 0}{" "}
+                    ({currency})
                   </Typography>
                 </div>
                 <CashOutTable

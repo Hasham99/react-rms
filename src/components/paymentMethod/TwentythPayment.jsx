@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 
-const TenthPayment = () => {
+const TwentythPayment = () => {
   const [narrationCashIn, setNarrationCashIn] = useState("");
   const [narrationCashOut, setNarrationCashOut] = useState("");
   const [amountCashIn, setAmountCashIn] = useState("");
@@ -45,12 +45,12 @@ const TenthPayment = () => {
           `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
-        setPaymentData(paymentResponse.data[9]);
+        setPaymentData(paymentResponse.data[19]);
 
         // Fetch cashOutResponse using paymentData
         axios
           .get(
-            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentResponse.data[9].p_name}`,
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentResponse.data[19].p_name}`,
             { headers: headers }
           )
           .then((cashOutResponse) => {
@@ -66,7 +66,7 @@ const TenthPayment = () => {
         // Fetch cashInResponse using paymentData
         axios
           .get(
-            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentResponse.data[9].p_name}`,
+            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentResponse.data[19].p_name}`,
             { headers: headers }
           )
           .then((cashInResponse) => {
@@ -404,4 +404,4 @@ function Icon() {
     </svg>
   );
 }
-export default TenthPayment;
+export default TwentythPayment;
