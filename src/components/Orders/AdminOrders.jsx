@@ -7,6 +7,7 @@ import {
   Input,
   Dialog,
   DialogBody,
+  Spinner,
 } from "@material-tailwind/react";
 import React from "react";
 import axios from "axios";
@@ -14,10 +15,11 @@ import AdminDialog from "./Dialog.jsx/AdminDialog";
 const AdminOrders = () => {
   const [ordersData, setOrdersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedOrder, setSelectedOrder] = useState(null); // State to store selected order data
+  // const [selectedOrder, setSelectedOrder] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(25); // Step 1: Set default itemsPerPage
   const [searchTerm, setSearchTerm] = useState("");
   const [OrderData, setOrderData] = useState([]);
+  const [loading, setLoading] = useState(true);
   // const itemsPerPage = 25; // Set the number of items to display per page
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const AdminOrders = () => {
         // if (sortedOrders) {
         //   localStorage.setItem("admin-orders", JSON.stringify(sortedOrders));
         // }
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -94,6 +97,13 @@ const AdminOrders = () => {
   const handleClose = () => setSize(null);
   const BearerToken = localStorage.getItem("BearerToken");
   const restaurantId = localStorage.getItem("restaurant_id");
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <>
       <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">

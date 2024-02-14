@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Spinner } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { IoBagHandle, IoPieChart, IoPeople, IoCart } from "react-icons/io5";
 
@@ -7,6 +8,8 @@ const GridStats = () => {
   const [monthlyExpense, setMonthlyExpense] = useState(null);
   const [dailyIncome, setDailyIncome] = useState(null);
   const [dailyExpense, setDailyExpense] = useState(null);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMonthlyIncomeExpenseData = async () => {
@@ -22,6 +25,7 @@ const GridStats = () => {
         .then((data) => {
           setMonthlyExpense(data.Expense);
           setMonthlyIncome(data.Income);
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -39,23 +43,38 @@ const GridStats = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          // Extracting expense and income from the response
-          // const { Expense, Income } = data;
-          // Setting the state with the fetched values
           setDailyExpense(data.Expense);
           setDailyIncome(data.Income);
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     };
-
     fetchMonthlyIncomeExpenseData();
     fetchDailyIncomeExpenseData();
   }, []);
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="grid grid-cols-4 gap-4">
+        <div className="w-full h-20 bg-white rounded-xl flex justify-center items-center">
+          <Spinner color="indigo" />
+        </div>
+        <div className="w-full h-20 bg-white rounded-xl flex justify-center items-center">
+          <Spinner color="indigo" />
+        </div>
+        <div className="w-full h-20 bg-white rounded-xl flex justify-center items-center">
+          <Spinner color="indigo" />
+        </div>
+        <div className="w-full h-20 bg-white rounded-xl flex justify-center items-center">
+          <Spinner color="indigo" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className=" flex gap-4 ">
       <BoxWrapper className="">
@@ -131,5 +150,4 @@ function BoxWrapper({ children }) {
     </div>
   );
 }
-
 export default GridStats;

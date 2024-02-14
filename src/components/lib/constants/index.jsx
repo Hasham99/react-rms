@@ -8,10 +8,12 @@ import {
   HiOutlineQuestionMarkCircle,
   HiOutlineCog,
 } from "react-icons/hi";
+import { ImDrawer } from "react-icons/im";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { RiRestaurant2Line } from "react-icons/ri";
 import { GrTransaction } from "react-icons/gr";
 import { LuUsers2 } from "react-icons/lu";
+import { GiTakeMyMoney } from "react-icons/gi";
 
 export const DASHBOARD_SIDEBAR_LINKS = [
   {
@@ -46,19 +48,6 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     label: "POS",
     path: "/pos",
     icon: <HiOutlineShoppingCart />,
-    // submenu: [
-    //   {
-    //     key: "subitem1",
-    //     label: "Submenu Item 1",
-    //     path: "/products/subitem1",
-    //   },
-    //   {
-    //     key: "subitem2",
-    //     label: "Submenu Item 2",
-    //     path: "/products/subitem2",
-    //   },
-    //   // Add more submenu items as needed
-    // ],
   },
   {
     key: "inventory",
@@ -72,50 +61,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     path: "/menu-management",
     icon: <RiRestaurant2Line />,
   },
-  // {
-  //   key: "users",
-  //   label: "Users",
-  //   path: "/users",
-  //   icon: <HiOutlineDocumentText />,
-  // },
   {
     key: "staff-management",
     label: "Staff Management",
     path: "/staff-management",
     icon: <LuUsers2 />,
-    // submenu: [
-    //   {
-    //     key: "subitem1",
-    //     label: "Submenu Item 1",
-    //     path: "/products/",
-    //   },
-
-    //   {
-    //     key: "subitem2",
-    //     label: "Submenu Item 2",
-    //     path: "/products/subitem2",
-    //   },
-    //   // Add more submenu items as needed
-    // ],
   },
-  // {
-  //   key: "transactions",
-  //   label: "Transactions",
-  //   path: "/transactions",
-  //   icon: <GrTransaction />,
-  // },
-  // {
-  //   key: "reports",
-  //   label: "Reports",
-  //   path: "/reports",
-  //   icon: <HiOutlineDocumentText />,
-  // },
-  // {
-  //   key: "promotions",
-  //   label: "Promotions",
-  //   path: "/promotions",
-  //   icon: <HiOutlineDocumentText />,
-  // },
   {
     key: "ingredients",
     label: "Ingredients",
@@ -126,13 +77,15 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     key: "cost-management",
     label: "Cost Management",
     path: "/cost-management",
-    icon: <HiOutlineDocumentText />,
+    icon: <GiTakeMyMoney />,
+    // icon: <HiOutlineDocumentText />,
   },
   {
     key: "cash-management",
-    label: "Cash Management",
+    label: "Drawer Management",
     path: "/cash-management",
-    icon: <HiOutlineDocumentText />,
+    icon: <ImDrawer />,
+    // icon: <HiOutlineDocumentText />,
   },
 ];
 

@@ -21,7 +21,6 @@ const Inventory = () => {
     <>
       <div className="flex justify-between items-center">
         <div className="text-2xl text-[#092635] font-bold py-4">Inventory</div>
-        {/* <div className=" "> */}
         <Button
           onClick={() => handleOpen("xs")}
           className="flex items-center gap-3"
@@ -29,9 +28,7 @@ const Inventory = () => {
         >
           <UserPlusIcon strokeWidth={10} className="h-5 w-5" /> Add item
         </Button>
-        {/* </div> */}
       </div>
-      {/* <div className="text-md font-normal py-1">Inventory</div> */}
       <InventoryTable />
       <Dialog
         open={

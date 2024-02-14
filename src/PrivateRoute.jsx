@@ -6,9 +6,12 @@ const PrivateRoute = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     let login = localStorage.getItem("token");
-    if (login == `true`) {
-      // navigate("/dashboard");
-    } else {
+    // if (login == `true`) {
+    //   // navigate("/dashboard");
+    // } else {
+    //   navigate("/");
+    // }
+    if (login == `false`) {
       navigate("/");
     }
   }, []);

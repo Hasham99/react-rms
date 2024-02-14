@@ -44,7 +44,7 @@ const AdminDialog = ({ onClose, orderData }) => {
     tid,
     paid_via,
   });
-  console.log(CommingOrderData);
+  // console.log(CommingOrderData);
 
   const [selectedPayment, setSelectedPayment] = useState("");
   const [valuePay, setValuePay] = useState(selectedPayment);
@@ -95,20 +95,32 @@ const AdminDialog = ({ onClose, orderData }) => {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      axios
+
+      await axios
         .patch(
-          `https://albadwan.shop/api/posorders/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`,
-          { headers: headers }
+          `https://albadwan.shop/api/posorders/res/${restaurantId}/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`,
+          {},
+          { headers: headers, responseType: "blob" }
         )
         .then((response) => {
-          console.log("PATCH request successful", response.data);
-          // setOpen(!open);
-          window.location.reload(true);
-          // Handle the response data here if needed
+          // Create a blob URL for the PDF data
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+
+          // Create a temporary <a> element to trigger the download
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "111.pdf";
+          document.body.appendChild(a);
+          a.click();
+
+          // Clean up resources
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          // console.log(response.data);
+          // window.location.reload();
         })
         .catch((error) => {
-          console.error("Error making PATCH request", error);
-          // Handle errors here if needed
+          console.log("error admin dialog:", error);
         });
     } else {
       alert("Transaction type can't be empty ");

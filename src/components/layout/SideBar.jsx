@@ -8,6 +8,7 @@ import {
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
   DASHBOARD_SIDEBAR_LINKS,
 } from "../lib/constants/index";
+import { Spinner } from "@material-tailwind/react";
 
 const linkClass =
   "flex items-center gap-2 font-light px-3 py-2 hover:bg-[#5C8374] hover:no-underline active:bg-[#9EC8B9] rounded-sm text-base";
@@ -16,6 +17,7 @@ export default function SideBar() {
   const { pathname } = useLocation();
   const [openSubmenus, setOpenSubmenus] = useState([]);
   const [sidebarData, setSidebarData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const restaurantName = localStorage.getItem("restaurant_name");
 
   useEffect(() => {
@@ -41,19 +43,7 @@ export default function SideBar() {
             path: `/payment/method/${item.series}`,
             icon: <MdPayment />,
           }));
-          // setSidebarData([...DASHBOARD_SIDEBAR_LINKS, ...apiSidebarItems]);
-          // localStorage.setItem(
-          //   "dashboard_sidebar",
-          //   JSON.stringify(sidebarData)
-          // );
-          // localStorage.setItem(
-          //   "dashboard_sidebar",
-          //   JSON.stringify([...DASHBOARD_SIDEBAR_LINKS, ...apiSidebarItems])
-          // );
-          // const LocalStorageJsonData =
-          //   localStorage.getItem("dashboard_sidebar");
-          // setSidebarData(JSON.parse(LocalStorageJsonData));
-          // Combine the sidebar data
+
           const combinedSidebarData = [
             ...DASHBOARD_SIDEBAR_LINKS,
             ...apiSidebarItems,
@@ -67,6 +57,7 @@ export default function SideBar() {
 
           // Set the combined sidebar data in a state variable
           setSidebarData(combinedSidebarData);
+          setLoading(false);
         } else {
           console.error("Failed to fetch sidebar data");
           // If fetching API data fails, set sidebar data to only the existing sidebar items
@@ -97,6 +88,13 @@ export default function SideBar() {
 
   const BearerToken = localStorage.getItem("BearerToken");
   const restaurantId = localStorage.getItem("restaurant_id");
+  if (loading) {
+    return (
+      <div className="bg-[#092635] w-60 h-screen flex justify-center items-center">
+        <Spinner color="light-blue" />
+      </div>
+    ); // Display loading message while data is being fetched
+  }
   return (
     <div className="bg-[#092635] w-60 p-3 flex flex-col">
       <div className="flex-col items-center ml-3 gap-2 px-1 py-2">
@@ -112,7 +110,7 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <div className="pt-3 flex flex-1 flex-col gap-0.5 h-3/4 overflow-y-auto ">
+      <div className="py-3 flex flex-1 flex-col gap-0.5 h-3/4 overflow-y-auto ">
         {sidebarData
           ? sidebarData.map((link, index) => (
               <div key={link.key}>

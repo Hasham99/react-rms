@@ -11,20 +11,19 @@ import {
   DialogBody,
   Input,
   IconButton,
-  // Select,
-  // Option,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { addToCart } from "../../../redux/CartSlice";
 import { useDispatch } from "react-redux";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-// import POSDialog from "./ProductDialog/POSDialog";
-
 const ProductsPOS = () => {
   const [formData, setFormData] = useState(null);
   const [Note, setNote] = useState("");
   const [itemExtras, setItemExtras] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const handleInputChange = (e) => {
     setFormData(e.target.value);
@@ -64,7 +63,6 @@ const ProductsPOS = () => {
   };
   const handleSubmit = () => {
     const jsonData = {
-      // item: {
       menuitemID: itemData.item.item_id,
       name: itemData.item.item_name,
       price: itemData.item.item_price,
@@ -83,7 +81,6 @@ const ProductsPOS = () => {
     } else {
       alert(`Add Quantity`);
     }
-    // console.log(itemExtras.map((item) => item.extras_id));
   };
 
   const [categories, setCategories] = useState([]);
@@ -95,9 +92,7 @@ const ProductsPOS = () => {
       subcategory_id: category.subcategory_id,
       item: item,
     };
-    // alert(JSON.stringify(jsonData));
     setItemData(jsonData);
-    // console.log(itemData.item.extras);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -111,25 +106,28 @@ const ProductsPOS = () => {
           { headers: headers }
         );
         const data = await response.json();
-        // localStorage.setItem("products", JSON.stringify(data));
-        // const data1 = localStorage.getItem("products");
-        // (data1);
         setCategories(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
-    // setCategories(JSON.parse(localStorage.getItem("products")));
     fetchData();
   }, []);
   const [size, setSize] = useState(null);
 
   const handleOpen = (value) => setSize(value);
-  const handleClose = () => setSize(null); // Function to close the dialog
+  const handleClose = () => setSize(null);
   const currency = localStorage.getItem("currency");
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <>
       <Card>
@@ -144,25 +142,7 @@ const ProductsPOS = () => {
                   {category.subcategory_name}
                 </Typography>
               </div>
-              {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-                {category.items.map((item) => (
-                  <div
-                    key={item.item_id}
-                    className="space-y-1 border-r-2 border-green-600 p-4 rounded-md bg-white shadow-md cursor-pointer"
-                    onClick={() => {
-                      handleClick(item, category);
-                    }}
-                  >
-                    <Typography className="text-[14px] font-semibold">
-                      {item.item_name}
-                    </Typography>
 
-                    <p className="text-gray-600 text-[14px]">
-                      {currency} {item.item_price}
-                    </p>
-                  </div>
-                ))}
-              </div> */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
                 {category.items.map((item) => (
                   <div
@@ -207,14 +187,12 @@ const ProductsPOS = () => {
         handler={handleOpen}
       >
         <DialogBody className="px-7 py-8 max-h-[85vh]">
-          {/* <POSDialog itemDetails={itemData} /> */}
           <Card className="space-y-2" color="transparent" shadow={false}>
             <div className="text-center">
               <Typography variant="h4" className="pb-4 text-left text-sidebar">
                 Product Details
               </Typography>
             </div>
-
             <Typography variant="h6" color="" className="font-normal">
               Quantity
             </Typography>
@@ -257,13 +235,11 @@ const ProductsPOS = () => {
                   Add Extras
                 </Typography>
               )}
-
             {itemData &&
               itemData.item &&
               itemData.item.extras &&
               itemData.item.extras.length > 0 && (
                 <List className="p-0">
-                  {/* Iterate through itemData.item.extras and render a ListItem for each extras_name */}
                   {itemData.item.extras.map((extra) => (
                     <ListItem key={extra.extras_id} className="p-0">
                       <label
@@ -290,13 +266,10 @@ const ProductsPOS = () => {
                 </List>
               )}
           </Card>
-          <div
-          // className="flex justify-center items-end"
-          >
+          <div>
             <Button
               onClick={handleSubmit}
-              className="mt-6 bg-sidebar "
-              // fullWidth
+              className="mt-6 bg-sidebar"
               type="submit"
             >
               Add to Cart

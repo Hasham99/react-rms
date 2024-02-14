@@ -7,9 +7,9 @@ import {
   Tooltip,
   Dialog,
   DialogBody,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-// import { AddInventoryItem } from "../../Inventory/elements/AddInventoryItem";
 import UpdateStaff from "./UpdateStaff";
 import { FaRegWindowClose } from "react-icons/fa";
 
@@ -17,6 +17,7 @@ const StaffTable = () => {
   const TABLE_HEAD = ["Name", "Username", "Password", "Status", "update"];
 
   const [size, setSize] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null);
@@ -36,6 +37,7 @@ const StaffTable = () => {
         // const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/waiter`);
         const data = await res.json();
         setStaffData(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -47,6 +49,13 @@ const StaffTable = () => {
   };
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <div>
       <CardBody className="overflow-scroll p-0">

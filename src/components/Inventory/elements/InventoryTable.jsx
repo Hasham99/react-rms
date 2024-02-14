@@ -1,5 +1,3 @@
-import { AddInventoryItem } from "./AddInventoryItem";
-
 import {
   Card,
   IconButton,
@@ -7,10 +5,8 @@ import {
   Tooltip,
   Dialog,
   DialogBody,
+  Spinner,
 } from "@material-tailwind/react";
-
-// import { Square2StackIcon } from "@heroicons/react/24/outline";
-// import { Tooltip } from "recharts";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { UpdateInventoryItem } from "./UpdateInventoryItem";
@@ -30,6 +26,8 @@ const TABLE_HEAD = [
 const InventoryTable = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [getInventoryData, setGetInventoryData] = useState([]);
+  const [size, setSize] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
@@ -44,6 +42,7 @@ const InventoryTable = () => {
         );
         const data = await res.json();
         setInventoryData(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -55,12 +54,17 @@ const InventoryTable = () => {
     setGetInventoryData(dataToUpdate);
   };
 
-  const [size, setSize] = useState(null);
-
   const handleOpen = (value) => setSize(value);
   const handleClose = () => setSize(null);
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <>
       <Card
@@ -117,24 +121,6 @@ const InventoryTable = () => {
                     {/* {data.available} */}
                   </Typography>
                 </td>
-                {/* <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {data.reserved}
-                  </Typography>
-                </td> */}
-                {/* <td className="p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {data.on_hand}
-                  </Typography>
-                </td> */}
                 <td className="px-0 py-0">
                   <Typography
                     variant="small"

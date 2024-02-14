@@ -23,11 +23,7 @@ const StaffManagement = () => {
   const handleClose = () => setSize(null);
 
   const handleOpen = (value) => setSize(value);
-  const [getInventoryData, setGetInventoryData] = useState([]);
 
-  const handleEditClick = async (dataToUpdate) => {
-    console.log(dataToUpdate);
-  };
   return (
     <>
       <Card className="w-full ">
@@ -42,9 +38,6 @@ const StaffManagement = () => {
               </Typography>
             </div>
             <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              {/* <Button variant="outlined" size="sm">
-              view all
-            </Button> */}
               <Button
                 onClick={() => handleOpen("xs")}
                 className="flex items-center gap-3"

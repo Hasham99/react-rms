@@ -11,6 +11,7 @@ import {
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Spinner } from "@material-tailwind/react";
 
 const MONTHS = [
   "Jan",
@@ -43,6 +44,8 @@ const fillMissingMonths = (data) => {
 export default function TransactionChartPos(props) {
   const [chartData, setChartData] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +69,7 @@ export default function TransactionChartPos(props) {
           (a, b) => MONTHS.indexOf(a.name) - MONTHS.indexOf(b.name)
         );
         setChartData(sortedData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,6 +79,13 @@ export default function TransactionChartPos(props) {
   }, []);
   const BearerToken = localStorage.getItem("BearerToken");
   const restaurantId = localStorage.getItem("restaurant_id");
+  if (loading) {
+    return (
+      <div className="bg-white rounded-xl mt-3 p-4 w-full h-[22rem] flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <div className="h-[22rem] bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col flex-1">
       <strong className="text-gray-700 font-medium">

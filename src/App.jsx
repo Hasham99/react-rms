@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./components/layout/layout";
+import Layout from "./components/layout/Layout";
 import Dashboard from "./components/dashboard/Dashboard";
 // import Products from "./components/products/Products";
 import Settings from "./components/settings/Settings";
@@ -41,20 +41,19 @@ import SeventeenthPayment from "./components/paymentMethod/SeventeenthPayment";
 import EighteenthPayment from "./components/paymentMethod/EighteenthPayment";
 import NinteenthPayment from "./components/paymentMethod/NinteenthPayment";
 import TwentythPayment from "./components/paymentMethod/TwentythPayment";
+import Printing from "./components/Printing/Printing";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route index path="/" element={<Login />} />
-        {/* <Route path="/cart" element={<Cart />} /> */}
         <Route path="/cart" element={<PrivateRoute Component={CartTest} />} />
         <Route path="/" element={<PrivateRoute Component={Layout} />}>
           <Route
             path="/dashboard"
             element={<PrivateRoute Component={Dashboard} />}
           />
-          {/* <Route path="/cost-management" element={<newFile />} /> */}
           <Route
             path="/admin-orders"
             element={<PrivateRoute Component={AdminOrders} />}
@@ -174,7 +173,6 @@ function App() {
             path="/transactions"
             element={<PrivateRoute Component={Transactions} />}
           />
-          {/* <Route path="/settings" element={<SettingsLayout />}> */}
           <Route
             path="/support"
             element={<PrivateRoute Component={ContactUs} />}
@@ -183,7 +181,10 @@ function App() {
             path="/settings"
             element={<PrivateRoute Component={Settings} />}
           />
-          {/* </Route> */}
+          <Route
+            path="/printing"
+            element={<PrivateRoute Component={Printing} />}
+          />
         </Route>
       </Routes>
     </Router>

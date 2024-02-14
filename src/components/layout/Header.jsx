@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition, Menu, Popover } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+// import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   HiOutlineBell,
   HiOutlineSearch,
@@ -12,29 +12,63 @@ import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
-import axios from "axios";
+import jsPDF from "jspdf";
+// import axios from "axios";
+// import PDFDocument from "pdfkit";
 
 const Header = () => {
-  const handleOpenCashDrawer = async () => {
-    const headers = {
-      Authorization: `${BearerToken}`,
-      "Content-Type": "application/json",
-    };
-    await axios
-      .get(`https://albadwan.shop/api/coc/res/${restaurantId}/cashdrawer`, {
-        headers: headers,
-      })
-      .then((response) => {
-        if (response.data.status == 200) {
-          alert(JSON.stringify(response.data.message));
-        } else {
-          console.error("Failed to open cash drawer");
-        }
-      })
-      .catch((error) => {
-        console.error("Network error:", error);
-      });
+  // const handleOpenCashDrawer = () => {
+  //   const doc = new PDFDocument();
+  //   doc.addDottedLine(50, 50, 550, 50, 5); // Add a single dotted line
+  //   // Create a buffer to store PDF data
+  //   const buffers = [];
+  //   doc.on("data", buffers.push.bind(buffers));
+  //   doc.on("end", () => {
+  //     // Combine buffers into a single buffer
+  //     const pdfData = Buffer.concat(buffers);
+  //     // Create a blob from the PDF data
+  //     const blob = new Blob([pdfData], { type: "application/pdf" });
+  //     // Create a URL for the blob
+  //     const url = window.URL.createObjectURL(blob);
+  //     // Create an <a> element to trigger the download
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "cash_drawer_receipt.pdf";
+  //     // Programmatically click on the link to trigger the download
+  //     a.click();
+  //     // Cleanup
+  //     window.URL.revokeObjectURL(url);
+  //   });
+  // Serialize the PDF document
+  //   doc.end();
+  // };
+  const handleOpenCashDrawer = () => {
+    const doc = new jsPDF();
+    doc.setDrawColor(0); // Set color to black
+    doc.setLineDash([5]); // Set line dash style (5 pixels on, 5 pixels off)
+    doc.line(50, 50, 550, 50); // Draw a line with dashed style
+    doc.save("111.pdf"); // Save the PDF
   };
+  // const handleOpenCashDrawer = async () => {
+  //   const headers = {
+  //     Authorization: `${BearerToken}`,
+  //     "Content-Type": "application/json",
+  //   };
+  //   await axios
+  //     .get(`https://albadwan.shop/api/coc/res/${restaurantId}/cashdrawer`, {
+  //       headers: headers,
+  //     })
+  //     .then((response) => {
+  //       if (response.data.status == 200) {
+  //         alert(JSON.stringify(response.data.message));
+  //       } else {
+  //         console.error("Failed to open cash drawer");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Network error:", error);
+  //     });
+  // };
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.length);
   const handleLogout = () => {

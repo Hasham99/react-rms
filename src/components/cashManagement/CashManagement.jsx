@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CashOutTable from "./CashOutTable";
-import CashInTable from "./CashInTable";
 import {
   Tabs,
   TabsHeader,
@@ -13,178 +11,19 @@ import {
   Input,
   Button,
   Alert,
+  Spinner,
 } from "@material-tailwind/react";
 import axios from "axios";
 
 const CashManagement = () => {
+  const [loading, setLoading] = useState(true); // State to manage loading status
   const [inputValues, setInputValues] = useState({});
   const [totalDrawerSum, setTotalDrawerSum] = useState(0);
   const [denominationDetails, setDenominationDetails] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertTrue, setShowAlertTrue] = useState(false);
   const [previousTotal, setPreviousTotal] = useState(0);
-  const [narrationCashIn, setNarrationCashIn] = useState("");
-  const [narrationCashOut, setNarrationCashOut] = useState("");
-  const [amountCashIn, setAmountCashIn] = useState("");
-  const [amountCashOut, setAmountCashOut] = useState("");
-  const [cashOutData, setCashOutData] = useState([]);
-  const [totalCashOutAmount, setTotalCashOutAmount] = useState(0);
-  const [cashInData, setCashInData] = useState([]);
-  const [totalCashInAmount, setTotalCashInAmount] = useState(0);
-  useEffect(() => {
-    const fetchCashOutData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/get`,
-          { headers: headers }
-        ); // Replace 1 with your restaurant_id
-        setCashOutData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchCashInData = async () => {
-      try {
-        const headers = {
-          Authorization: `${BearerToken}`,
-          "Content-Type": "application/json",
-        };
-        const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
-          { headers: headers }
-        );
-        setCashInData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchCashInData();
-    fetchCashOutData();
-  }, []);
-
-  // useEffect(() => {
-  //   // Calculate total cash amount
-  //   const sum = cashOutData.reduce(
-  //     (total, cashOutItem) => total + cashOutItem.amount,
-  //     0
-  //   );
-  //   setTotalCashOutAmount(sum);
-  // }, [cashOutData]);
-
-  useEffect(() => {
-    // Filter cashOutData by type and calculate total cash amount
-    const sum = cashOutData
-      .filter((item) => item.type === "CASHOUT")
-      .reduce((total, cashOutItem) => total + cashOutItem.amount, 0);
-    setTotalCashOutAmount(sum);
-  }, [cashOutData]);
-
-  // useEffect(() => {
-  //   // Filter cashInData based on type
-  //   const filteredData = cashOutItem.filter((item) => item.type === "CASHOUT");
-  //   // Calculate total cash amount
-  //   const sum = filteredData.reduce(
-  //     (total, cashOutItem) => total + cashOutItem.amount,
-  //     0
-  //   );
-  //   setTotalCashOutAmount(sum);
-  // }, [cashOutItem]);
-
-  useEffect(() => {
-    // Filter cashInData based on type
-    const filteredData = cashInData.filter((item) => item.type === "CASHIN");
-    // Calculate total cash amount
-    const sum = filteredData.reduce(
-      (total, cashInItem) => total + cashInItem.amount,
-      0
-    );
-    setTotalCashInAmount(sum);
-  }, [cashInData]);
-
-  const handleCashInNarrationChange = (event) => {
-    setNarrationCashIn(event.target.value);
-  };
-
-  const handleCashInAmountChange = (event) => {
-    const value = event.target.value;
-    const parsedValue = parseInt(value);
-
-    // Check if parsedValue is a valid number and not negative
-    if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setAmountCashIn(parsedValue);
-    }
-  };
-  const handleCashOutNarrationChange = (event) => {
-    setNarrationCashOut(event.target.value);
-  };
-
-  const handleCashOutAmountChange = (event) => {
-    const value = event.target.value;
-    const parsedValue = parseInt(value);
-
-    // Check if parsedValue is a valid number and not negative
-    if (!isNaN(parsedValue) && parsedValue >= 0) {
-      setAmountCashOut(parsedValue);
-    }
-  };
-  const handleSubmitCheckIn = async () => {
-    try {
-      const headers = {
-        Authorization: `${BearerToken}`,
-        "Content-Type": "application/json",
-      };
-      const postData = {
-        type: "cashin",
-        narration: narrationCashIn,
-        amount: amountCashIn,
-      };
-
-      // Make a POST request using Axios
-      await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/create`,
-        postData,
-        { headers: headers }
-      );
-
-      // Reset input values
-      setNarrationCashIn("");
-      setAmountCashIn("");
-      window.location.reload();
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      // Handle error
-    }
-  };
-  const handleSubmitCheckOut = async () => {
-    try {
-      const headers = {
-        Authorization: `${BearerToken}`,
-        "Content-Type": "application/json",
-      };
-      const postData = {
-        type: "cashout",
-        narration: narrationCashOut,
-        amount: amountCashOut,
-      };
-      await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/create`,
-        postData,
-        { headers: headers }
-      );
-
-      // Reset input values
-      setNarrationCashOut("");
-      setAmountCashOut("");
-      window.location.reload();
-    } catch (error) {
-      console.error("Error submitting data:", error);
-    }
-  };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     const parsedValue = parseInt(value);
@@ -293,6 +132,7 @@ const CashManagement = () => {
           newInputValues[denomination.denom_name] = 0;
         });
         setInputValues(newInputValues);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching denominations: ", error);
       }
@@ -332,6 +172,13 @@ const CashManagement = () => {
     }
     setTotalDrawerSum(total);
   }, [inputValues, denominationDetails]);
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <Tabs value="open_sale">
       <TabsHeader>

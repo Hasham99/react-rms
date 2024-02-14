@@ -8,6 +8,7 @@ import {
   DialogBody,
   IconButton,
   Input,
+  Spinner,
 } from "@material-tailwind/react";
 
 const StaffOrders = () => {
@@ -17,6 +18,7 @@ const StaffOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(25);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrdersData = async () => {
@@ -38,6 +40,7 @@ const StaffOrders = () => {
         // if (sortedOrders) {
         //   localStorage.setItem("staff-orders", JSON.stringify(sortedOrders));
         // }
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -98,6 +101,13 @@ const StaffOrders = () => {
   const handleClose = () => setSize(null);
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <>
       <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
@@ -125,7 +135,6 @@ const StaffOrders = () => {
                 </option>
               ))}
             </select>
-            {/* <span>items per page</span> */}
           </div>
         </div>
         <div className=" border-x border-gray-200 rounded-sm mt-3">
@@ -155,8 +164,6 @@ const StaffOrders = () => {
                     handleOpen("xl");
                   }}
                 >
-                  {/* <td>{order.OrderID}</td> */}
-
                   <td className="p-2 ">{order.series}</td>
                   <td className="p-2 flex">
                     {order.items.map((item) => (
@@ -249,7 +256,6 @@ const StaffOrders = () => {
         size={size || "md"}
         handler={handleOpen}
       >
-        {/* <DialogHeader>Its a simple dialog.</DialogHeader> */}
         <DialogBody className="p-0 m-0">
           <StaffDialog onClose={handleClose} orderData={OrderData} />
         </DialogBody>

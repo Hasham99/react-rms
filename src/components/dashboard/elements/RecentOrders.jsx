@@ -2,27 +2,18 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { getOrderStatus } from "../../lib/helpers/index";
 import { useEffect, useState } from "react";
-import { Button, CardFooter, IconButton } from "@material-tailwind/react";
+import {
+  Button,
+  CardFooter,
+  IconButton,
+  Spinner,
+} from "@material-tailwind/react";
 
 export default function RecentOrders() {
   const [ordersData, setOrdersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Set the number of items to display per page
-
-  // useEffect(() => {
-  //   const fetchOrdersData = async () => {
-  //     try {
-  //       // const res = await fetch(`https://albadwan.shop/api/duplicate`);
-  //       const res = await fetch(`https://albadwan.shop/api/posorders`);
-  //       const data = await res.json();
-  //       setOrdersData(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchOrdersData();
-  // }, []);
+  const [loading, setLoading] = useState(true);
+  const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchOrdersData = async () => {
@@ -41,6 +32,7 @@ export default function RecentOrders() {
         const sortedOrders = data.sort((a, b) => b.OrderID - a.OrderID);
 
         setOrdersData(sortedOrders);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -71,6 +63,13 @@ export default function RecentOrders() {
 
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
+  if (loading) {
+    return (
+      <div className="w-full h-96 bg-white rounded-xl px-4 pt-20 pb-4 flex justify-center ">
+        <Spinner color="indigo" />
+      </div>
+    );
+  }
   return (
     <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
       <strong className="text-gray-800 text-lg font-medium">
@@ -94,7 +93,7 @@ export default function RecentOrders() {
           <tbody>
             {currentItems.map((order) => (
               <tr key={order.OrderID}>
-                <td>{order.OrderID}</td>
+                <td>{order.series}</td>
                 <td className="flex">
                   {order.items.map((item) => (
                     <div className="" key={item.MenuItemID}>
