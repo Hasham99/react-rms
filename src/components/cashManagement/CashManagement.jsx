@@ -12,8 +12,14 @@ import {
   Button,
   Alert,
   Spinner,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import axios from "axios";
+import DefaultSpinner from "../DefaultSpinner";
+import Swal from "sweetalert2";
 
 const CashManagement = () => {
   const [loading, setLoading] = useState(true); // State to manage loading status
@@ -21,8 +27,14 @@ const CashManagement = () => {
   const [totalDrawerSum, setTotalDrawerSum] = useState(0);
   const [denominationDetails, setDenominationDetails] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertData, setShowAlertData] = useState("");
   const [showAlertTrue, setShowAlertTrue] = useState(false);
   const [previousTotal, setPreviousTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [swalProps, setSwalProps] = useState({});
+
+  const handleOpen = () => setOpen(!open);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -37,7 +49,7 @@ const CashManagement = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitClose = async () => {
     try {
       const headers = {
         Authorization: `${BearerToken}`,
@@ -96,6 +108,95 @@ const CashManagement = () => {
         setShowAlert(false);
       }, 2000);
       console.error("Error submitting data:", error);
+      // Handle error
+    }
+  };
+  const handleSubmitOpen = async () => {
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `${BearerToken}`,
+        "Content-Type": "application/json",
+      };
+      let total = 0;
+      for (const [denomination, value] of Object.entries(inputValues)) {
+        const denominationDetail = denominationDetails.find(
+          (detail) => detail.denom_name === denomination
+        );
+        if (denominationDetail) {
+          const multipliedValue = value * denominationDetail.digit_value;
+          total += multipliedValue;
+        }
+      }
+      setTotalDrawerSum(total);
+      const postData = [];
+      for (const [denomination, value] of Object.entries(inputValues)) {
+        const denominationDetail = denominationDetails.find(
+          (detail) => detail.denom_name === denomination
+        );
+        if (denominationDetail) {
+          const multipliedValue = value;
+          postData.push({
+            denomKey: denomination,
+            denomValue: multipliedValue,
+          });
+        }
+      }
+      const jsonData = {
+        username: "admin",
+        total: totalDrawerSum,
+        items: postData,
+      };
+
+      await axios.post(
+        `https://albadwan.shop/api/coc/res/${restaurantId}/posopening/create`,
+        jsonData,
+        { headers: headers }
+      );
+      setIsLoading(false);
+      setShowAlertTrue(true);
+      setTimeout(() => {
+        setShowAlertTrue(false);
+        setInputValues({});
+        if (previousTotal !== totalDrawerSum) {
+          alert(
+            "Previous drawer amount and total drawer amount are not equal!"
+          );
+        }
+        window.location.reload();
+        // navigate("/dashboard");
+      }, 2000);
+    } catch (error) {
+      // setShowAlertData(error.response.data.message);
+      // if (showAlertData) {
+      //   console.log(showAlertData);
+      //   setShowAlert(true);
+      //   setTimeout(() => {
+      //     setShowAlert(false);
+      //   }, 2000);
+      //   // console.error("Error submitting data:", error.response.data.message);
+      // }
+      setIsLoading(false);
+
+      console.error("Error:", error); // Log the entire error object for debugging
+      const errorMessage =
+        error.response?.data?.message || "Unknown error occurred"; // Extract error message
+      setShowAlertData(errorMessage);
+      Swal.fire({
+        // title: "Alert",
+        text: `Cash difference found! ${parseFloat(
+          previousTotal - totalDrawerSum
+        ).toFixed(2)} (${currency})`,
+        icon: "error",
+        confirmButtonColor: "#F44336",
+      }).then();
+      // setShowAlert(true); // Show the alert
+      // setOpen(open);
+      // handleOpen();
+      // setTimeout(() => {
+      //   setShowAlert(false); // Hide the alert after 2000ms
+      // }, 3000);
+
       // Handle error
     }
   };
@@ -175,7 +276,8 @@ const CashManagement = () => {
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
-        <Spinner color="indigo" />
+        <Spinner className="w-10 h-10 text-blue-200/20 " />
+        {/* <DefaultSpinner className="w-20 h-20" /> */}
       </div>
     );
   }
@@ -226,14 +328,29 @@ const CashManagement = () => {
                 </div>
               ))}
             </CardBody>
+            {previousTotal - totalDrawerSum == 0 ? (
+              <Typography className="text-green-500 self-end px-6" variant="h6">
+                No Difference Found : ☺
+                {/* Difference Total: `$
+                {parseFloat(previousTotal - totalDrawerSum).toFixed(2)} ($
+                {currency})` */}
+              </Typography>
+            ) : (
+              <Typography className="text-red-500 self-end px-6" variant="h6">
+                Difference Total:{" "}
+                {parseFloat(previousTotal - totalDrawerSum).toFixed(2)} (
+                {currency})
+              </Typography>
+            )}
             <Button
               fullWidth={false}
-              className="w-28 self-end mx-5 my-4 bg-green-600
+              className="flex justify-center items-center w-28 self-end mx-5 my-4 bg-green-600
               
               "
-              onClick={handleSubmit}
+              onClick={handleSubmitOpen}
             >
-              Submit
+              {isLoading ? <DefaultSpinner /> : "Submit"}{" "}
+              {/* Show spinner if loading, otherwise show 'Submit' */}
             </Button>
           </Card>
         </TabPanel>
@@ -277,23 +394,14 @@ const CashManagement = () => {
             <Button
               fullWidth={false}
               className="w-28 self-end mx-5 my-4 bg-red-600"
-              onClick={handleSubmit}
+              onClick={handleSubmitClose}
             >
               Submit
             </Button>
           </Card>
         </TabPanel>
       </TabsBody>
-      {showAlert && (
-        <div className="fixed right-7 z-50">
-          <Alert
-            icon={<Icon />}
-            className="transition-opacity rounded-md border-l-4 border-[#ff5252] bg-[#ff5252]/10 font-medium text-[#ff5252]"
-          >
-            Server Down. Please try again later.
-          </Alert>
-        </div>
-      )}
+
       {showAlertTrue && (
         <div className="fixed right-7 z-50">
           <Alert
@@ -321,6 +429,20 @@ function Icon() {
         clipRule="evenodd"
       />
     </svg>
+  );
+}
+function alert() {
+  return (
+    <template>
+      <swal-title>Save changes to "Untitled 1" before closing?</swal-title>
+      <swal-icon type="warning" color="red"></swal-icon>
+      <swal-button type="confirm">Save As</swal-button>
+      <swal-button type="cancel">Cancel</swal-button>
+      <swal-button type="deny">Close without Saving</swal-button>
+      <swal-param name="allowEscapeKey" value="false" />
+      <swal-param name="customClass" value='{ "popup": "my-popup" }' />
+      <swal-function-param name="didOpen" value="popup => console.log(popup)" />
+    </template>
   );
 }
 export default CashManagement;

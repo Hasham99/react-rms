@@ -13,6 +13,8 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
 import jsPDF from "jspdf";
+
+import Swal from "sweetalert2";
 // import axios from "axios";
 // import PDFDocument from "pdfkit";
 
@@ -48,6 +50,14 @@ const Header = () => {
     doc.setLineDash([5]); // Set line dash style (5 pixels on, 5 pixels off)
     doc.line(50, 50, 550, 50); // Draw a line with dashed style
     doc.save("111.pdf"); // Save the PDF
+    setTimeout(() => {
+      Swal.fire({
+        // title: "Alert",
+        text: `Cash Drawer Opened! `,
+        icon: "success",
+        confirmButtonColor: "#43A047",
+      });
+    }, 2000);
   };
   // const handleOpenCashDrawer = async () => {
   //   const headers = {

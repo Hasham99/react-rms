@@ -2,16 +2,24 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@material-tailwind/react";
+import Swal from "sweetalert2";
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertTrue, setShowAlertTrue] = useState(false);
-
-  const jsonData = {
-    login_id: `${formData.email}`,
-    login_pass: `${formData.password}`,
-  };
+  const navigate = useNavigate();
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
   // Event handler for input changes
   const handleInputChange = (e) => {
@@ -21,44 +29,92 @@ const UserLogin = () => {
       [name]: value,
     });
   };
-  const navigate = useNavigate();
-  const handleSubmit = () => {
-    axios
-      .post(`https://albadwan.shop/admin/login`, jsonData)
-      // .post(`${import.meta.env.VITE_API_KEY}/admin/login`, jsonData)
-      .then((response) => {
-        if (response.data.token) {
-          localStorage.setItem("token", true);
-          localStorage.setItem("BearerToken", response.data.token);
-          localStorage.setItem("currency", response.data.currency);
-          localStorage.setItem("tax", response.data.tax);
-          localStorage.setItem(
-            "restaurant_name",
-            response.data.restaurant_name
-          );
-          localStorage.setItem("restaurant_id", response.data.restaurant_id);
-          setShowAlertTrue(true);
-          setTimeout(() => {
-            setShowAlertTrue(false);
-            navigate("/dashboard");
-          }, 2000);
-        } else {
-          localStorage.setItem("token", false);
-        }
-        console.log(response);
 
-        // Handle the response data here if needed
-      })
-      .catch((error) => {
-        localStorage.setItem("token", false);
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 2000);
-        console.error("Error making post request", error);
-        // Handle errors here if needed
-        // alert(error);
+  // useEffect(() => {
+  //   if (showAlert == true) {
+  //     // Show the SweetAlert dialog when showAlert is true
+  //     Swal.fire({
+  //       title: "Error!",
+  //       text: "Do you want to continue",
+  //       icon: "error",
+  //       // confirmButtonText: "Cool",
+  //     }).then((result) => {
+  //       // Handle the user's response if needed
+  //       if (result.isConfirmed) {
+  //         // User clicked 'OK' button
+  //         // Add any action you want to perform here
+  //       } else {
+  //         // User clicked 'Cancel' button or closed the dialog
+  //         // Add any action you want to perform here
+  //       }
+  //       // Reset showAlert after handling the alert
+  //       setShowAlert(false);
+  //     });
+  //   }
+  // }, [showAlert]); // Run this effect whenever showAlert changes
+  const handleShowAlert = () => {
+    setShowAlert(true); // Set showAlert to true to trigger the alert
+  };
+  const handleSubmit = () => {
+    if (formData.email && formData.password) {
+      const jsonData = {
+        login_id: `${formData.email}`,
+        login_pass: `${formData.password}`,
+      };
+      axios
+        .post(`https://albadwan.shop/admin/login`, jsonData)
+        // .post(`${import.meta.env.VITE_API_KEY}/admin/login`, jsonData)
+        .then((response) => {
+          if (response.data.token) {
+            localStorage.setItem("token", true);
+            localStorage.setItem("BearerToken", response.data.token);
+            localStorage.setItem("currency", response.data.currency);
+            localStorage.setItem("tax", response.data.tax);
+            localStorage.setItem(
+              "restaurant_name",
+              response.data.restaurant_name
+            );
+            localStorage.setItem("restaurant_id", response.data.restaurant_id);
+            Toast.fire({
+              icon: "success",
+              title: "Signed in successfully",
+            }).then(
+              setTimeout(() => {
+                navigate("/dashboard");
+              }, 2000)
+            );
+            // setShowAlertTrue(true);
+            // setTimeout(() => {
+            //   // setShowAlertTrue(false);
+            //   navigate("/dashboard");
+            // }, 2000);
+          } else {
+            localStorage.setItem("token", false);
+          }
+          console.log(response);
+
+          // Handle the response data here if needed
+        })
+        .catch((error) => {
+          localStorage.setItem("token", false);
+          // setShowAlert(true);
+          Toast.fire({
+            icon: "error",
+            title: "Invalid email or password. Please try again.",
+          });
+          // setTimeout(() => {
+          //   setShowAlert(false);
+          // }, 2000);
+          console.error("Error making post request", error);
+          // Handle errors here if needed
+          // alert(error);
+        });
+    } else {
+      Toast.fire({
+        icon: "warning",
+        title: "Enter email and password",
       });
+    }
   };
   return (
     <div className="h-screen w-screen bg-blue-gray-50 flex items-center justify-center">
@@ -140,6 +196,7 @@ const UserLogin = () => {
             className="block w-full select-none rounded-lg bg-sidebar py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             // type="submit"
             onClick={handleSubmit}
+            // onClick={handleShowAlert}
           >
             Sign In
           </button>
@@ -157,16 +214,27 @@ const UserLogin = () => {
 
         {/* </form> */}
       </div>
-      {showAlert && (
-        <div className="fixed top-4 right-4 z-50">
-          <Alert
-            icon={<Icon />}
-            className="transition-opacity rounded-md border-l-4 border-[#ff5252] bg-[#ff5252]/10 font-medium text-[#ff5252]"
-          >
-            Invalid email or password. Please try again.
-          </Alert>
-        </div>
-      )}
+      {/* {showAlert &&
+        // <div className="fixed top-4 right-4 z-50">
+        //   <Alert
+        //     icon={<Icon />}
+        //     className="transition-opacity rounded-md border-l-4 border-[#ff5252] bg-[#ff5252]/10 font-medium text-[#ff5252]"
+        //   >
+        //     Invalid email or password. Please try again.
+        //   </Alert>
+        // </div>
+        // Swal.fire({
+        //   title: "Error!",
+        //   text: "Do you want to continue",
+        //   icon: "error",
+        //   // confirmButtonText: "Cool",
+        // })
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "Signed in successfully",
+        // }).then(() => {
+        //   window.location.reload();
+        // })} */}
       {showAlertTrue && (
         <div className="fixed top-4 right-4 z-50">
           <Alert
