@@ -84,9 +84,13 @@ const CartTest = () => {
     };
     // Calculate total extras price and update state
     axios
-      .post(`https://albadwan.shop/api/posorders/${restaurantId}`, jsonData, {
-        headers,
-      })
+      .post(
+        `${import.meta.env.VITE_API_KEY}/api/posorders/${restaurantId}`,
+        jsonData,
+        {
+          headers,
+        }
+      )
       // .post(`{currency}{import.meta.env.VITE_API_KEY}/api/posorders/1`, jsonData)
       .then(() => {
         // alert(JSON.stringify(jsonData));
@@ -104,7 +108,7 @@ const CartTest = () => {
     // const fetchData = async () => {
     //   try {
     //     const response = await axios.get(
-    //       "https://albadwan.shop/api/timezones/res/1"
+    //       "${import.meta.env.VITE_API_KEY}/api/timezones/res/1"
     //     );
     //     const data = response.data;
 

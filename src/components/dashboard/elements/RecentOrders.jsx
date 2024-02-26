@@ -23,7 +23,7 @@ export default function RecentOrders() {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/order/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/order/res/${restaurantId}`,
           { headers: headers }
         );
         const data = await res.json();

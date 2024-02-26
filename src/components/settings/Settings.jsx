@@ -136,7 +136,9 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/whatsapp/res/${restaurantId}/group`,
           { headers: headers }
         );
         const data = await response.json();
@@ -169,7 +171,7 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/timezones/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/timezones/res/${restaurantId}`,
           { headers: headers }
         );
         const data = response.data;
@@ -195,7 +197,9 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/whatsapp/res/${restaurantId}/group`,
           { headers: headers }
         );
         setGroupsData(response.data);
@@ -204,31 +208,9 @@ const Settings = () => {
       }
     };
 
-    // Fetch API data
-
-    // const fetchCurrencyData = async () => {
-    //   try {
-    //     const response = await axios.get("https://albadwan.shop/api/currency");
-    //     const data = response.data;
-
-    //     // Extract values from the response and set them in state
-    //     if (data && data.timezone && data.timezone.length > 0) {
-    //       const timezoneData = data.timezone[0];
-
-    //       setName(timezoneData.name);
-    //       setDefaultCurrency(timezoneData.default_currency);
-    //       setTimeZone(timezoneData.time_zone);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // };
-
-    // Call the fetch function
     fetchData();
     fetchGroupsData();
-    // fetchCurrencyData();
-  }, []); // Empty dependency array to run the effect only once on mount
+  }, []);
   useEffect(() => {
     const fetchGroupDataIndex = async () => {
       try {
@@ -237,7 +219,9 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/whatsapp/res/${restaurantId}/group`,
           { headers: headers }
         );
         const data = await response.json();
@@ -271,7 +255,7 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/kitchen/res/${restaurantId}`,
           { headers: headers }
         );
         const data = await response.json();
@@ -287,9 +271,12 @@ const Settings = () => {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await fetch(`https://albadwan.shop/api/whatsapp`, {
-          headers: headers,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_KEY}/api/whatsapp`,
+          {
+            headers: headers,
+          }
+        );
         const data = await response.json();
         setInstanceId(data);
         // setActiveKitchen(data[0]); // Set the first kitchen as active by default
@@ -303,7 +290,9 @@ const Settings = () => {
         "Content-Type": "application/json",
       };
       // Fetch data from your API and update state
-      fetch("https://albadwan.shop/api/whatsapp/instances", { headers })
+      fetch(`${import.meta.env.VITE_API_KEY}/api/whatsapp/instances`, {
+        headers,
+      })
         .then((response) => response.json())
         .then((data) => {
           setAccessTokens(data.map((item) => item.access_token));
@@ -313,12 +302,14 @@ const Settings = () => {
     };
 
     const fetchKitchenDataViaIndex = async () => {
-      const apiUrl = `https://albadwan.shop/api/kitchen/res/${restaurantId}`;
+      const apiUrl = `${
+        import.meta.env.VITE_API_KEY
+      }/api/kitchen/res/${restaurantId}`;
       const headers = {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, {
+      fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen/res/${restaurantId}`, {
         headers,
       })
         .then((response) => response.json())
@@ -417,37 +408,6 @@ const Settings = () => {
         // KitchenID: `${kitchenId}`,
       };
       alert(JSON.stringify(jsonData));
-      // axios
-      //   .post(
-      //     // `https://albadwan.shop/api/inventory/res/${restaurantId}/create`,
-      //     `https://albadwan.shop/api/whatsapp/res/${restaurantId}/group`,
-      //     jsonData
-      //   )
-      //   // .post(`${import.meta.env.VITE_API_KEY}/inventory/create`, jsonData)
-      //   .then((response) => {
-      //     console.log("Post request successful", response.data);
-      //     // Clear the input value after adding
-      //     setInputValues((prevInputValues) => ({
-      //       ...prevInputValues,
-      //       [kitchenId]: "",
-      //     }));
-      //     setSelectedInstanceNum([]);
-      //     window.location.reload();
-      //     // Handle the response data here if needed
-      //   })
-      //   .catch((error) => {
-      //     alert("Error making post request", error);
-      //     // Handle errors here if needed
-      //   });
-
-      // alert(JSON.stringify(updatedJsonData));
-      // Clear the input value after adding
-      // setInputValues((prevInputValues) => ({
-      //   ...prevInputValues,
-      //   [kitchenId]: "",
-      // }));
-      // setSelectedInstanceNum([]);
-      // window.location.reload();
     }
   };
   const handleUpdateButtonClick = () => {
@@ -485,9 +445,12 @@ const Settings = () => {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await fetch("https://albadwan.shop/api/timezones", {
-          headers: headers,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_KEY}/api/timezones`,
+          {
+            headers: headers,
+          }
+        );
         const data = await response.json();
         setTimeZones(data);
         // console.log(JSON.stringify(data));
@@ -501,9 +464,12 @@ const Settings = () => {
           Authorization: `${BearerToken}`,
           "Content-Type": "application/json",
         };
-        const response = await fetch("https://albadwan.shop/api/currency", {
-          headers: headers,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_KEY}/api/currency`,
+          {
+            headers: headers,
+          }
+        );
         const data = await response.json();
         setCurrency(data);
         // console.log(JSON.stringify(data));
@@ -518,7 +484,7 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          `${import.meta.env.VITE_API_KEY}/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
         const data = await response.json();
@@ -533,9 +499,12 @@ const Settings = () => {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`, {
-        headers: headers,
-      })
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/category/res/${restaurantId}`,
+        {
+          headers: headers,
+        }
+      )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -550,9 +519,12 @@ const Settings = () => {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`, {
-        headers: headers,
-      })
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/subcategory/res/${restaurantId}`,
+        {
+          headers: headers,
+        }
+      )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
         .then((response) => response.json())
         .then((data) => {
@@ -569,7 +541,7 @@ const Settings = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/kitchen/res/${restaurantId}`,
           { headers: headers }
         );
         const data = await response.json();
@@ -624,7 +596,7 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .patch(
-          `https://albadwan.shop/api/timezones/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/timezones/${restaurantId}`,
           jsonData,
           { headers: headers }
         )
@@ -656,9 +628,13 @@ const Settings = () => {
       };
       // Make the PATCH request
       await axios
-        .patch(`https://albadwan.shop/api/currency/${restaurantId}`, jsonData, {
-          headers: headers,
-        })
+        .patch(
+          `${import.meta.env.VITE_API_KEY}/api/currency/${restaurantId}`,
+          jsonData,
+          {
+            headers: headers,
+          }
+        )
         .then(() => {
           // Alert after successful request
           alert(`Selected Currency: ${selectedCurrency}`);
@@ -688,7 +664,7 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .patch(
-          `https://albadwan.shop/api/tax/res/${restaurantId}/update`,
+          `${import.meta.env.VITE_API_KEY}/api/tax/res/${restaurantId}/update`,
           jsonData,
           { headers: headers }
         )
@@ -714,7 +690,9 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .post(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/create`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/payment/res/${restaurantId}/create`,
           jsonData,
           { headers: headers }
         )
@@ -740,11 +718,10 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .post(
-          `https://albadwan.shop/api/kitchen/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/kitchen/res/${restaurantId}`,
           jsonData,
           { headers: headers }
         )
-        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
           setEnteredKitchen("");
           window.location.reload();
@@ -769,11 +746,12 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .post(
-          `https://albadwan.shop/api/category/res/${restaurantId}/create`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/category/res/${restaurantId}/create`,
           jsonData,
           { headers: headers }
         )
-        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
           setEnteredCategory("");
           window.location.reload();
@@ -798,11 +776,12 @@ const Settings = () => {
       // Make the PATCH request
       await axios
         .post(
-          `https://albadwan.shop/api/subcategory/res/${restaurantId}/create`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/subcategory/res/${restaurantId}/create`,
           jsonData,
           { headers: headers }
         )
-        // .post(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, jsonData)
         .then(() => {
           setEnteredSubCategory("");
           window.location.reload();

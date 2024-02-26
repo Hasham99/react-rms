@@ -69,7 +69,7 @@ const Ingredients = () => {
       };
       axios
         .post(
-          `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/ingredients/res/${restaurantId}`,
           jsonData01,
           { headers }
         )
@@ -103,11 +103,10 @@ const Ingredients = () => {
       };
       axios
         .post(
-          `https://albadwan.shop/api/ingredients/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/ingredients/res/${restaurantId}`,
           jsonData02,
           { headers }
         )
-        // .post(`${import.meta.env.VITE_API_KEY}/api/ingredients`, jsonData01)
         .then(() => {
           // console.log("Post request successful", response.data);
           setFormData({

@@ -31,7 +31,7 @@ const StaffTable = () => {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/waiter/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/waiter/res/${restaurantId}`,
           { headers: headers }
         );
         // const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/waiter`);

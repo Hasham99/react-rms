@@ -18,7 +18,9 @@ const GridStats = () => {
         "Content-Type": "application/json",
       };
       await fetch(
-        `https://albadwan.shop/api/expense/res/${restaurantId}/combined/monthly`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/expense/res/${restaurantId}/combined/monthly`,
         { headers: headers }
       )
         .then((response) => response.json())
@@ -37,8 +39,9 @@ const GridStats = () => {
         "Content-Type": "application/json",
       };
       await fetch(
-        `https://albadwan.shop/api/expense/res/${restaurantId}/combined/daily`,
-        // `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/expense/res/${restaurantId}/combined/daily`,
         { headers: headers }
       )
         .then((response) => response.json())

@@ -22,8 +22,9 @@ const CashInTable = ({ type, urlProp }) => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${type}`,
-          // `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/get`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/coc/res/${restaurantId}/methodwise/cashin/get/${type}`,
           { headers: headers }
         );
         // Filter data to show only entries with the specified type

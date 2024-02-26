@@ -55,7 +55,9 @@ export default function TransactionChartPos(props) {
         };
         const response = await axios.get(
           // `${props.url}`
-          `https://albadwan.shop/api/expense/res/${restaurantId}/pos/monthly`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/expense/res/${restaurantId}/pos/monthly`,
           { headers: headers }
         );
 
@@ -87,7 +89,7 @@ export default function TransactionChartPos(props) {
     );
   }
   return (
-    <div className="h-[22rem] bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col flex-1">
+    <div className=" h-[22rem] bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col flex-1">
       <strong className="text-gray-700 font-medium">
         {props.title} Transactions
       </strong>
@@ -100,7 +102,7 @@ export default function TransactionChartPos(props) {
             margin={{
               top: 20,
               right: 10,
-              left: -10,
+              left: 10,
               bottom: 0,
             }}
           >

@@ -102,7 +102,7 @@ const ProductsPOS = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/cai/v2/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/cai/v2/res/${restaurantId}`,
           { headers: headers }
         );
         const data = await response.json();

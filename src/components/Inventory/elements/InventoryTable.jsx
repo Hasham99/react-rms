@@ -36,9 +36,10 @@ const InventoryTable = () => {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/inventory/res/${restaurantId}/get`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/inventory/res/${restaurantId}/get`,
           { headers: headers }
-          // `${import.meta.env.VITE_API_KEY}/api/inventory/get`
         );
         const data = await res.json();
         setInventoryData(data);

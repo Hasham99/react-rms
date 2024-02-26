@@ -51,7 +51,9 @@ export function UpdateInventoryItem(props) {
     // Make a POST request to your server endpoint
     await axios
       .patch(
-        `https://albadwan.shop/api/inventory/res/${restaurantId}/update`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/inventory/res/${restaurantId}/update`,
         jsonData,
         { headers }
       )

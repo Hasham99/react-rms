@@ -55,7 +55,9 @@ const StaffDialog = ({ onClose, orderData }) => {
         "Content-Type": "application/json",
       };
       const response = await axios.patch(
-        `https://albadwan.shop/api/order/${staffOrderData.OrderID}/paid`,
+        `${import.meta.env.VITE_API_KEY}/api/order/${
+          staffOrderData.OrderID
+        }/paid`,
         { headers: headers }
       );
       console.log("PATCH request successful", response.data);

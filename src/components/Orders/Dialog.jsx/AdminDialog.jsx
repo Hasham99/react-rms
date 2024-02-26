@@ -74,7 +74,7 @@ const AdminDialog = ({ onClose, orderData }) => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          `${import.meta.env.VITE_API_KEY}/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
         const data = await response.json();
@@ -98,7 +98,9 @@ const AdminDialog = ({ onClose, orderData }) => {
 
       await axios
         .patch(
-          `https://albadwan.shop/api/posorders/res/${restaurantId}/${CommingOrderData.PosOrderID}/paid/${inputValue}/${valuePay}`,
+          `${import.meta.env.VITE_API_KEY}/api/posorders/res/${restaurantId}/${
+            CommingOrderData.PosOrderID
+          }/paid/${inputValue}/${valuePay}`,
           {},
           { headers: headers, responseType: "blob" }
         )
@@ -153,9 +155,6 @@ const AdminDialog = ({ onClose, orderData }) => {
       </div>
       <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch  w-full space-x-4 space-y-4 md:space-y-6 xl:space-y-0">
         <div className="flex flex-col justify-start items-start w-full space-y-3">
-          {/* <p className="text-xl  font-semibold leading-6  text-gray-800">
-            Customer’s Cart
-          </p> */}
           <div className=" flex flex-col justify-start items-start rounded-md bg-gray-50 px-4 py-4 h-full w-full">
             <p className="py-4 text-2xl font-semibold leading-6 xl:leading-5 text-green-600">
               Customer’s Cart

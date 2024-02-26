@@ -39,11 +39,8 @@ const SubCategoriesCard = () => {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        const res = await fetch("https://albadwan.shop/api/cai");
+        const res = await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`);
         const data = await res.json();
-        // const allItems = Object.values(data).flatMap(
-        //   (category) => category.
-        // );
         setCategoryData(data);
       } catch (error) {
         console.log(error);

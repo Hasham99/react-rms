@@ -70,7 +70,9 @@ export function AddInventoryItem(props) {
     // alert(JSON.stringify(jsonData));
     axios
       .post(
-        `https://albadwan.shop/api/inventory/res/${restaurantId}/create`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/inventory/res/${restaurantId}/create`,
         jsonData,
         { headers }
       )
@@ -98,52 +100,6 @@ export function AddInventoryItem(props) {
     //   `
     // );
   };
-  // const { handleClose } = props;
-
-  // useEffect(() => {
-  //   const fetchInventoryData = async () => {
-  //     // Fetch data from your API
-  //     await fetch(`https://albadwan.shop/api/cai`)
-  //       // await fetch(`${import.meta.env.VITE_API_KEY}/api/cai`)
-  //       // .then((response) => response.json())
-  //       .then((data) => {
-  //         // Extract "item_name" from the menu items
-  //         const extractedItemNames = data.reduce((accumulator, category) => {
-  //           return [
-  //             ...accumulator,
-  //             ...category.subcategories.reduce(
-  //               (subAccumulator, subcategory) => {
-  //                 return [
-  //                   ...subAccumulator,
-  //                   ...subcategory.menu.map((item) => ({
-  //                     itemId: item.item_id,
-  //                     itemName: item.item_name,
-  //                   })),
-  //                 ];
-  //               },
-  //               []
-  //             ),
-  //           ];
-  //         }, []);
-
-  //         // localStorage.setItem(
-  //         //   "inventory-Items",
-  //         //   JSON.stringify(extractedItemNames)
-  //         // );
-
-  //         // const local_inventory_items = JSON.parse(
-  //         //   localStorage.getItem("inventory-Items")
-  //         // );
-  //         // setCategoryOptions(local_inventory_items);
-  //         console.log(extractedItemNames);
-  //         setCategoryOptions(extractedItemNames);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching data from API", error);
-  //       });
-  //   };
-  //   fetchInventoryData();
-  // }, []);
 
   useEffect(() => {
     const fetchInventoryData01 = async () => {
@@ -153,7 +109,7 @@ export function AddInventoryItem(props) {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/cai/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/cai/res/${restaurantId}`,
           { headers: headers }
         );
         const data = response.data;
@@ -200,7 +156,7 @@ export function AddInventoryItem(props) {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/cai/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/cai/res/${restaurantId}`,
           { headers: headers }
         );
         const data = response.data;

@@ -54,7 +54,9 @@ export default function TransactionChartWaiter(props) {
         };
         const response = await axios.get(
           // `${props.url}`
-          `https://albadwan.shop/api/expense/res/${restaurantId}/waiter/monthly/admin`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/expense/res/${restaurantId}/waiter/monthly/admin`,
           { headers: headers }
         );
 
@@ -99,7 +101,7 @@ export default function TransactionChartWaiter(props) {
             margin={{
               top: 20,
               right: 10,
-              left: -10,
+              left: 10,
               bottom: 0,
             }}
           >

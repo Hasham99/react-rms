@@ -8,6 +8,7 @@ import {
   HiOutlineShoppingCart,
 } from "react-icons/hi";
 import { FaCashRegister } from "react-icons/fa6";
+import { MdOutlineSummarize } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
@@ -15,6 +16,7 @@ import { Button } from "@material-tailwind/react";
 import jsPDF from "jspdf";
 
 import Swal from "sweetalert2";
+import axios from "axios";
 // import axios from "axios";
 // import PDFDocument from "pdfkit";
 
@@ -59,26 +61,83 @@ const Header = () => {
       });
     }, 2000);
   };
-  // const handleOpenCashDrawer = async () => {
-  //   const headers = {
-  //     Authorization: `${BearerToken}`,
-  //     "Content-Type": "application/json",
-  //   };
-  //   await axios
-  //     .get(`https://albadwan.shop/api/coc/res/${restaurantId}/cashdrawer`, {
-  //       headers: headers,
-  //     })
-  //     .then((response) => {
-  //       if (response.data.status == 200) {
-  //         alert(JSON.stringify(response.data.message));
-  //       } else {
-  //         console.error("Failed to open cash drawer");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Network error:", error);
-  //     });
-  // };
+  const handleSummaryDownload = async () => {
+    const inputOptions = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          daily: "Daily",
+          weekly: "Weekly",
+          // fortnightly: "Fortnightly",
+          monthly: "Monthly",
+        });
+      }, 1000);
+    });
+    const { value: summary } = await Swal.fire({
+      title: "Select Summary ",
+      input: "select",
+      // confirmButtonColor: "#092635",
+      confirmButtonColor: "#43A047",
+      // color: "#092635",
+      inputOptions,
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to choose something!";
+        }
+      },
+    });
+
+    if (summary) {
+      let apiUrl;
+      switch (summary) {
+        case "daily":
+          apiUrl = `${
+            import.meta.env.VITE_API_KEY
+          }/api/summary/res/${restaurantId}/print/daily`;
+          break;
+        case "weekly":
+          apiUrl = `${
+            import.meta.env.VITE_API_KEY
+          }/api/summary/res/${restaurantId}/print/weekly`;
+          break;
+        // case "fortnightly":
+        //   apiUrl = `${
+        //     import.meta.env.VITE_API_KEY
+        //   }/api/summary/res/${restaurantId}/print/daily`;
+        //   break;
+        case "monthly":
+          apiUrl = `${
+            import.meta.env.VITE_API_KEY
+          }/api/summary/res/${restaurantId}/print/monthly`;
+          break;
+        default:
+          apiUrl = "";
+      }
+
+      if (apiUrl) {
+        try {
+          const headers = {
+            Authorization: `${BearerToken}`,
+            "Content-Type": "application/json",
+          };
+          const response = await axios.get(apiUrl, { headers: headers });
+          console.log("API response:", response.data);
+          const uppercaseSummary = summary.toUpperCase();
+          Swal.fire({
+            padding: `15px`,
+            confirmButtonColor: "#43A047",
+            text: `You have selected: ${uppercaseSummary} Summary.\n ${response.data.message}`,
+          });
+        } catch (error) {
+          console.error("An error occurred while fetching the API:", error);
+          Swal.fire({
+            confirmButtonColor: "#E53935",
+            html: `Error Printing Summary for ${summary}.`,
+          });
+        }
+      }
+    }
+  };
+
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.length);
   const handleLogout = () => {
@@ -105,14 +164,26 @@ const Header = () => {
         {/* <IconButton variant="outlined">
           <FaCashRegister fontSize={20} className="text-gray-500 " />
         </IconButton> */}
-        <Button
-          onClick={handleOpenCashDrawer}
-          variant="filled"
-          className="flex gap-2 items-center py-2 px-3 text-green-600 bg-green-100/60"
-        >
-          <FaCashRegister fontSize={20} className=" " />
-          Open Cash Drawer
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleOpenCashDrawer}
+            variant="filled"
+            className="flex gap-2 items-center py-2 px-3 text-white font-semibold bg-green-500"
+            // className="flex gap-2 items-center py-2 px-3 text-green-600 bg-green-100/60"
+          >
+            <FaCashRegister fontSize={20} className=" " />
+            Open Cash Drawer
+          </Button>
+          <Button
+            onClick={handleSummaryDownload}
+            variant="filled"
+            className="flex gap-2 items-center py-2 px-3 text-white font-semibold bg-blue-500"
+            // className="flex gap-2 items-center py-2 px-3 text-blue-600 bg-blue-100/60"
+          >
+            <MdOutlineSummarize fontSize={20} className=" " />
+            Print Summary
+          </Button>
+        </div>
       </div>
       <div className="flex items-center gap-2 mr-2">
         {/* {cartItems > 0 && (

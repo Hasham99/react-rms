@@ -29,7 +29,7 @@ export default function SideBar() {
         };
 
         const response = await fetch(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          `${import.meta.env.VITE_API_KEY}/api/payment/res/${restaurantId}/get`,
           {
             headers: headers,
           }

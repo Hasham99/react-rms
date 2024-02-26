@@ -13,7 +13,7 @@ const Printing = () => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    const socket = io("https://albadwan.shop", {
+    const socket = io(`${import.meta.env.VITE_API_KEY}`, {
       transports: ["websocket"],
       autoConnect: false,
     });
@@ -39,7 +39,7 @@ const Printing = () => {
   }, []);
 
   const handleSendData = () => {
-    const socket = io("https://albadwan.shop");
+    const socket = io(`${import.meta.env.VITE_API_KEY}`);
     socket.emit("userInput", inputValue);
     setInputValue(""); // Clear input field after sending data
   };

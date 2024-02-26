@@ -10,6 +10,7 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
+import jsPDF from "jspdf";
 
 const StaffOrders = () => {
   const [ordersData, setOrdersData] = useState([]);
@@ -28,7 +29,7 @@ const StaffOrders = () => {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/order/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/order/res/${restaurantId}`,
           {
             headers: headers,
           }
@@ -37,6 +38,7 @@ const StaffOrders = () => {
         // Sort orders by PosOrderID in descending order
         const sortedOrders = data.sort((a, b) => b.OrderID - a.OrderID);
         setOrdersData(sortedOrders);
+        console.log(sortedOrders);
         // if (sortedOrders) {
         //   localStorage.setItem("staff-orders", JSON.stringify(sortedOrders));
         // }
@@ -49,6 +51,155 @@ const StaffOrders = () => {
     // setOrdersData(JSON.parse(localStorage.getItem("staff-orders")));
     fetchOrdersData();
   }, []);
+  // const generatePDF = () => {
+  //   const doc = new jsPDF({
+  //     orientation: "portrait",
+  //     unit: "mm",
+  //     format: "a4",
+  //   });
+
+  //   // Add content to the PDF
+  //   doc.setFontSize(12);
+  //   doc.text("Staff Orders", 105, 20, { align: "center" });
+  //   doc.setFontSize(10);
+  //   doc.text(`Generated at: ${new Date().toLocaleString()}`, 105, 30, {
+  //     align: "center",
+  //   });
+
+  //   // Table headers
+  //   const headers = [
+  //     "Order ID",
+  //     "Order Date",
+  //     "Order Time",
+  //     "Order Total",
+  //     "Waiter ID",
+  //     "TX-ID",
+  //     "TX-Type",
+  //   ];
+
+  //   // Positioning variables
+  //   let yPos = 40; // Initial y position of the table
+  //   const startX = 10; // X position of the first column
+
+  //   // Add headers to the table
+  //   headers.forEach((header, index) => {
+  //     doc.text(header, startX + index * 40, yPos);
+  //   });
+
+  //   // Table data
+  //   ordersData.forEach((order, rowIndex) => {
+  //     yPos += 8; // Move to the next row
+  //     doc.text(String(order.OrderID), startX, yPos);
+  //     doc.text(convertToLocaleDate(order.time), startX + 40, yPos);
+  //     doc.text(convertToLocaleTime(order.time), startX + 80, yPos);
+  //     doc.text(String(order.total_amount), startX + 120, yPos);
+  //     doc.text(String(order.waiter_id), startX + 160, yPos);
+  //     doc.text(String(order.tid), startX + 200, yPos);
+  //     doc.text(String(order.paid_via), startX + 240, yPos);
+  //   });
+
+  //   // Save the PDF
+  //   doc.save("staff_orders.pdf");
+  // };
+
+  const generatePDF = () => {
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    // Add content to the PDF
+    doc.setFontSize(12);
+    doc.text("Staff Orders", 105, 10, { align: "center" });
+    doc.setFontSize(10);
+
+    const generatedAtText = `Generated at: ${new Date().toLocaleString()}`;
+    doc.text(generatedAtText, 105, 18, { align: "center" });
+
+    // Draw dotted line after generated time
+    const startX = 20; // X position to start the dotted line
+    const endX =
+      startX +
+      doc.getStringUnitWidth(generatedAtText) * doc.internal.getFontSize(); // X position to end the dotted line
+    const lineY = 23; // Y position for the dotted line
+    const lineWidth = 0.2; // Width of the dotted line
+    const dotSpacing = 2; // Space between dots
+    const dotLength = 1; // Length of each dot
+
+    doc.setLineWidth(lineWidth);
+    for (let x = startX; x <= endX; x += dotSpacing) {
+      doc.line(x, lineY, x + dotLength, lineY);
+    }
+
+    // Table headers
+    const headers = [
+      "Order Date",
+      "Order Time",
+      "Order ID",
+      "Waiter Name",
+      "Transaction Id",
+      "Paid Via",
+      "Order Total",
+    ];
+
+    // Filter orders from the previous 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
+    const filteredOrders = currentItems.filter(
+      (order) => new Date(order.time) >= sevenDaysAgo
+    );
+
+    // Positioning variables
+    let yPos = 40; // Initial y position of the table
+    const startXTable = 8; // X position of the first column
+
+    // Add headers to the table
+    headers.forEach((header, index) => {
+      doc.text(header, startXTable + index * 30, yPos);
+    });
+
+    // Table data
+    filteredOrders.forEach((order, rowIndex) => {
+      yPos += 8; // Move to the next row
+      doc.text(convertToLocaleDate(order.time), startXTable, yPos);
+      doc.text(convertToLocaleTime(order.time), startXTable + 30, yPos);
+      doc.text(String(order.OrderID), startXTable + 60, yPos);
+      doc.text(String(order.waiter_name), startXTable + 90, yPos);
+      doc.setFontSize(8);
+      doc.text(String(order.tid), startXTable + 120, yPos);
+      doc.setFontSize(10);
+      doc.text(String(order.paid_via.toUpperCase()), startXTable + 150, yPos);
+      doc.text(String(order.total_amount), startXTable + 180, yPos);
+    });
+
+    // Thank you message and organization details
+    const thankYouMessage = "THANK YOU";
+    const organizationDetails = "software by: Anunzio International";
+    const website = "www.anunziointernational.com";
+    const contactNumber = "+971-58-551-5742";
+    const email = "info@anunziointernational.com";
+
+    const pageHeight = doc.internal.pageSize.height;
+    const bottomMargin = 25;
+
+    doc.text(thankYouMessage, 105, pageHeight - bottomMargin, {
+      align: "center",
+    });
+    doc.text(organizationDetails, 105, pageHeight - bottomMargin + 5, {
+      align: "center",
+    });
+    doc.text(website, 105, pageHeight - bottomMargin + 10, { align: "center" });
+    doc.text(contactNumber, 105, pageHeight - bottomMargin + 15, {
+      align: "center",
+    });
+    doc.text(email, 105, pageHeight - bottomMargin + 20, {
+      align: "center",
+    });
+
+    // Save the PDF
+    doc.save("staff_orders_last_30_days.pdf");
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -108,14 +259,21 @@ const StaffOrders = () => {
       </div>
     );
   }
+
   return (
     <>
       <div className=" bg-white shadow-md px-4 pt-3 pb-4 rounded-xl border border-gray-200 flex-1">
         <div className="grid grid-cols-6">
-          <div className="col-span-4 flex items-center">
+          <div className="col-span-4 flex justify-between items-center">
             <strong className="text-gray-800 text-lg font-medium">
               Waiter Orders
             </strong>
+            <Button
+              onClick={generatePDF}
+              className="mx-4 outline-1 outline shadow-none bg-transparent text-black"
+            >
+              Generate PDF
+            </Button>
           </div>
           <Input
             label="Search Orders"

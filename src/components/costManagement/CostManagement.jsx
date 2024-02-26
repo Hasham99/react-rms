@@ -20,9 +20,10 @@ const CostManagement = () => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/recipeitems/res/${restaurantId}/ing`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/recipeitems/res/${restaurantId}/ing`,
           { headers: headers }
-          // `${import.meta.env.VITE_API_KEY}/api/recipeitems/ing`
         );
         setAllData(response.data);
         setLoading(false);

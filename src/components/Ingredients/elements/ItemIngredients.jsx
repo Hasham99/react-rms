@@ -94,7 +94,9 @@ const ItemIngredients = () => {
         "Content-Type": "application/json",
       };
       await fetch(
-        `https://albadwan.shop/api/items/res/${restaurantId}/recipewise`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/items/res/${restaurantId}/recipewise`,
         { headers }
       )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/items/recipewise`)
@@ -111,9 +113,12 @@ const ItemIngredients = () => {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/ingredients/res/${restaurantId}`, {
-        headers,
-      })
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/ingredients/res/${restaurantId}`,
+        {
+          headers,
+        }
+      )
         // await fetch(`${import.meta.env.VITE_API_KEY}/api/ingredients/`)
         .then((response) => response.json())
         .then((data) => {
@@ -185,7 +190,7 @@ const ItemIngredients = () => {
     };
     axios
       .post(
-        `https://albadwan.shop/api/recipeitems/res/${restaurantId}`,
+        `${import.meta.env.VITE_API_KEY}/api/recipeitems/res/${restaurantId}`,
         jsonData,
         { headers }
       )

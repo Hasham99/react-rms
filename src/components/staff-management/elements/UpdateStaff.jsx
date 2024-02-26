@@ -44,8 +44,7 @@ const UpdateStaff = (props) => {
     };
     axios
       .patch(
-        `https://albadwan.shop/api/waiter/${InputValue.waiter_id}`,
-        // `${import.meta.env.VITE_API_KEY}/api/waiter/${InputValue.waiter_id}`,
+        `${import.meta.env.VITE_API_KEY}/api/waiter/${InputValue.waiter_id}`,
         jsonData,
         { headers: headers }
       )

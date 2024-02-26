@@ -30,17 +30,14 @@ const AdminOrders = () => {
           "Content-Type": "application/json",
         };
         const res = await fetch(
-          `https://albadwan.shop/api/posorders/res/${restaurantId}`,
+          `${import.meta.env.VITE_API_KEY}/api/posorders/res/${restaurantId}`,
           { headers: headers }
         );
         const data = await res.json();
         // Sort orders by PosOrderID in descending order
         const sortedOrders = data.sort((a, b) => b.PosOrderID - a.PosOrderID);
         setOrdersData(sortedOrders);
-        // setOrdersData(data);
-        // if (sortedOrders) {
-        //   localStorage.setItem("admin-orders", JSON.stringify(sortedOrders));
-        // }
+
         setLoading(false);
       } catch (error) {
         console.log(error);

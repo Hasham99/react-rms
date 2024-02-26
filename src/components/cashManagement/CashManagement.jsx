@@ -85,15 +85,26 @@ const CashManagement = () => {
         items: postData,
       };
 
-      await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/posclosing/create`,
-        jsonData,
-        { headers: headers }
-      );
+      await axios
+        .post(
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/coc/res/${restaurantId}/posclosing/create`,
+          jsonData,
+          { headers: headers }
+        )
+        .then((response) => {
+          console.log(response.data);
+        });
+      // .catch((response) => {
+      //   // Handle error
+      //   console.error("An error occurred:", response.data);
+      // });
       setShowAlertTrue(true);
       setTimeout(() => {
         setShowAlertTrue(false);
         setInputValues({});
+
         if (previousTotal !== totalDrawerSum) {
           alert(
             "Previous drawer amount and total drawer amount are not equal!"
@@ -149,7 +160,9 @@ const CashManagement = () => {
       };
 
       await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/posopening/create`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/coc/res/${restaurantId}/posopening/create`,
         jsonData,
         { headers: headers }
       );
@@ -223,7 +236,9 @@ const CashManagement = () => {
           "Content-Type": "application/json",
         };
         const response = await fetch(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/denom/get`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/coc/res/${restaurantId}/denom/get`,
           { headers: headers }
         );
         const data = await response.json();
@@ -245,7 +260,9 @@ const CashManagement = () => {
           "Content-Type": "application/json",
         };
         const response = await axios.get(
-          `https://albadwan.shop/api/coc/res/${restaurantId}/posclosing/get`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/coc/res/${restaurantId}/posclosing/get`,
           { headers: headers }
         );
         const data = response.data;

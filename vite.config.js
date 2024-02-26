@@ -9,6 +9,7 @@ export default defineConfig({
     'process.env.VITE_API_KEY': JSON.stringify(process.env.VITE_API_KEY),
   },
   build: {
+    chunkSizeWarningLimit: 16000,
     commonjsOptions: {
       transformMixedEsModules: true,
       // include: [/linked-dep/, /node_modules/],

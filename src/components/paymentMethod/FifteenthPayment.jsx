@@ -42,7 +42,7 @@ const FifteenthPayment = () => {
 
         // Fetch paymentResponse first
         const paymentResponse = await axios.get(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/get`,
+          `${import.meta.env.VITE_API_KEY}/api/payment/res/${restaurantId}/get`,
           { headers: headers }
         );
         setPaymentData(paymentResponse.data[14]);
@@ -50,7 +50,11 @@ const FifteenthPayment = () => {
         // Fetch cashOutResponse using paymentData
         axios
           .get(
-            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashout/get/${paymentResponse.data[14].p_name}`,
+            `${
+              import.meta.env.VITE_API_KEY
+            }/api/coc/res/${restaurantId}/methodwise/cashout/get/${
+              paymentResponse.data[14].p_name
+            }`,
             { headers: headers }
           )
           .then((cashOutResponse) => {
@@ -66,7 +70,11 @@ const FifteenthPayment = () => {
         // Fetch cashInResponse using paymentData
         axios
           .get(
-            `https://albadwan.shop/api/coc/res/${restaurantId}/methodwise/cashin/get/${paymentResponse.data[14].p_name}`,
+            `${
+              import.meta.env.VITE_API_KEY
+            }/api/coc/res/${restaurantId}/methodwise/cashin/get/${
+              paymentResponse.data[14].p_name
+            }`,
             { headers: headers }
           )
           .then((cashInResponse) => {
@@ -129,7 +137,9 @@ const FifteenthPayment = () => {
 
       // Make a POST request using Axios
       await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/cashin/create`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/coc/res/${restaurantId}/cashin/create`,
         postData,
         { headers: headers }
       );
@@ -157,7 +167,9 @@ const FifteenthPayment = () => {
         amount: amountCashOut,
       };
       await axios.post(
-        `https://albadwan.shop/api/coc/res/${restaurantId}/cashout/create`,
+        `${
+          import.meta.env.VITE_API_KEY
+        }/api/coc/res/${restaurantId}/cashout/create`,
         postData,
         { headers: headers }
       );
@@ -199,7 +211,11 @@ const FifteenthPayment = () => {
       };
       await axios
         .patch(
-          `https://albadwan.shop/api/payment/res/${restaurantId}/update/${balanceAmount}/${paymentData.p_id}`,
+          `${
+            import.meta.env.VITE_API_KEY
+          }/api/payment/res/${restaurantId}/update/${balanceAmount}/${
+            paymentData.p_id
+          }`,
           {},
           { headers: headers }
         )

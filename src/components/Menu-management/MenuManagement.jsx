@@ -86,10 +86,12 @@ function MenuManagement() {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/kitchen/res/${restaurantId}`, {
-        headers,
-      })
-        // await fetch(`${import.meta.env.VITE_API_KEY}/api/kitchen`)
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/kitchen/res/${restaurantId}`,
+        {
+          headers,
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           setKitchen(data);
@@ -103,10 +105,12 @@ function MenuManagement() {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/category/res/${restaurantId}`, {
-        headers,
-      })
-        // await fetch(`${import.meta.env.VITE_API_KEY}/api/category`)
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/category/res/${restaurantId}`,
+        {
+          headers,
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           setCategory(data);
@@ -120,10 +124,12 @@ function MenuManagement() {
         Authorization: `${BearerToken}`,
         "Content-Type": "application/json",
       };
-      await fetch(`https://albadwan.shop/api/subcategory/res/${restaurantId}`, {
-        headers,
-      })
-        // await fetch(`${import.meta.env.VITE_API_KEY}/api/subcategory`)
+      await fetch(
+        `${import.meta.env.VITE_API_KEY}/api/subcategory/res/${restaurantId}`,
+        {
+          headers,
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           setSubCategory(data);
@@ -143,104 +149,24 @@ function MenuManagement() {
       "Content-Type": "application/json",
     };
     axios
-      .post(`https://albadwan.shop/api/items/res/${restaurantId}`, jsonData, {
-        headers,
-      })
-      // .post(`https://albadwan.shop/api/items`, jsonData)
-      // .post(`http://54.196.226.78:3000/api/items`, jsonData)
-      // .post(`${import.meta.env.VITE_API_KEY}/api/items`, jsonData)
+      .post(
+        `${import.meta.env.VITE_API_KEY}/api/items/res/${restaurantId}`,
+        jsonData,
+        {
+          headers,
+        }
+      )
       .then(() => {
         window.location.href = "/menu-management";
-        // Handle the response data here if needed
       })
       .catch((error) => {
-        // console.error("Error making post request", error);
-        // Handle errors here if needed
         alert(error);
       });
-    // alert(JSON.stringify(jsonData));
-    // alert(`${selectedOptionOne} ${selectedOptionTwo} ${selectedOptionThree}`);
   };
   const restaurantId = localStorage.getItem("restaurant_id");
   const BearerToken = localStorage.getItem("BearerToken");
   return (
-    // <div>
-    //   <h1>Filter Item Names by Subcategory</h1>
-    //   <label>Select a subcategory: </label>
-    //   <Select
-    //     value={selectedSubcategoryId}
-    //     onChange={(e) => setSelectedSubcategoryId(parseInt(e.target.value))}
-    //   >
-    //     <Option value={null}>-- All Subcategories --</Option>
-    //     {data.map((subcategory) => (
-    //       <option
-    //         key={subcategory.subcategory_id}
-    //         value={subcategory.subcategory_id}
-    //       >
-    //         {subcategory.subcategory_name}
-    //       </option>
-    //     ))}
-    //   </Select>
-    //   <h2>Filtered Item Names:</h2>
-    //   <ul>
-    //     {filteredItemNames.map((itemName, index) => (
-    //       <li key={index}>{itemName}</li>
-    //     ))}
-    //   </ul>
-    // </div>
     <Card className=" m-2">
-      {/* <CardBody className="m-2"> */}
-
-      {/* <div className="flex flex-row">
-        <div className="p-4">
-          <Typography variant="h5" className="py-2 text-sidebar">
-            Category
-          </Typography>
-          <Select
-            color="teal"
-            value={selectedOptionOne}
-            onChange={handleSelectChangeOne}
-            label="Select Category"
-          >
-            {Category.map((data) => (
-              <Option key={data.CategoryID}>{data.CategoryName}</Option>
-            ))}
-          </Select>
-        </div>
-        <div className="p-4">
-          <Typography variant="h5" className="py-2 text-sidebar">
-            Sub Category
-          </Typography>
-          <Select
-            color="teal"
-            // value={selectedOptionTwo}
-            onChange={handleSelectChangeTwo}
-            value={newValue}
-            label="Select SubCategory"
-          >
-            {SubCategory.map((data) => (
-              <Option value={data} key={data.SubCategoryID}>
-                {data.SubCategoryName}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className="p-4">
-          <Typography variant="h5" className="py-2 text-sidebar">
-            Kitchen
-          </Typography>
-          <Select
-            color="teal"
-            // value={selectedOptionThree}
-            onChange={handleSelectChangeThree}
-            label="Select Kitchen"
-          >
-            {Kitchen.map((data) => (
-              <Option key={data.KitchenID}>{data.Name}</Option>
-            ))}
-          </Select>
-        </div>
-      </div> */}
       <CardBody>
         <div className="grid grid-cols-3 ">
           <div className="p-2">
@@ -277,11 +203,6 @@ function MenuManagement() {
                   </Option>
                 ))
               )}
-              {/* {Kitchen.map((item) => (
-                <Option value={item} key={item.KitchenID}>
-                  {item.Name}
-                </Option>
-              ))} */}
             </Select>
           </div>
         </div>
@@ -323,8 +244,6 @@ function MenuManagement() {
           </Button>
         </div>
       </CardBody>
-
-      {/* </CardBody> */}
     </Card>
   );
 }
