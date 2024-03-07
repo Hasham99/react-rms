@@ -143,7 +143,6 @@ const StaffOrders = () => {
       "Order Total",
     ];
 
-    // Filter orders from the previous 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
     const filteredOrders = currentItems.filter(

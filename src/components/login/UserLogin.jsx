@@ -121,7 +121,8 @@ const UserLogin = () => {
         {/* bg-gradient-to-tr from-gray-900 to-gray-800 */}
         <div className="relative grid mx-4 mb-4 -mt-6 overflow-hidden text-white shadow-lg h-28 place-items-center rounded-xl bg-sidebar bg-clip-border shadow-gray-900/20">
           <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-white">
-            Sign In {import.meta.env.VITE_API_KEY}
+            Sign In
+            {/* {import.meta.env.VITE_API_KEY} */}
           </h3>
         </div>
         <div className="flex flex-col gap-4 p-6">
